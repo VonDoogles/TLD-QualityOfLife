@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<!--This is an xml comment. Comments have no impact on compiling.-->
+
+	<PropertyGroup>
+		<!--This is the .NET version the mod will be compiled with. Don't change it.-->
+		<TargetFramework>net6.0</TargetFramework>
+
+		<!--This tells the compiler to use the latest C# version.-->
+		<LangVersion>Latest</LangVersion>
+
+		<!--This adds global usings for a few common System namespaces.-->
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<!--This enables nullable annotation and analysis. It's good coding form.-->
+		<Nullable>enable</Nullable>
+
+		<!--This tells the compiler to use assembly attributes instead of generating its own.-->
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+		<!--PDB files give line numbers in stack traces (errors). This is useful for debugging. There are 3 options:-->
+		<!--full has a pdb file created beside the dll.-->
+		<!--embedded has the pdb data embedded within the dll. This is useful because bug reports will then have line numbers.-->
+		<!--none skips creation of pdb data.-->
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
+
+	<!--This is the of packages that the mod references.-->
+	<ItemGroup>
+		<!--This package contains almost everything a person could possibly need to reference while modding.-->
+		<PackageReference Include="ds5678.Modding.TLD.Il2CppAssemblies.Windows" Version="2.10.0" />
+		<!--The package version here in this template may be outdated and need to be updated. Visual Studio can update package versions automatically.-->
+		<!--If the mod references any other mods (such as ModSettings), that NuGet package will also need to be listed here.-->
+    <PackageReference Include="ds5678.Modding.TLD.ModSettings" Version="1.9.0" />
+	</ItemGroup>
+
+  <PropertyGroup>
+    <TLDMods>D:\github\TLD\Mods</TLDMods>
+  </PropertyGroup>
+  <Target Name="CopyToMods" AfterTargets="Build">
+    <Error Condition="!Exists('$(TLDMods)')" Text="TLDMods folder is missing.  Check value of TLDMods property." />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TLDMods)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

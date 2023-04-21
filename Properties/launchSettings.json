@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "TLD": {
+      "commandName": "Executable",
+      "executablePath": "D:\\github\\TLD\\tld.exe",
+      "commandLineArgs": "--melonloader.launchdebugger --melonloader.debug",
+      "workingDirectory": "D:\\github\\TLD",
+      "nativeDebugging": true
+    }
+  }
+}

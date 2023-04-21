@@ -1,0 +1,6 @@
+.se/
+.vs/
+*.csproj.user
+bin/
+obj/
+
