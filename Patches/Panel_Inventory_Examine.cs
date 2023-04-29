@@ -51,22 +51,18 @@ namespace QualityOfLife
                 }
             }
 
-            if ( __instance.m_RepairPanel.active && Settings.Instance.RepairColoredAmount )
+            if ( __instance.m_RepairPanel.active )
             {
-                if ( __instance.m_GearItem != null && __instance.m_GearItem.m_Repairable != null )
+                if ( Settings.Instance.RepairColoredAmount && __instance.m_GearItem != null && __instance.m_GearItem.m_Repairable != null )
                 {
-                    int FullAmount = (int)__instance.m_GearItem.m_Repairable.m_ConditionIncrease;
-                    string FullAmountStr = string.Format( "{0}%", FullAmount );
+                    float FullAmount = __instance.m_GearItem.m_Repairable.m_ConditionIncrease;
+                    float RepairAmount = __instance.GetConditionIncreaseFromRepair( __instance.m_GearItem );
 
-                    bool bDifferentAmounts = FullAmountStr != __instance.m_Repair_AmountLabel.text;
-                    if ( bDifferentAmounts )
-                    {
-                        __instance.m_Repair_AmountLabel.color = ColorParialRepair;
-                    }
-                    else
-                    {
-                        __instance.m_Repair_AmountLabel.color = __instance.m_RepairLabelColorNormal;
-                    }
+                    __instance.m_Repair_AmountLabel.color = ( FullAmount != RepairAmount ) ? ColorParialRepair : __instance.m_RepairLabelColorNormal;
+                }
+                else if ( __instance.m_Repair_AmountLabel.color != __instance.m_RepairLabelColorNormal )
+                {
+                    __instance.m_Repair_AmountLabel.color = __instance.m_RepairLabelColorNormal;
                 }
             }
         }

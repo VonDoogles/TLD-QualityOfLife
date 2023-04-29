@@ -19,9 +19,19 @@ namespace QualityOfLife
                         __instance.OnToggleFeatActive();
                     }
 
-                    if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) || Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                    if ( Input.GetKeyDown( Settings.Instance.InteractKey ) )
                     {
                         __instance.OnSelectFeatsContinue();
+                    }
+
+                    float Scroll = InputManager.GetScroll( __instance );
+                    if ( Scroll > 0 )
+                    {
+                        __instance.FeatSelectionPrev();
+                    }
+                    else if ( Scroll < 0 )
+                    {
+                        __instance.FeatSelectionNext();
                     }
                 }
             }

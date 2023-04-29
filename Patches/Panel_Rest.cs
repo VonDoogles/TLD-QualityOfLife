@@ -101,6 +101,11 @@ namespace QualityOfLife
                     }
                 }
 
+                if ( InputManager.GetKeyDown( __instance, Settings.Instance.DropKey ) )
+                {
+                    __instance.OnPickUp();
+                }
+
                 float Scroll = InputManager.GetScroll( __instance );
                 if ( Scroll < 0 || InputManager.GetKeyDown( __instance, KeyCode.A ) )
                 {

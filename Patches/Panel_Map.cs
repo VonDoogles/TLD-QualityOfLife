@@ -41,7 +41,7 @@ namespace QualityOfLife
                     __instance.OnNextRegion();
                 }
 
-                if ( Input.GetKeyDown( Settings.Instance.EquipKey ) || Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                if ( Input.GetKeyDown( KeyCode.Tab ) )
                 {
                     InputFrame = Frame;
                     __instance.ToggleWorldMap();

@@ -2,7 +2,7 @@
 using Il2Cpp;
 using UnityEngine;
 
-namespace QualityOfLife.Patches
+namespace QualityOfLife
 {
     [HarmonyPatch( typeof( Panel_Clothing ), "Update" )]
     internal class Patch_Panel_Clothing_Update

@@ -3,6 +3,18 @@ using UnityEngine;
 
 namespace QualityOfLife
 {
+	internal enum DropItemType
+	{
+		// Disable dropping item in hand.
+		None = 0,
+		// Allow dropping any item in hand.
+		Any,
+		// Only drop light source items in hand.
+		LightSource,
+		// Allow dropping any item in hand that isn't a weapon.
+		NonWeapons
+	}
+
     internal class Settings : JsonModSettings
     {
         [Section( "Crafting" )]
@@ -10,11 +22,19 @@ namespace QualityOfLife
         [Description( "Remembers which crafting filter was selected, and restores it when the crafting UI is opened." )]
         public bool CraftRememberFilter = true;
 
+        [Section( "Food" )]
+        [Name( "Eat Pick Units" )]
+        [Description( "Show the Pick Units UI to select how many stackable food items to eat." )]
+        public bool FoodEatPickUnits = true;
 
         [Section( "Fire" )]
         [Name( "Auto-Select Lit Torch" )]
         [Description( "Auto selects the torch as the fire starter if the player is holding a lit torch." )]
         public bool FireAutoSelectLitTorch = true;
+
+		[Name( "Charcoal Pick Units" )]
+		[Description( "Show the Pick Units UI to select how much charcoal to take." )]
+		public bool FireCharcoalPickUnits = true;
 
         [Name( "Auto-Select Mag Lens" )]
         [Description( "If the the Mag Lens is able to be used, then auto select it.  A lit torch takes precedence if 'Auto-Select Lit Torch' is enabled." )]
@@ -39,25 +59,18 @@ namespace QualityOfLife
 		public bool HighlightSelection = true;
 
 		[Name( "UI Extra Controls" )]
-		[Description( "Adds extra shortcut keys to the Breakdown, Clothing, FireStart, Harvest, Inventory, Menu, Reading, Rest and TorchLight UI."+
-					  "\nAccept"+
-					  "\n    Confirms Selection / Examine Item"+
-					  "\nA / D"+
-					  "\n    Adjust Tool / Adjust Time"+
-					  "\nMouseWheel"+
-					  "\n    Adjust Tool / Rotate Safe Dial / Scroll Clothing Items"+
-					  "\nTab"+
-					  "\n    Cycles between Harvest / Quarter and Rest / PassTime"+
-					  "\nDrop"+
-					  "\n    Drop Item"+
-					  "\nEquip"+
-					  "\n    Equip / Wear / Remove Item"+
-					  "\nPrecision Rotate"+
-					  "\n    Slows down mouse wheel adjustment for SafeCracking and Placement."+
-					  "" )]
+		[Description( "Adds extra shortcut keys to various UI. (See README.md)" )]
 		public bool UIExtraControls = true;
 
-		[Name( "Accept / Interact" )]
+        [Name( "Drop Item in Hands" )]
+        [Description( "Which type of items held in player's hands can be dropped with the Drop key. (None, Any, LightSource, NonWeapons)" )]
+        public DropItemType DropItemInHands = DropItemType.Any;
+
+		[Name("QuickSelect Hold Duration")]
+		[Description("Hold long QuickSelect Key must be held down to show Radial UI. (Default: 0.25)")]
+        public float QuickSelectHoldDuration = 0.25f;
+
+        [Name( "Accept / Interact" )]
 		[Description( "The key for accepting menu choices and interacting with objects in the world." )]
 		public KeyCode InteractKey = KeyCode.E;
 
@@ -78,8 +91,16 @@ namespace QualityOfLife
 		public KeyCode NavigateKey = KeyCode.BackQuote;
 
 		[Name( "Crafting UI" )]
-		[Description( "Quick select key to toggle the crafting UI." )]
+		[Description( "Quick select key to toggle the crafting UI. (Hold to show menu. Press for default behaviour.)" )]
 		public KeyCode CraftingKey = KeyCode.X;
+
+		[Name( "LightSource Radial" )]
+		[Description( "Quick select key to show the LightSource radial UI. (Hold to show menu. Press for default behaviour.)" )]
+		public KeyCode LightSourceKey = KeyCode.Alpha5;
+
+        [Name( "Weapon Radial" )]
+        [Description( "Quick select key to show the Weapon radial UI." )]
+        public KeyCode WeaponKey = KeyCode.Alpha6;
 
 
         [Section( "Map" )]
@@ -88,7 +109,15 @@ namespace QualityOfLife
         public bool MapShowPlayerIcon = true;
 
 
-		[Section( "Repair" )]
+		[Section( "Radial" )]
+		[Name( "Combine Items" )]
+		[Description( "The radial menu will only show one item of each type.\n"+
+					  "Mouse wheel will select which item of that type is used. (IE: Birch Tea, Coffee)\n"+
+					  "Also sorts the items by Heat status first, then by Calories remaining and finally by HP." )]
+		public bool RadialCombineItems = true;
+
+
+        [Section( "Repair" )]
 		[Name( "Repair Colored Amount" )]
 		[Description( "Change the color of the repair amount when it is less than the full amount." )]
 		public bool RepairColoredAmount = true;
@@ -98,7 +127,7 @@ namespace QualityOfLife
         [Description( "The radial menu will equip the lowest quality torch." )]
         public bool TorchUseLowest = true;
 
-        [Name( "Always Select StarterName" )]
+        [Name( "Always Select Starter" )]
         [Description( "Always show the torch light UI to select the starter item.  This helps prevent accidental usage of matches." )]
         public bool TorchLightAlwaysShow = true;
 

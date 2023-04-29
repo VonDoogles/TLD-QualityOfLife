@@ -87,4 +87,26 @@ namespace QualityOfLife
         }
     }
 
+    [HarmonyPatch( typeof( InputManager ), "GetRadialButtonHeldDown" )]
+    internal class Patch_InputManager_GetRadialButtonHeldDown
+    {
+        static void Postfix( InputManager __instance, ref bool __result )
+        {
+            if ( Settings.Instance.LightSourceKey != KeyCode.None )
+            {
+                if ( Input.GetKey( Settings.Instance.LightSourceKey ) )
+                {
+                    __result = true;
+                }
+            }
+
+            if ( Settings.Instance.WeaponKey != KeyCode.None )
+            {
+                if ( Input.GetKey( Settings.Instance.WeaponKey ) )
+                {
+                    __result = true;
+                }
+            }
+        }
+    }
 }

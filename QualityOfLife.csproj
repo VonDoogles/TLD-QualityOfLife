@@ -33,8 +33,11 @@
     <PackageReference Include="ds5678.Modding.TLD.ModSettings" Version="1.9.0" />
 	</ItemGroup>
 
-  <PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <TLDMods>D:\github\TLD\Mods</TLDMods>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <TLDMods>D:\SteamLibrary\steamapps\common\TheLongDark\Mods</TLDMods>
   </PropertyGroup>
   <Target Name="CopyToMods" AfterTargets="Build">
     <Error Condition="!Exists('$(TLDMods)')" Text="TLDMods folder is missing.  Check value of TLDMods property." />

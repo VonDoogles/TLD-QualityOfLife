@@ -2,7 +2,7 @@
 using Il2Cpp;
 using UnityEngine;
 
-namespace QualityOfLife.Patches
+namespace QualityOfLife
 {
     [HarmonyPatch( typeof( Panel_IceFishing ), "Update" )]
     internal class Patch_Panel_IceFishing_Update
