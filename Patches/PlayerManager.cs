@@ -113,10 +113,22 @@ namespace QualityOfLife
                     {
 						bool bCanDropItemInHands = true;
 
-						bCanDropItemInHands = bCanDropItemInHands && !__instance.m_ItemInHands.m_CantDropItem;
+						bCanDropItemInHands = bCanDropItemInHands && __instance.CheckIfCanDropGearItem( __instance.m_ItemInHands );
                         bCanDropItemInHands = bCanDropItemInHands && !__instance.IsInspectModeActive();
                         bCanDropItemInHands = bCanDropItemInHands && !InterfaceManager.IsPanelEnabled<Panel_Inventory>();
 
+                        PlayerAnimation PlayerAnim = GameManager.GetPlayerAnimationComponent();
+						if ( PlayerAnim != null )
+						{
+							PlayerAnimation.State State = PlayerAnim.GetState();
+							if ( State != PlayerAnimation.State.Showing )
+							{
+								bCanDropItemInHands = false;
+#if DEBUG
+								Debug.Log( string.Format( "Can't drop item in hand during PlayerAnimation.State ({0})", State.ToString() ) );
+#endif
+							}
+                        }
 
                         if ( bCanDropItemInHands )
 						{
