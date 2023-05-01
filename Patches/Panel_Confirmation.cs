@@ -17,7 +17,7 @@ namespace QualityOfLife
                 {
                     if ( !CurrentRequest.IsInputType() )
                     {
-                        if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) || Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                        if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                         {
                             __instance.OnConfirm();
                         }

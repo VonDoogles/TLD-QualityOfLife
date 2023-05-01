@@ -18,11 +18,11 @@ namespace QualityOfLife
                 }
 
                 float Scroll = InputManager.GetScroll( __instance );
-                if ( Scroll > 0 || Input.GetKeyDown( KeyCode.A ) )
+                if ( Scroll > 0 || InputManager.GetKeyDown( __instance, KeyCode.A ) )
                 {
                     __instance.OnPrevTool();
                 }
-                else if ( Scroll < 0 || Input.GetKeyDown( KeyCode.D ) )
+                else if ( Scroll < 0 || InputManager.GetKeyDown( __instance, KeyCode.D ) )
                 {
                     __instance.OnNextTool();
                 }

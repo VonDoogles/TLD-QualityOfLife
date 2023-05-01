@@ -29,19 +29,19 @@ namespace QualityOfLife
             int Frame = Time.frameCount;
             if ( Settings.Instance.UIExtraControls && InputFrame != Frame )
             {
-                if ( Input.GetKeyDown( KeyCode.A ) )
+                if ( InputManager.GetKeyDown( __instance, KeyCode.A ) )
                 {
                     InputFrame = Frame;
                     __instance.OnPrevRegion();
                 }
 
-                if ( Input.GetKeyDown( KeyCode.D ) )
+                if ( InputManager.GetKeyDown( __instance, KeyCode.D ) )
                 {
                     InputFrame = Frame;
                     __instance.OnNextRegion();
                 }
 
-                if ( Input.GetKeyDown( KeyCode.Tab ) )
+                if ( InputManager.GetKeyDown( __instance, KeyCode.Tab ) )
                 {
                     InputFrame = Frame;
                     __instance.ToggleWorldMap();

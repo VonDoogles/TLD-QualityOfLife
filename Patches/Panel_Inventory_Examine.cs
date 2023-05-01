@@ -16,7 +16,7 @@ namespace QualityOfLife
             {
                 if ( __instance.IsRepairing() )
                 {
-                    if ( Input.GetKeyDown( KeyCode.Escape ) )
+                    if ( InputManager.GetKeyDown( __instance, KeyCode.Escape ) )
                     {
                         __instance.OnProgressBarCancel();
                     }

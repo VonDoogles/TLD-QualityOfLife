@@ -81,7 +81,7 @@ namespace QualityOfLife
 				__instance.m_PlaceMeshRotationDegreesPerSecond = 0;
 				__instance.m_PlaceDecalRotationDegreesPerSecond = 0;
 
-				if ( Input.GetKeyDown( Settings.Instance.PrecisionRotateKey ) )
+				if ( InputManager.GetKeyDown( __instance, Settings.Instance.PrecisionRotateKey ) )
 				{
 					__instance.m_PlaceMeshMouseWheelRotationDegrees = 1;
 					__instance.m_PlaceDecalMouseWheelRotationDegrees = 2;
@@ -93,7 +93,7 @@ namespace QualityOfLife
 					__instance.m_PlaceDecalMouseWheelRotationDegrees = 20;
 				}
 
-				if ( Input.GetKeyDown( Settings.Instance.DropKey ) )
+				if ( InputManager.GetKeyDown( __instance, Settings.Instance.DropKey ) )
 				{
 					bool InPlacementMode = __instance.IsInPlacementMode();
 
@@ -168,7 +168,7 @@ namespace QualityOfLife
 			QuickSelectLightSource.Update();
 			QuickSelectWeapon.Update();
 
-            if ( Input.GetKeyDown( Settings.Instance.NavigateKey ) )
+            if ( InputManager.GetKeyDown( __instance, Settings.Instance.NavigateKey ) )
             {
                 Inventory Inv = GameManager.GetInventoryComponent();
 				if ( Inv != null )
@@ -181,7 +181,7 @@ namespace QualityOfLife
 				}
             }
 
-			if ( Input.GetKeyDown( Settings.Instance.CraftingKey ) )
+			if ( InputManager.GetKeyDown( __instance, Settings.Instance.CraftingKey ) )
 			{
 				bool Enable = !InterfaceManager.IsPanelEnabled<Panel_Crafting>();
 				if ( Enable )
