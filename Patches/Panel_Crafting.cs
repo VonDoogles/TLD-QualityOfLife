@@ -43,16 +43,16 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.UIExtraControls )
             {
-                if ( Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnBeginCrafting();
                 }
 
-                if ( Input.GetKeyDown( KeyCode.A ) )
+                if ( InputManager.GetKeyDown( __instance, KeyCode.A ) )
                 {
                     __instance.m_RequirementContainer.m_QuantitySelect.OnDecrease();
                 }
-                else if ( Input.GetKeyDown( KeyCode.D ) )
+                else if ( InputManager.GetKeyDown( __instance, KeyCode.D ) )
                 {
                     __instance.m_RequirementContainer.m_QuantitySelect.OnIncrease();
                 }

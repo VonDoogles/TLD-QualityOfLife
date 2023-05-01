@@ -11,12 +11,12 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.UIExtraControls )
             {
-                if ( Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnExecute();
                 }
 
-                if ( Input.GetKeyDown( Settings.Instance.EquipKey ) )
+                if ( InputManager.GetKeyDown( __instance, Settings.Instance.EquipKey ) )
                 {
                     __instance.OnExecuteAll();
                 }

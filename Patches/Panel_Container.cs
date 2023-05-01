@@ -11,12 +11,12 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.UIExtraControls )
             {
-                if ( Input.GetKeyDown( Settings.Instance.EquipKey ) || Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                if ( InputManager.GetKeyDown( __instance, Settings.Instance.EquipKey ) || InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnMoveItem();
                 }
 
-                if ( Input.GetKeyDown( KeyCode.Tab ) )
+                if ( InputManager.GetKeyDown( __instance, KeyCode.Tab ) )
                 {
                     if ( __instance.m_SelectedTable == SelectedTableEnum.ContainerTable )
                     {

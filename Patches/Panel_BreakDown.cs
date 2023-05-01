@@ -12,7 +12,7 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.UIExtraControls )
             {
-                if ( Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnBreakDown();
                 }

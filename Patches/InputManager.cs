@@ -77,7 +77,7 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.SeparateInteract )
             {
-                if ( Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                if ( InputManager.GetKeyDown( context, Settings.Instance.InteractKey ) )
                 {
                     __result = true;
                 }

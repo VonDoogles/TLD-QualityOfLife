@@ -27,7 +27,7 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.UIExtraControls )
             {
-                if ( Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     if ( __instance.m_CollectibleSectionObject.activeSelf )
                     {

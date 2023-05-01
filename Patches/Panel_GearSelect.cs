@@ -11,17 +11,17 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.UIExtraControls )
             {
-                if ( Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.SelectGear();
                 }
 
                 float Scroll = InputManager.GetScroll( __instance );
-                if ( Scroll > 0 || Input.GetKeyDown( KeyCode.A ) )
+                if ( Scroll > 0 || InputManager.GetKeyDown( __instance, KeyCode.A ) )
                 {
                     __instance.PreviousGear();
                 }
-                else if ( Scroll < 0 || Input.GetKeyDown( KeyCode.D ) )
+                else if ( Scroll < 0 || InputManager.GetKeyDown( __instance, KeyCode.D ) )
                 {
                     __instance.NextGear();
                 }

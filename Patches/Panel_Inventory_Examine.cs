@@ -33,7 +33,7 @@ namespace QualityOfLife
                     {
                         __instance.OnReadHoursIncrease();
                     }
-                    else if ( Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                    else if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                     {
                         __instance.OnRead();
                     }

@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
-using UnityEngine;
 
 namespace QualityOfLife
 {
@@ -12,7 +11,7 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) || Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnSelectRegionContinue();
                 }
@@ -27,7 +26,7 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) || Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnSelectRegionContinue();
                 }

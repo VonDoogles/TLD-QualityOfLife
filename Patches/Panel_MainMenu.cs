@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
-using UnityEngine;
 
 namespace QualityOfLife
 {
@@ -14,12 +13,12 @@ namespace QualityOfLife
             {
                 if ( __instance.m_SelectFeatWindow != null && __instance.m_SelectFeatWindow.active )
                 {
-                    if ( Input.GetKeyDown( Settings.Instance.EquipKey ) )
+                    if ( InputManager.GetKeyDown( __instance, Settings.Instance.EquipKey ) )
                     {
                         __instance.OnToggleFeatActive();
                     }
 
-                    if ( Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                    if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                     {
                         __instance.OnSelectFeatsContinue();
                     }

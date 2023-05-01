@@ -35,7 +35,7 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.UIExtraControls )
             {
-                if ( __instance.m_Cracked && Input.GetKeyDown( Settings.Instance.InteractKey ) )
+                if ( __instance.m_Cracked && InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     Panel_SafeCracking Panel = __instance.m_SafeCracking.GetPanel();
                     if ( Panel != null )
