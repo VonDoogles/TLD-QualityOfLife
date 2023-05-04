@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<!--This is an xml comment. Comments have no impact on compiling.-->
 
 	<PropertyGroup>
@@ -24,7 +24,17 @@
 		<DebugType>embedded</DebugType>
 	</PropertyGroup>
 
-	<!--This is the of packages that the mod references.-->
+  <Target Name="GetAssmeblyVersion" AfterTargets="Build">
+    <GetAssemblyIdentity
+        AssemblyFiles="$(TargetPath)">
+      <Output
+          TaskParameter="Assemblies"
+          ItemName="MyAssemblyIdentities"/>
+    </GetAssemblyIdentity>
+
+    <Message Text="Assmebly Version: %(MyAssemblyIdentities.Version)"/>
+  </Target>
+  <!--This is the of packages that the mod references.-->
 	<ItemGroup>
 		<!--This package contains almost everything a person could possibly need to reference while modding.-->
 		<PackageReference Include="ds5678.Modding.TLD.Il2CppAssemblies.Windows" Version="2.10.0" />
@@ -42,5 +52,12 @@
   <Target Name="CopyToMods" AfterTargets="Build">
     <Error Condition="!Exists('$(TLDMods)')" Text="TLDMods folder is missing.  Check value of TLDMods property." />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TLDMods)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="Zip" AfterTargets="Build" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <ItemGroup>
+      <ZipFiles Include="$(TargetPath)" />
+    </ItemGroup>
+    <Exec Command="PowerShell -command Compress-Archive -force @(ZipFiles, ',') $(AssemblyName)-%(MyAssemblyIdentities.Version).zip" />
   </Target>
 </Project>
