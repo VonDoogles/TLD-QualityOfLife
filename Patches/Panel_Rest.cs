@@ -79,11 +79,11 @@ namespace QualityOfLife
             {
                 if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
-                    if ( __instance.m_ShowPassTime )
+                    if ( __instance.m_ShowPassTime && __instance.m_PassTimeButtonObject.activeInHierarchy )
                     {
                         __instance.OnPassTime();
                     }
-                    else
+                    else if ( __instance.m_SleepButton.activeInHierarchy )
                     {
                         __instance.OnRest();
                     }

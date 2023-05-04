@@ -8,7 +8,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Milling __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.UIExtraControls && !__instance.m_MillingInProgress )
             {
                 if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {

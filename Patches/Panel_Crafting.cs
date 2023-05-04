@@ -41,7 +41,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Crafting __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.UIExtraControls && __instance.m_CraftButton.isActiveAndEnabled )
             {
                 if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {

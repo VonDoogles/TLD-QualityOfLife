@@ -8,7 +8,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_SnowShelterBuild __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.UIExtraControls && !__instance.IsBuilding() )
             {
                 if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {

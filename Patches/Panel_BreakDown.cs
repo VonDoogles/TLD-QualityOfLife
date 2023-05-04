@@ -10,7 +10,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_BreakDown __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.UIExtraControls && !__instance.IsBreakingDown() )
             {
                 if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
