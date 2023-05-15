@@ -29,6 +29,30 @@ namespace QualityOfLife
 
                     __instance.RefreshTables();
                 }
+
+				ContainerUI UIComp = __instance.m_ContainerUIComponent;
+				if ( UIComp != null )
+				{
+                    Vector3 MouseLoc = Input.mousePosition;
+
+					UIWidget ContainerWidget = UIComp.m_ContainerGridBackground.GetComponent<UIWidget>();
+					UIWidget InventoryWidget = UIComp.m_InventoryGridBackground.GetComponent<UIWidget>();
+
+					if ( ContainerWidget != null && WidgetUtils.UIRectContains( ContainerWidget, MouseLoc ) )
+					{
+						if ( __instance.m_SelectedTable != SelectedTableEnum.ContainerTable )
+						{
+							__instance.m_SelectedTable = SelectedTableEnum.ContainerTable;
+						}
+					}
+					else if ( InventoryWidget != null && WidgetUtils.UIRectContains( InventoryWidget, MouseLoc ) )
+					{
+						if ( __instance.m_SelectedTable != SelectedTableEnum.InventoryTable )
+						{
+							__instance.m_SelectedTable = SelectedTableEnum.InventoryTable;
+						}
+					}
+				}
             }
         }
     }

@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace QualityOfLife
 {
-    internal class WidgetUtils
+    public class WidgetUtils
     {
-        internal static UISprite? MakeSprite( string Name, Transform parent, Vector3 offset, string SpriteName )
+        public static UISprite? MakeSprite( string Name, Transform parent, Vector3 offset, string SpriteName )
         {
             GameObject GameObj = new GameObject( Name );
             if ( GameObj != null )
@@ -21,12 +21,12 @@ namespace QualityOfLife
             return null;
         }
 
-        private static UIAtlas? FindAtlas( string AtlasName )
+        public static UIAtlas? FindAtlas( string AtlasName )
         {
             return InterfaceManager.GetInstance().m_ScalableAtlases.FirstOrDefault( Atlas => Atlas.name == AtlasName );
         }
 
-        internal static void SetActive( Component? Comp, bool Active )
+        public static void SetActive( Component? Comp, bool Active )
         {
             if ( Comp != null && Comp.gameObject != null && Comp.gameObject.activeSelf != Active )
             {
@@ -34,12 +34,30 @@ namespace QualityOfLife
             }
         }
 
-        internal static void SetActive( GameObject GameObj, bool Active )
+        public static void SetActive( GameObject GameObj, bool Active )
         {
             if ( GameObj != null && GameObj.activeSelf != Active )
             {
                 GameObj.SetActive( Active );
             }
+        }
+
+        public static bool UIRectContains( UIRect Rect, Vector3 MouseLoc )
+        {
+            Vector3 Min = Rect.anchorCamera.WorldToScreenPoint( Rect.worldCorners[ 0 ] );
+            Vector3 Max = Min;
+
+            foreach ( Vector3 Corner in Rect.worldCorners )
+            {
+                Vector3 ScreenCorner = Rect.anchorCamera.WorldToScreenPoint( Corner );
+                Min.x = Math.Min( Min.x, ScreenCorner.x );
+                Min.y = Math.Min( Min.y, ScreenCorner.y );
+                Max.x = Math.Max( Max.x, ScreenCorner.x );
+                Max.y = Math.Max( Max.y, ScreenCorner.y );
+            }
+
+            Rect ScreenRect = UnityEngine.Rect.MinMaxRect( Min.x, Min.y, Max.x, Max.y );
+            return ScreenRect.Contains( MouseLoc );
         }
     }
 }

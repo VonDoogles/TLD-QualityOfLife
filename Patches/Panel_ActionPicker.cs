@@ -26,6 +26,7 @@ namespace QualityOfLife
                             PickUnits.m_maxUnits = Interaction.Fire.GetAvailableCharcoalPieces();
                             PickUnits.Enable( true );
                             PickUnits.Refresh();
+                            PickUnits.m_EnablePanelOnExit = EnablePanelOnExit.None;
                             return false;
                         }
                     }

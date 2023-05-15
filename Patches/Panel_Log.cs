@@ -46,35 +46,17 @@ namespace QualityOfLife
                 {
                     Vector3 MouseLoc = Input.mousePosition;
 
-                    var PanelContains = delegate ( UIPanel Panel, Vector3 MouseLoc )
-                    {
-                        Vector3 Min = Panel.anchorCamera.WorldToScreenPoint( Panel.worldCorners[ 0 ] );
-                        Vector3 Max = Min;
-
-                        foreach ( Vector3 Corner in Panel.worldCorners )
-                        {
-                            Vector3 ScreenCorner = Panel.anchorCamera.WorldToScreenPoint( Corner );
-                            Min.x = Math.Min( Min.x, ScreenCorner.x );
-                            Min.y = Math.Min( Min.y, ScreenCorner.y );
-                            Max.x = Math.Max( Max.x, ScreenCorner.x );
-                            Max.y = Math.Max( Max.y, ScreenCorner.y );
-                        }
-
-                        Rect PanelRect = Rect.MinMaxRect( Min.x, Min.y, Max.x, Max.y );
-                        return PanelRect.Contains( MouseLoc );
-                    };
-
                     UIPanel RegionListPanel = __instance.m_SurveyListRegionScrollbar.transform.parent.GetComponent<UIPanel>();
                     UIPanel SurveyListPanel = __instance.m_SurveyListScrollbar.transform.parent.GetComponent<UIPanel>();
 
-                    if ( SurveyListPanel != null && PanelContains( SurveyListPanel, MouseLoc ) )
+                    if ( SurveyListPanel != null && WidgetUtils.UIRectContains( SurveyListPanel, MouseLoc ) )
                     {
                         if ( __instance.m_SurveyState != PanelLogSurveyStates.AchievementList )
                         {
                             __instance.m_SurveyState = PanelLogSurveyStates.AchievementList;
                         }
                     }
-                    else if ( RegionListPanel != null && PanelContains( RegionListPanel, MouseLoc ) )
+                    else if ( RegionListPanel != null && WidgetUtils.UIRectContains( RegionListPanel, MouseLoc ) )
                     {
                         if ( __instance.m_SurveyState != PanelLogSurveyStates.RegionList )
                         {
@@ -106,17 +88,9 @@ namespace QualityOfLife
                     }
                 }
 
-                int ClickedIndex = -1;
-                for ( int Index = 0; Index < __instance.m_SurveyRegionDisplayList.Count; ++Index )
-                {
-                    SurveyRegionListItem RegionItem = __instance.m_SurveyRegionDisplayList[ Index ];
-                    if ( RegionItem != null && RegionItem.m_Index == RegionIndex )
-                    {
-                        ClickedIndex = Index;
-                        break;
-                    }
-                }
+                __instance.m_SurveyRegionIndexOffset = Math.Max( 0, RegionIndex - 3 );
 
+                int ClickedIndex = RegionIndex - __instance.m_SurveyRegionIndexOffset;
                 if ( ClickedIndex != -1 )
                 {
                     __instance.OnSurveyRegionClicked( ClickedIndex );

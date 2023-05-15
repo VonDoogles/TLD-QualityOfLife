@@ -15,9 +15,20 @@ namespace QualityOfLife
             {
                 Vector3 Offset = new Vector3( 0, 0, 0 );
                 Offset.x = __instance.m_SegmentLabel.width * 0.5f + 16;
-                
+
                 UISprite? PrevItem = WidgetUtils.MakeSprite( "PrevItem", __instance.m_SegmentLabel.transform, -Offset, "arrow_nav3" );
                 UISprite? NextItem = WidgetUtils.MakeSprite( "NextItem", __instance.m_SegmentLabel.transform,  Offset, "arrow_nav3" );
+
+				Transform LineBreak = __instance.m_GearStatsObject.transform.FindChild( "Linebreak" );
+                UISprite? LineBreakSprite = LineBreak.GetComponent<UISprite>();
+				UISprite? Thumb = WidgetUtils.MakeSprite( "Thumb", LineBreak, Vector3.zero, "scrollbar_thumb" );
+
+                if ( Thumb != null )
+                {
+                    Thumb.depth = LineBreakSprite.depth + 1;
+                    Thumb.transform.localScale = Vector3.one;
+                    Thumb.SetDimensions( 4, 8 );
+                }
 
                 if ( PrevItem != null )
                 {
@@ -104,6 +115,9 @@ namespace QualityOfLife
         {
             Transform PrevItem = __instance.m_SegmentLabel.transform.FindChild( "PrevItem" );
             Transform NextItem = __instance.m_SegmentLabel.transform.FindChild( "NextItem" );
+            UISprite? LineBreak = __instance.m_GearStatsObject.transform.FindChild( "Linebreak" ).GetComponent<UISprite>();
+            UISprite? Thumb = LineBreak?.transform.FindChild( "Thumb" ).GetComponent<UISprite>();
+
             bool bShowItemIcons = false;
 
             if ( Settings.Instance.RadialCombineItems )
@@ -138,6 +152,14 @@ namespace QualityOfLife
                             {
                                 HoveredArm.m_GearItem = NewItem;
                             }
+
+                            if ( LineBreak != null && Thumb != null )
+                            {
+                                float StepSize = LineBreak.height / (float)( ItemList.Count - 1 );
+                                float ThumbX = StepSize * Index - LineBreak.height * 0.5f;
+                                Thumb.transform.localPosition = new Vector3( 0, -ThumbX, 0 );
+                                WidgetUtils.SetActive( Thumb, true );
+                            }
                         }
 
                         bShowItemIcons = bMultipleItems;
@@ -166,6 +188,7 @@ namespace QualityOfLife
 
             WidgetUtils.SetActive( PrevItem, bShowItemIcons );
             WidgetUtils.SetActive( NextItem, bShowItemIcons );
+            WidgetUtils.SetActive( Thumb, bShowItemIcons );
         }
     }
 
