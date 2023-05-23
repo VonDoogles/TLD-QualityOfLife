@@ -76,7 +76,10 @@ namespace QualityOfLife
 
         static bool Prefix( PlayerManager __instance )
 		{
-			if ( Settings.Instance.SeparateInteract )
+            bool bCanDropItemInHands = true;
+			bool bDropKeyDown = InputManager.GetKeyDown( __instance, Settings.Instance.DropKey );
+
+            if ( Settings.Instance.SeparateInteract )
 			{
 				__instance.m_PlaceMeshRotationDegreesPerSecond = 0;
 				__instance.m_PlaceDecalRotationDegreesPerSecond = 0;
@@ -93,70 +96,24 @@ namespace QualityOfLife
 					__instance.m_PlaceDecalMouseWheelRotationDegrees = 20;
 				}
 
-				if ( InputManager.GetKeyDown( __instance, Settings.Instance.DropKey ) )
+				if ( bDropKeyDown )
 				{
 					bool InPlacementMode = __instance.IsInPlacementMode();
 
 					if ( __instance.ActiveInteraction != null && !InPlacementMode )
 					{
-						GameObject ObjectToPlace = __instance.ActiveInteraction.GetInteractiveObject();
+                        GameObject ObjectToPlace = __instance.ActiveInteraction.GetInteractiveObject();
 						if ( ObjectToPlace != null && ObjectToPlace.GetComponent<Inspect>() != null )
 						{
 							__instance.StartPlaceMesh( ObjectToPlace, PlaceMeshFlags.None );
 						}
-					}
-					else if ( InPlacementMode )
+                        bCanDropItemInHands = false;
+                    }
+                    else if ( InPlacementMode )
 					{
 						__instance.CancelPlacementMode();
-					}
-					else if ( __instance.m_ItemInHands != null )
-                    {
-						bool bCanDropItemInHands = true;
-
-						bCanDropItemInHands = bCanDropItemInHands && __instance.CheckIfCanDropGearItem( __instance.m_ItemInHands );
-                        bCanDropItemInHands = bCanDropItemInHands && !__instance.IsInspectModeActive();
-                        bCanDropItemInHands = bCanDropItemInHands && !InterfaceManager.IsPanelEnabled<Panel_Inventory>();
-
-                        PlayerAnimation PlayerAnim = GameManager.GetPlayerAnimationComponent();
-						if ( PlayerAnim != null )
-						{
-							PlayerAnimation.State State = PlayerAnim.GetState();
-							if ( State != PlayerAnimation.State.Showing )
-							{
-								bCanDropItemInHands = false;
-#if DEBUG
-								Debug.Log( string.Format( "Can't drop item in hand during PlayerAnimation.State ({0})", State.ToString() ) );
-#endif
-							}
-                        }
-
-                        if ( bCanDropItemInHands )
-						{
-							switch ( Settings.Instance.DropItemInHands )
-							{
-								case DropItemType.Any:
-									__instance.m_ItemInHands.Drop( 1 );
-									break;
-
-								case DropItemType.LightSource:
-									if ( IsLightSource( __instance.m_ItemInHands ) )
-									{
-										__instance.m_ItemInHands.Drop( 1 );
-									}
-									break;
-
-								case DropItemType.NonWeapons:
-									if ( !__instance.m_ItemInHands.IsWeapon() )
-									{
-										__instance.m_ItemInHands.Drop( 1 );
-									}
-									break;
-
-								case DropItemType.None:
-									break;
-							}
-						}
-					}
+                        bCanDropItemInHands = false;
+                    }
                 }
             }
             else
@@ -165,7 +122,54 @@ namespace QualityOfLife
                 __instance.m_PlaceDecalRotationDegreesPerSecond = 120;
             }
 
-			QuickSelectLightSource.Update();
+			if ( bCanDropItemInHands && bDropKeyDown && __instance.m_ItemInHands != null )
+			{
+				bCanDropItemInHands = bCanDropItemInHands && __instance.CheckIfCanDropGearItem( __instance.m_ItemInHands );
+				bCanDropItemInHands = bCanDropItemInHands && !__instance.IsInspectModeActive();
+				bCanDropItemInHands = bCanDropItemInHands && !InterfaceManager.IsPanelEnabled<Panel_Inventory>();
+
+				PlayerAnimation PlayerAnim = GameManager.GetPlayerAnimationComponent();
+				if ( PlayerAnim != null )
+				{
+					PlayerAnimation.State State = PlayerAnim.GetState();
+					if ( State != PlayerAnimation.State.Showing )
+					{
+						bCanDropItemInHands = false;
+#if DEBUG
+						Debug.Log( string.Format( "Can't drop item in hand during PlayerAnimation.State ({0})", State.ToString() ) );
+#endif
+					}
+				}
+
+				if ( bCanDropItemInHands )
+				{
+					switch ( Settings.Instance.DropItemInHands )
+					{
+						case DropItemType.Any:
+							__instance.m_ItemInHands.Drop( 1 );
+							break;
+
+						case DropItemType.LightSource:
+							if ( IsLightSource( __instance.m_ItemInHands ) )
+							{
+								__instance.m_ItemInHands.Drop( 1 );
+							}
+							break;
+
+						case DropItemType.NonWeapons:
+							if ( !__instance.m_ItemInHands.IsWeapon() )
+							{
+								__instance.m_ItemInHands.Drop( 1 );
+							}
+							break;
+
+						case DropItemType.None:
+							break;
+					}
+				}
+			}
+
+            QuickSelectLightSource.Update();
 			QuickSelectWeapon.Update();
 
             if ( InputManager.GetKeyDown( __instance, Settings.Instance.NavigateKey ) )

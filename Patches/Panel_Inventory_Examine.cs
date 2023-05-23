@@ -22,31 +22,35 @@ namespace QualityOfLife
                     }
                 }
 
-                if ( __instance.m_ReadPanel.active )
+                bool bIsDoingAction = __instance.IsCleaning() || __instance.IsHarvesting() || __instance.IsReading() || __instance.IsRepairing() || __instance.IsSharpening();
+                if ( !bIsDoingAction )
                 {
-                    float Scroll = InputManager.GetScroll( __instance );
-                    if ( Scroll < 0 || InputManager.GetKeyDown( __instance, KeyCode.A ) )
+                    if ( __instance.m_ReadPanel.active )
                     {
-                        __instance.OnReadHoursDecrease();
-                    }
-                    else if ( Scroll > 0 || InputManager.GetKeyDown( __instance, KeyCode.D ) )
-                    {
-                        __instance.OnReadHoursIncrease();
+                        float Scroll = InputManager.GetScroll( __instance );
+                        if ( Scroll < 0 || InputManager.GetKeyDown( __instance, KeyCode.A ) )
+                        {
+                            __instance.OnReadHoursDecrease();
+                        }
+                        else if ( Scroll > 0 || InputManager.GetKeyDown( __instance, KeyCode.D ) )
+                        {
+                            __instance.OnReadHoursIncrease();
+                        }
+                        else if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                        {
+                            __instance.OnRead();
+                        }
                     }
                     else if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                     {
-                        __instance.OnRead();
-                    }
-                }
-                else if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
-                {
-                    if ( __instance.m_ActionToolSelect.active )
-                    {
-                        __instance.OnSelectActionTool();
-                    }
-                    else
-                    {
-                        __instance.m_ButtonDelegates[ __instance.m_SelectedButtonIndex ].Invoke();
+                        if ( __instance.m_ActionToolSelect.active )
+                        {
+                            __instance.OnSelectActionTool();
+                        }
+                        else
+                        {
+                            __instance.m_ButtonDelegates[ __instance.m_SelectedButtonIndex ].Invoke();
+                        }
                     }
                 }
             }

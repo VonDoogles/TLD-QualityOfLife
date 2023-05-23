@@ -91,7 +91,7 @@ namespace QualityOfLife
                 for ( int Index = 0; Index < __result.Count; ++Index )
                 {
                     GearItem Item = __result[ Index ];
-                    if ( Item != null && Item.m_TorchItem != null )
+                    if ( Item != null && ( Item.m_TorchItem != null || Item.m_BowItem != null ) )
                     {
                         Inventory Inv = GameManager.GetInventoryComponent();
                         if ( Inv != null )
