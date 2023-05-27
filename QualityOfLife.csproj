@@ -25,14 +25,11 @@
 	</PropertyGroup>
 
   <Target Name="GetAssmeblyVersion" AfterTargets="Build">
-    <GetAssemblyIdentity
-        AssemblyFiles="$(TargetPath)">
-      <Output
-          TaskParameter="Assemblies"
-          ItemName="MyAssemblyIdentities"/>
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="MyAssemblyIdentities" />
     </GetAssemblyIdentity>
 
-    <Message Text="Assmebly Version: %(MyAssemblyIdentities.Version)"/>
+    <Message Text="Assmebly Version: %(MyAssemblyIdentities.Version)" />
   </Target>
   <!--This is the of packages that the mod references.-->
 	<ItemGroup>
@@ -41,6 +38,9 @@
 		<!--The package version here in this template may be outdated and need to be updated. Visual Studio can update package versions automatically.-->
 		<!--If the mod references any other mods (such as ModSettings), that NuGet package will also need to be listed here.-->
     <PackageReference Include="ds5678.Modding.TLD.ModSettings" Version="1.9.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Source\" />
 	</ItemGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
