@@ -12,7 +12,7 @@ namespace QualityOfLife
 
         static void Postfix( Panel_Rest __instance, bool enable )
         {
-            if ( Settings.Instance.UIExtraControls && enable )
+            if ( Settings.Instance.RestPreset && enable )
             {
                 Transform Parent = __instance.m_ButtonIncrease.transform.parent;
                 GenericButtonMouseSpawner ButtonSpawner = __instance.m_PickUpButton.GetComponent<GenericButtonMouseSpawner>();

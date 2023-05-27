@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Il2CppTLD.Gear;
 using UnityEngine;
 
 namespace QualityOfLife
@@ -74,6 +75,24 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_ActionsRadial __instance, ref Il2CppSystem.Collections.Generic.List<GearItem> __result )
         {
+            if ( Settings.Instance.RadialShowRuinedFood )
+            {
+                Inventory Inv = GameManager.GetInventoryComponent();
+                if ( Inv != null )
+                {
+                    foreach ( GearItemObject GearObj in Inv.m_Items )
+                    {
+                        if ( GearObj != null && GearObj.m_GearItem != null && GearObj.m_GearItem.m_FoodItem != null )
+                        {
+                            if ( GearObj.m_GearItem.CurrentHP <= 0.0f && !__result.Contains( GearObj.m_GearItem ) )
+                            {
+                                __result.Add( GearObj.m_GearItem );
+                            }
+                        }
+                    }
+                }
+            }
+
             if ( Settings.Instance.RadialCombineItems )
             {
                 GearHelper.GroupItemsByType( __result );

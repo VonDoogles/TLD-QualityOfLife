@@ -5,6 +5,26 @@ using UnityEngine;
 namespace QualityOfLife
 {
 
+    [HarmonyPatch( typeof( Panel_HUD ), "Enable" )]
+    internal class Patch_Panel_HUD_Enable
+    {
+        static float OffsetMax = 400.0f;
+
+        static void Postfix( Panel_HUD __instance, bool enable )
+        {
+            if ( enable && __instance.m_BuffNotificationPanel != null )
+            {
+                Vector3 LocalPos = __instance.m_BuffNotificationPanel.transform.localPosition;
+                float DesiredY = OffsetMax * Settings.Instance.BuffOffsetVertical;
+                if ( LocalPos.y != DesiredY )
+                {
+                    LocalPos.y = DesiredY;
+                    __instance.m_BuffNotificationPanel.transform.localPosition = LocalPos;
+                }
+            }
+        }
+    }
+
     [HarmonyPatch( typeof( Panel_HUD ), "Update" )]
     internal class Patch_Panel_HUD_Update
     {

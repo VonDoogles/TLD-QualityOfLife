@@ -1,19 +1,20 @@
 ﻿using ModSettings;
+using QualityOfLife.Patches;
 using UnityEngine;
 
 namespace QualityOfLife
 {
-	internal enum DropItemType
-	{
-		// Disable dropping item in hand.
-		None = 0,
-		// Allow dropping any item in hand.
-		Any,
-		// Only drop light source items in hand.
-		LightSource,
-		// Allow dropping any item in hand that isn't a weapon.
-		NonWeapons
-	}
+    internal enum DropItemType
+    {
+        // Disable dropping item in hand.
+        None = 0,
+        // Allow dropping any item in hand.
+        Any,
+        // Only drop light source items in hand.
+        LightSource,
+        // Allow dropping any item in hand that isn't a weapon.
+        NonWeapons
+    }
 
     internal class Settings : JsonModSettings
     {
@@ -23,6 +24,10 @@ namespace QualityOfLife
         public bool CraftRememberFilter = true;
 
         [Section( "Food" )]
+        [Name( "Cook Filter Reheat" )]
+        [Description( "Filter reheatable items in the Cook UI." )]
+        public bool FoodCookFilterReheat = true;
+
         [Name( "Eat Pick Units" )]
         [Description( "Show the Pick Units UI to select how many stackable food items to eat." )]
         public bool FoodEatPickUnits = true;
@@ -32,9 +37,9 @@ namespace QualityOfLife
         [Description( "Auto selects the torch as the fire starter if the player is holding a lit torch." )]
         public bool FireAutoSelectLitTorch = true;
 
-		[Name( "Charcoal Pick Units" )]
-		[Description( "Show the Pick Units UI to select how much charcoal to take." )]
-		public bool FireCharcoalPickUnits = true;
+        [Name( "Charcoal Pick Units" )]
+        [Description( "Show the Pick Units UI to select how much charcoal to take." )]
+        public bool FireCharcoalPickUnits = true;
 
         [Name( "Auto-Select Mag Lens" )]
         [Description( "If the the Mag Lens is able to be used, then auto select it.  A lit torch takes precedence if 'Auto-Select Lit Torch' is enabled." )]
@@ -49,54 +54,58 @@ namespace QualityOfLife
         public bool FireRememberSelection = true;
 
 
-		[Section( "Input" )]
-		[Name( "Separate Interact" )]
-		[Description( "Separate interact with objects so it doesn't share the same controls as shooting." )]
-		public bool SeparateInteract = true;
+        [Section( "Input" )]
+        [Name( "Separate Interact" )]
+        [Description( "Separate interact with objects so it doesn't share the same controls as shooting." )]
+        public bool SeparateInteract = true;
 
-		[Name( "Highlight Selection" )]
-		[Description( "Changes the background color of items on the Harvest and FireStart UI to show which row has keyboard focus." )]
-		public bool HighlightSelection = true;
+        [Name( "Highlight Selection" )]
+        [Description( "Changes the background color of items on the Harvest and FireStart UI to show which row has keyboard focus." )]
+        public bool HighlightSelection = true;
 
-		[Name( "UI Extra Controls" )]
-		[Description( "Adds extra shortcut keys to various UI. (See README.md)" )]
-		public bool UIExtraControls = true;
+        [Name( "Rest Preset" )]
+        [Description( "Adds a preset button for 10 hours to the rest UI." )]
+        public bool RestPreset = true;
+
+        [Name( "UI Extra Controls" )]
+        [Description( "Adds extra shortcut keys to various UI. (See README.md)" )]
+        public bool UIExtraControls = true;
 
         [Name( "Drop Item in Hands" )]
         [Description( "Which type of items held in player's hands can be dropped with the Drop key. (None, Any, LightSource, NonWeapons)" )]
         public DropItemType DropItemInHands = DropItemType.Any;
 
-		[Name("QuickSelect Hold Duration")]
-		[Description("Hold long QuickSelect Key must be held down to show Radial UI. (Default: 0.25)")]
+        [Name( "QuickSelect Hold Duration" )]
+        [Description( "Hold long QuickSelect Key must be held down to show Radial UI. (Default: 0.25)" )]
         public float QuickSelectHoldDuration = 0.25f;
 
         [Name( "Accept / Interact" )]
-		[Description( "The key for accepting menu choices and interacting with objects in the world." )]
-		public KeyCode InteractKey = KeyCode.E;
+        [Description( "The key for accepting menu choices and interacting with objects in the world." )]
+        public KeyCode InteractKey = KeyCode.E;
 
-		[Name( "Drop / Put Back" )]
-		[Description( "The key for dropping items or putting them back while inpecting them." )]
-		public KeyCode DropKey = KeyCode.Q;
+        [Name( "Drop / Put Back" )]
+        [Description( "The key for dropping items or putting them back while inpecting them." )]
+        public KeyCode DropKey = KeyCode.Q;
 
-		[Name( "Equip / Consume" )]
-		[Description( "The key equipping items or consuming them." )]
-		public KeyCode EquipKey = KeyCode.Space;
+        [Name( "Equip / Consume" )]
+        [Description( "The key equipping items or consuming them." )]
+        public KeyCode EquipKey = KeyCode.Space;
 
-		[Name( "Precision Rotate" )]
-		[Description( "When this key is held, rotating the placement object with mouse wheel is more precise." )]
-		public KeyCode PrecisionRotateKey = KeyCode.LeftShift;
+        [Name( "Precision Rotate" )]
+        [Description( "When this key is held, rotating the placement object with mouse wheel is more precise." )]
+        public KeyCode PrecisionRotateKey = KeyCode.LeftShift;
 
-		[Name( "Navigate Quick Select" )]
-		[Description( "Quick select key to equip Charcoal." )]
-		public KeyCode NavigateKey = KeyCode.BackQuote;
+        [Name( "Navigate Quick Select" )]
+        [Description( "Quick select key to equip Charcoal." )]
+        public KeyCode NavigateKey = KeyCode.BackQuote;
 
-		[Name( "Crafting UI" )]
-		[Description( "Quick select key to toggle the crafting UI. (Hold to show menu. Press for default behaviour.)" )]
-		public KeyCode CraftingKey = KeyCode.X;
+        [Name( "Crafting UI" )]
+        [Description( "Quick select key to toggle the crafting UI. (Hold to show menu. Press for default behaviour.)" )]
+        public KeyCode CraftingKey = KeyCode.X;
 
-		[Name( "LightSource Radial" )]
-		[Description( "Quick select key to show the LightSource radial UI. (Hold to show menu. Press for default behaviour.)" )]
-		public KeyCode LightSourceKey = KeyCode.Alpha5;
+        [Name( "LightSource Radial" )]
+        [Description( "Quick select key to show the LightSource radial UI. (Hold to show menu. Press for default behaviour.)" )]
+        public KeyCode LightSourceKey = KeyCode.Alpha5;
 
         [Name( "Weapon Radial" )]
         [Description( "Quick select key to show the Weapon radial UI." )]
@@ -109,20 +118,24 @@ namespace QualityOfLife
         public bool MapShowPlayerIcon = true;
 
 
-		[Section( "Radial" )]
-		[Name( "Combine Items" )]
-		[Description( "The radial menu will only show one item of each type.\n"+
-					  "Mouse wheel will select which item of that type is used. (IE: Birch Tea, Coffee)\n"+
-					  "Also sorts the items by Heat status first, then by Calories remaining and finally by HP." )]
-		public bool RadialCombineItems = true;
+        [Section( "Radial" )]
+        [Name( "Combine Items" )]
+        [Description( "The radial menu will only show one item of each type.\n" +
+                      "Mouse wheel will select which item of that type is used. (IE: Birch Tea, Coffee)\n" +
+                      "Also sorts the items by Heat status first, then by Calories remaining and finally by HP." )]
+        public bool RadialCombineItems = true;
+
+        [Name( "Show Ruined Food" )]
+        [Description( "Always show ruined food items in the radial menu." )]
+        public bool RadialShowRuinedFood = true;
 
 
         [Section( "Repair" )]
-		[Name( "Repair Colored Amount" )]
-		[Description( "Change the color of the repair amount when it is less than the full amount." )]
-		public bool RepairColoredAmount = true;
+        [Name( "Repair Colored Amount" )]
+        [Description( "Change the color of the repair amount when it is less than the full amount." )]
+        public bool RepairColoredAmount = true;
 
-		[Section( "Torch" )]
+        [Section( "Torch" )]
         [Name( "Lowest Torch" )]
         [Description( "The radial menu will equip the lowest quality torch." )]
         public bool TorchUseLowest = true;
@@ -131,12 +144,27 @@ namespace QualityOfLife
         [Description( "Always show the torch light UI to select the starter item.  This helps prevent accidental usage of matches." )]
         public bool TorchLightAlwaysShow = true;
 
+        [Section( "UI" )]
+        [Name( "Buff Notification Offset" )]
+        [Description( "A vertical offset applied to the buff notification UI." )]
+        public float BuffOffsetVertical = 0.5f;
+
+        [Name( "Console Dark Mode" )]
+        [Description( "Change the console to use a dark mode color scheme." )]
+        public bool ConsoleDarkMode = true;
+
 
         public static Settings Instance = new();
 
         public static void OnLoad()
         {
             Instance.AddToModSettings( "Quality of Life" );
+        }
+
+        protected override void OnConfirm()
+        {
+            base.OnConfirm();
+            Patch_uConsole_Start.UpdateConsoleColor();
         }
     }
 }

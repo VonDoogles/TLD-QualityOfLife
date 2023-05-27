@@ -4,6 +4,22 @@ namespace QualityOfLife
 {
     internal class GearHelper
     {
+        public static int CompareGearItemByCondition( GearItem A, GearItem B )
+        {
+            float ConditionA = A.GetNormalizedCondition();
+            float ConditionB = B.GetNormalizedCondition();
+            if ( ConditionA != ConditionB )
+            {
+                return ConditionA < ConditionB ? -1 : 1;
+            }
+            return 0;
+        }
+
+        public static int CompareGearItemByDisplayName( GearItem A, GearItem B )
+        {
+            return string.Compare( A.DisplayName, B.DisplayName );
+        }
+
         public static int CompareGearItemByHP( GearItem A, GearItem B )
         {
             if ( A.CurrentHP != B.CurrentHP )
@@ -28,6 +44,20 @@ namespace QualityOfLife
                 return CompareGearItemByHP( A, B );
             }
             return CompareGearItemByHP( A, B );
+        }
+
+        public static int CompareGearItemByName( GearItem A, GearItem B )
+		{
+            return string.Compare( A.name, B.name );            
+		}
+
+        public static int CompareGearItemByWeight( GearItem A, GearItem B )
+        {
+            if ( A.WeightKG != B.WeightKG )
+            {
+                return A.WeightKG < B.WeightKG ? -1 : 1;
+            }
+            return 0;
         }
 
         public static void Swap( Il2CppSystem.Collections.Generic.List<GearItem> ItemList, int IndexA, int IndexB )
