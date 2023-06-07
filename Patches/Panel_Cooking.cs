@@ -38,7 +38,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Cooking __instance )
         {
-            if ( Settings.Instance.FoodCookFilterReheat )
+            if ( Settings.Instance.FoodCookFilterReheat && __instance.m_CookingFilter != Panel_Cooking.CookingFilter.WaterOnly )
             {
                 Inventory Inv = GameManager.GetInventoryComponent();
                 if ( Inv != null )

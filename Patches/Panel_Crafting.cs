@@ -59,4 +59,47 @@ namespace QualityOfLife
             }
         }
     }
+
+    [HarmonyPatch( typeof( Panel_Crafting ), "RefreshSelectedBlueprint" )]
+    internal class Patch_Panel_Crafting_RefreshSelectedBlueprint
+    {
+        static void Postfix( Panel_Crafting __instance )
+        {
+            if ( __instance.m_SelectedBPI != null )
+            {
+                Il2CppSystem.Collections.Generic.List<GearItem> Tools = __instance.m_SelectedBPI.GetToolsAvailableToCraft( GameManager.GetInventoryComponent() );
+                if ( Tools.Count > 0 )
+                {
+                    GearItem? BestTool = null;
+                    int BestIndex = -1;
+
+                    for ( int Index = 0; Index < Tools.Count; ++Index )
+                    {
+                        GearItem Tool = Tools[ Index ];
+                        if ( Tool != null )
+                        {
+                            if ( BestTool == null || Tool.m_ToolsItem.m_CraftingAndRepairTimeModifier < BestTool.m_ToolsItem.m_CraftingAndRepairTimeModifier )
+                            {
+                                BestIndex = Index;
+                                BestTool = Tool;
+                            }
+                        }
+                    }
+
+                    if ( BestTool != null )
+                    {
+                        CraftingRequirementContainer Container = __instance.GetComponentInChildren<CraftingRequirementContainer>();
+                        CraftingRequirementMultiTool? MultiTool = Container?.m_MultiTool;
+                        if ( Container != null && MultiTool != null )
+                        {
+                            MultiTool.m_SelectedIndex = MultiTool.m_ToolOptions.IndexOf( BestTool );
+                            MultiTool.RefreshDisplayed();
+                            Container.OnSelectedToolChanged();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

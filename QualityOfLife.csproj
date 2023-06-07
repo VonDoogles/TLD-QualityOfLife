@@ -58,6 +58,6 @@
     <ItemGroup>
       <ZipFiles Include="$(TargetPath)" />
     </ItemGroup>
-    <Exec Command="PowerShell -command Compress-Archive -force @(ZipFiles, ',') $(AssemblyName)-%(MyAssemblyIdentities.Version).zip" />
+    <Exec Command="PowerShell -command Compress-Archive -force @(ZipFiles, ',') TLD-$(AssemblyName)-%(MyAssemblyIdentities.Version).zip" />
   </Target>
 </Project>

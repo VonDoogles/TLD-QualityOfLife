@@ -91,11 +91,11 @@ namespace QualityOfLife
 
                 if ( InputManager.GetKeyDown( __instance, KeyCode.Tab ) )
                 {
-                    if ( __instance.m_ShowPassTime )
+                    if ( __instance.m_ShowPassTime && !__instance.m_ShowPassTimeOnly )
                     {
                         __instance.OnSelectRest();
                     }
-                    else
+                    else if ( !__instance.m_ShowPassTime )
                     {
                         __instance.OnSelectPassTime();
                     }
