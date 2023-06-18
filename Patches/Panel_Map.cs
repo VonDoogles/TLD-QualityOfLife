@@ -5,20 +5,6 @@ using UnityEngine;
 namespace QualityOfLife
 {
 
-    [HarmonyPatch( typeof( Panel_Map ), "ShouldCenterOnPlayer" )]
-    internal class Patch_Panel_Map_ShouldCenterOnPlayer
-    {
-        static bool Prefix( ref bool __result )
-        {
-            if ( Settings.Instance.MapShowPlayerIcon )
-            {
-                __result = true;
-                return false;
-            }
-            return true;
-        }
-    }
-
     [HarmonyPatch( typeof( Panel_Map ), "Update" )]
     internal class Patch_Panel_Map_Update
     {

@@ -39,9 +39,6 @@
 		<!--If the mod references any other mods (such as ModSettings), that NuGet package will also need to be listed here.-->
     <PackageReference Include="ds5678.Modding.TLD.ModSettings" Version="1.9.0" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Source\" />
-	</ItemGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <TLDMods>D:\github\TLD\Mods</TLDMods>

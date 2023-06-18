@@ -17,10 +17,14 @@ namespace QualityOfLife
 				GameObject GameObj = __instance.GetInteractiveObjectUnderCrosshairs( Range );
 				if ( GameObj != null )
 				{
-					IInteraction Interaction = GameObj.GetComponentInChildren<IInteraction>();
-					if ( Interaction != null )
+					IInteraction[] Interactions = GameObj.GetComponentsInChildren<IInteraction>();
+					foreach ( IInteraction Interaction in Interactions )
 					{
-						__instance.SetCurrentInteraction( Interaction );
+						if ( Interaction != null && Interaction.IsEnabled )
+						{
+							__instance.SetCurrentInteraction( Interaction );
+							break;
+						}
 					}
                 }
 				else

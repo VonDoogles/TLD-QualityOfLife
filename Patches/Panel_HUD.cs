@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
+using QualityOfLife.Source;
 using UnityEngine;
 
 namespace QualityOfLife
@@ -20,6 +21,37 @@ namespace QualityOfLife
                 {
                     LocalPos.y = DesiredY;
                     __instance.m_BuffNotificationPanel.transform.localPosition = LocalPos;
+                }
+            }
+
+            if ( enable )
+            {
+                CreateWindStatusBar( __instance.m_SmallSizeGroup, "StatusBars_Small/StatusBarHungerSpawner/StatusBar/Root" );
+                CreateWindStatusBar( __instance.m_RegularSizeGroup, "StatusBars_Regular/StatusBarHungerSpawner/StatusBar/Root" );
+                CreateWindStatusBar( __instance.m_LargeSizeGroup, "StatusBars_Large/StatusBarHungerSpawner/StatusBar/Root" );
+            }
+        }
+
+        static void CreateWindStatusBar( Transform Parent, string HungerName )
+        {
+            if ( Parent != null )
+            {
+                Transform HungerSpawner = Parent.FindChild( HungerName );
+                if ( HungerSpawner != null )
+                {
+                    Transform StatusBarWind = HungerSpawner.FindChild( "StatusBarWind" );
+                    if ( StatusBarWind == null )
+                    {
+                        GameObject GameObj = new GameObject( "StatusBarWind" );
+                        if ( GameObj != null )
+                        {
+                            StatusBarWind = GameObj.transform;
+                            GameObj.transform.parent = HungerSpawner;
+                            GameObj.transform.localPosition = Vector3.zero;
+                            GameObj.AddComponent<StatusBarWind>();
+                        }
+                    }
+                    WidgetUtils.SetActive( StatusBarWind, Settings.Instance.WindStatusBar != WindStatusType.None );
                 }
             }
         }

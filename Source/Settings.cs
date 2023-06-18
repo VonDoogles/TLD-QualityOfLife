@@ -16,6 +16,16 @@ namespace QualityOfLife
         NonWeapons
     }
 
+    internal enum WindStatusType
+    {
+        // Wind StatusBar is disabled.
+        None = 0,
+        // Wind StatusBar only shows direction.
+        DirectionOnly,
+        // Wind StatusBar shows both direction and speed.
+        DirectionAndSpeed
+    }
+
     internal class Settings : JsonModSettings
     {
         [Section( "Crafting" )]
@@ -112,12 +122,6 @@ namespace QualityOfLife
         public KeyCode WeaponKey = KeyCode.Alpha6;
 
 
-        [Section( "Map" )]
-        [Name( "Show Player Icon" )]
-        [Description( "Show the player's location on the map.  It does not reveal any of the map, just renders the player's icon." )]
-        public bool MapShowPlayerIcon = true;
-
-
         [Section( "Radial" )]
         [Name( "Combine Items" )]
         [Description( "The radial menu will only show one item of each type.\n" +
@@ -152,6 +156,10 @@ namespace QualityOfLife
         [Name( "Console Dark Mode" )]
         [Description( "Change the console to use a dark mode color scheme." )]
         public bool ConsoleDarkMode = true;
+
+        [Name( "Wind Status Bar" )]
+        [Description( "Show a wind status bar." )]
+        public WindStatusType WindStatusBar = WindStatusType.DirectionAndSpeed;
 
 
         public static Settings Instance = new();
