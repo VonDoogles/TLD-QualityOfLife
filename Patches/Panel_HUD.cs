@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
-using QualityOfLife.Source;
 using UnityEngine;
 
 namespace QualityOfLife
@@ -26,9 +25,36 @@ namespace QualityOfLife
 
             if ( enable )
             {
+                CreateWeightLabel( __instance.m_Sprite_CapacityBuff.transform.parent );
+
                 CreateWindStatusBar( __instance.m_SmallSizeGroup, "StatusBars_Small/StatusBarHungerSpawner/StatusBar/Root" );
                 CreateWindStatusBar( __instance.m_RegularSizeGroup, "StatusBars_Regular/StatusBarHungerSpawner/StatusBar/Root" );
                 CreateWindStatusBar( __instance.m_LargeSizeGroup, "StatusBars_Large/StatusBarHungerSpawner/StatusBar/Root" );
+            }
+            }
+
+        private static void CreateWeightLabel( Transform Parent )
+        {
+            if ( Parent != null )
+            {
+                Transform WeightLabel = Parent.FindChild( "WeightLabel" );
+                if ( WeightLabel == null )
+                {
+                    Panel_Inventory PanelInv = InterfaceManager.GetPanel<Panel_Inventory>();
+                    if ( PanelInv != null && PanelInv.m_Label_CarryCapacity != null )
+                    {
+                        GameObject GameObj = UnityEngine.Object.Instantiate( PanelInv.m_Label_CarryCapacity.gameObject );
+                        if ( GameObj != null )
+                        {
+                            GameObj.name = "WeightLabel";
+                            WeightLabel = GameObj.transform;
+                            WeightLabel.parent = Parent;
+                            WeightLabel.localPosition = Vector3.zero;
+                            GameObj.AddComponent<WeightLabel>();
+                        }
+                    }
+                }
+                WidgetUtils.SetActive( WeightLabel, Settings.Instance.WeightLabel != WeightLabelType.None );
             }
         }
 

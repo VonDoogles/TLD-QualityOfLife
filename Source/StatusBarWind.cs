@@ -3,7 +3,7 @@ using Il2CppInterop.Runtime.Injection;
 using MelonLoader;
 using UnityEngine;
 
-namespace QualityOfLife.Source
+namespace QualityOfLife
 {
     [RegisterTypeInIl2Cpp]
     public class StatusBarWind : MonoBehaviour

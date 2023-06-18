@@ -16,6 +16,16 @@ namespace QualityOfLife
         NonWeapons
     }
 
+    internal enum WeightLabelType
+    {
+        // Weight Label is disabled.
+        None = 0,
+        // Weight Label is always visible.
+        AlwaysOn,
+        // Weight Label auto fades with the other hud elements.
+        AutoHide
+    }
+
     internal enum WindStatusType
     {
         // Wind StatusBar is disabled.
@@ -156,6 +166,10 @@ namespace QualityOfLife
         [Name( "Console Dark Mode" )]
         [Description( "Change the console to use a dark mode color scheme." )]
         public bool ConsoleDarkMode = true;
+
+        [Name( "Weight Label" )]
+        [Description( "Show a weight label on the hud." )]
+        public WeightLabelType WeightLabel = WeightLabelType.AutoHide;
 
         [Name( "Wind Status Bar" )]
         [Description( "Show a wind status bar." )]
