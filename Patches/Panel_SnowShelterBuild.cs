@@ -8,9 +8,9 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_SnowShelterBuild __instance )
         {
-            if ( Settings.Instance.UIExtraControls && !__instance.IsBuilding() )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls && !__instance.IsBuilding() )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnBuild();
                 }

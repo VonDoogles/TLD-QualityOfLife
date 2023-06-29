@@ -9,9 +9,9 @@ namespace QualityOfLife
     {
         static void Postfix( BasicMenu __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance.m_OwnerContext, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance.m_OwnerContext, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnItemDoubleClicked( __instance.m_MenuSelectedButtonIndex );
                 }

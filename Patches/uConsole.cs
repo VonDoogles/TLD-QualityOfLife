@@ -18,7 +18,7 @@ namespace QualityOfLife.Patches
             OriginalColorFG = __instance.m_LogFontColor;
             OriginalColorBGInput = __instance.m_InputFieldBackGroundColor;
             OriginalColorFGInput = __instance.m_InputFieldFontColor;
-            
+
             UpdateConsoleColor();
         }
 
@@ -27,7 +27,7 @@ namespace QualityOfLife.Patches
             uConsole Console = uConsole.m_Instance;
             if ( Console != null )
             {
-                if ( Settings.Instance.ConsoleDarkMode )
+                if ( Settings.Instance.EnableMod && Settings.Instance.ConsoleDarkMode )
                 {
                     Console.m_InputFieldBackGroundColor = Console.m_LogBackGroundColor = new Color( 0.2f, 0.2f, 0.2f );
                     Console.m_InputFieldFontColor = Console.m_LogFontColor = Color.green;

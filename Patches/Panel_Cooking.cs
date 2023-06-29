@@ -1,44 +1,18 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
+using Il2CppTLD.Cooking;
 using Il2CppTLD.Gear;
 using UnityEngine;
 
 namespace QualityOfLife
 {
-    [HarmonyPatch( typeof( Panel_Cooking ), "Update" )]
-    internal class Patch_Panel_Cooking_Update
-    {
-        static void Postfix( Panel_Cooking __instance )
-        {
-            if ( Settings.Instance.UIExtraControls )
-            {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
-                {
-                    __instance.OnDoAction();
-                }
-
-                if ( __instance.m_CookingFilter == Panel_Cooking.CookingFilter.WaterOnly )
-                {
-                    float Scroll = InputManager.GetScroll( __instance );
-                    if ( Scroll < 0 )
-                    {
-                        __instance.OnWaterDown();
-                    }
-                    else if ( Scroll > 0 )
-                    {
-                        __instance.OnWaterUp();
-                    }
-                }
-            }
-        }
-    }
-
+#if false
     [HarmonyPatch( typeof( Panel_Cooking ), "RefreshFoodList" )]
     internal class Patch_Panel_Cooking_RefreshFoodList
     {
         static void Postfix( Panel_Cooking __instance )
         {
-            if ( Settings.Instance.FoodCookFilterReheat && __instance.m_CookingFilter != Panel_Cooking.CookingFilter.WaterOnly )
+            if ( Settings.Instance.EnableMod && Settings.Instance.FoodCookFilterReheat )
             {
                 Inventory Inv = GameManager.GetInventoryComponent();
                 if ( Inv != null )
@@ -98,4 +72,5 @@ namespace QualityOfLife
             }
         }
     }
+#endif
 }

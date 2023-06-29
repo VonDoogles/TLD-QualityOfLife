@@ -13,21 +13,21 @@ namespace QualityOfLife
         static void Postfix( Panel_Map __instance )
         {
             int Frame = Time.frameCount;
-            if ( Settings.Instance.UIExtraControls && InputFrame != Frame )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls && InputFrame != Frame )
             {
-                if ( InputManager.GetKeyDown( __instance, KeyCode.A ) )
+                if ( ModInput.GetKeyDown( __instance, KeyCode.A ) )
                 {
                     InputFrame = Frame;
                     __instance.OnPrevRegion();
                 }
 
-                if ( InputManager.GetKeyDown( __instance, KeyCode.D ) )
+                if ( ModInput.GetKeyDown( __instance, KeyCode.D ) )
                 {
                     InputFrame = Frame;
                     __instance.OnNextRegion();
                 }
 
-                if ( InputManager.GetKeyDown( __instance, KeyCode.Tab ) )
+                if ( ModInput.GetKeyDown( __instance, KeyCode.Tab ) )
                 {
                     InputFrame = Frame;
                     __instance.ToggleWorldMap();

@@ -9,9 +9,9 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_SelectRegion_Map __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnSelectRegionContinue();
                 }
@@ -24,9 +24,9 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_SelectRegion_Map __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnSelectRegionContinue();
                 }

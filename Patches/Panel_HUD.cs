@@ -12,7 +12,7 @@ namespace QualityOfLife
 
         static void Postfix( Panel_HUD __instance, bool enable )
         {
-            if ( enable && __instance.m_BuffNotificationPanel != null )
+            if ( Settings.Instance.EnableMod && enable && __instance.m_BuffNotificationPanel != null )
             {
                 Vector3 LocalPos = __instance.m_BuffNotificationPanel.transform.localPosition;
                 float DesiredY = OffsetMax * Settings.Instance.BuffOffsetVertical;
@@ -23,7 +23,7 @@ namespace QualityOfLife
                 }
             }
 
-            if ( enable )
+            if ( Settings.Instance.EnableMod && enable )
             {
                 CreateWeightLabel( __instance.m_Sprite_CapacityBuff.transform.parent );
 
@@ -31,7 +31,7 @@ namespace QualityOfLife
                 CreateWindStatusBar( __instance.m_RegularSizeGroup, "StatusBars_Regular/StatusBarHungerSpawner/StatusBar/Root" );
                 CreateWindStatusBar( __instance.m_LargeSizeGroup, "StatusBars_Large/StatusBarHungerSpawner/StatusBar/Root" );
             }
-            }
+        }
 
         private static void CreateWeightLabel( Transform Parent )
         {
@@ -99,7 +99,7 @@ namespace QualityOfLife
             ButtonPrompt? PromptPutBack = __instance.m_InspectMode_InspectPrompts.transform.FindChild( "ButtonPromp_PutBack" )?.GetComponent<ButtonPrompt>();
             ButtonPrompt? PromptTake = __instance.m_InspectMode_InspectPrompts.transform.FindChild( "ButtonPromp_Take" )?.GetComponent<ButtonPrompt>();
 
-            if ( Settings.Instance.SeparateInteract )
+            if ( Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
             {
                 if ( PromptPutBack == null )
                 {
@@ -130,7 +130,7 @@ namespace QualityOfLife
 
                 SetGameObjectActive( PromptPutBack?.gameObject, bShouldBeActive );
                 SetGameObjectActive( PromptTake?.gameObject, bShouldBeActive );
-                
+
                 SetGameObjectActive( __instance.m_InspectMode_Take?.gameObject, false );
                 SetGameObjectActive( __instance.m_InspectMode_PutBack?.gameObject, false );
             }

@@ -11,7 +11,7 @@ namespace QualityOfLife
 	{
         static bool Prefix( PlayerManager __instance )
 		{
-			if ( Settings.Instance.SeparateInteract )
+			if ( Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
 			{
 				float Range = __instance.ComputeModifiedPickupRange( __instance.GetDefaultPlacementDistance() );
 				GameObject GameObj = __instance.GetInteractiveObjectUnderCrosshairs( Range );
@@ -49,9 +49,9 @@ namespace QualityOfLife
 	{
         static bool Prefix( PlayerManager __instance )
 		{
-			if ( Settings.Instance.SeparateInteract && __instance.ActiveInteraction != null )
+			if ( Settings.Instance.EnableMod && Settings.Instance.SeparateInteract && __instance.ActiveInteraction != null )
 			{
-				if ( __instance.IsClickHoldActive() && Input.GetKeyUp( Settings.Instance.InteractKey ) )
+				if ( __instance.IsClickHoldActive() && ModInput.GetKeyUp( __instance, Settings.Instance.InteractKey ) )
 				{
 					__instance.TryCancelHoldInteraction();
 				}
@@ -80,21 +80,26 @@ namespace QualityOfLife
 
         static bool Prefix( PlayerManager __instance )
 		{
+			if ( !Settings.Instance.EnableMod )
+			{
+				return true;
+			}
+
             bool bCanDropItemInHands = true;
-			bool bDropKeyDown = InputManager.GetKeyDown( __instance, Settings.Instance.DropKey );
+			bool bDropKeyDown = ModInput.GetKeyDown( __instance, Settings.Instance.DropKey );
 
             if ( Settings.Instance.SeparateInteract )
 			{
 				__instance.m_PlaceMeshRotationDegreesPerSecond = 0;
 				__instance.m_PlaceDecalRotationDegreesPerSecond = 0;
 
-				if ( InputManager.GetKeyDown( __instance, Settings.Instance.PrecisionRotateKey ) )
+				if ( ModInput.GetKeyDown( __instance, Settings.Instance.PrecisionRotateKey ) )
 				{
 					__instance.m_PlaceMeshMouseWheelRotationDegrees = 1;
 					__instance.m_PlaceDecalMouseWheelRotationDegrees = 2;
 				}
 
-				if ( Input.GetKeyUp( Settings.Instance.PrecisionRotateKey ) )
+				if ( ModInput.GetKeyUp( __instance, Settings.Instance.PrecisionRotateKey ) )
 				{
 					__instance.m_PlaceMeshMouseWheelRotationDegrees = 10;
 					__instance.m_PlaceDecalMouseWheelRotationDegrees = 20;
@@ -176,7 +181,7 @@ namespace QualityOfLife
             QuickSelectLightSource.Update();
 			QuickSelectWeapon.Update();
 
-            if ( InputManager.GetKeyDown( __instance, Settings.Instance.NavigateKey ) )
+            if ( ModInput.GetKeyDown( __instance, Settings.Instance.NavigateKey ) )
             {
                 Inventory Inv = GameManager.GetInventoryComponent();
 				if ( Inv != null )
@@ -189,7 +194,7 @@ namespace QualityOfLife
 				}
             }
 
-			if ( InputManager.GetKeyDown( __instance, Settings.Instance.CraftingKey ) )
+			if ( ModInput.GetKeyDown( __instance, Settings.Instance.CraftingKey ) )
 			{
 				bool Enable = !InterfaceManager.IsPanelEnabled<Panel_Crafting>();
 				if ( Enable )
@@ -257,7 +262,7 @@ namespace QualityOfLife
     {
 		static bool Prefix( PlayerManager __instance, bool success, bool playerCancel, float progress )
 		{
-			if ( Settings.Instance.FoodEatPickUnits )
+			if ( Settings.Instance.EnableMod && Settings.Instance.FoodEatPickUnits )
 			{
 				if ( __instance.m_FoodItemEaten.m_StackableItem != null && __instance.m_FoodItemEaten.m_StackableItem.m_Units > 1 )
 				{
@@ -290,7 +295,7 @@ namespace QualityOfLife
     {
         static bool Prefix( PlayerManager __instance, GearItem gi )
         {
-			if ( Settings.Instance.FoodEatPickUnits )
+			if ( Settings.Instance.EnableMod && Settings.Instance.FoodEatPickUnits )
 			{
 				if ( gi != null && gi.m_StackableItem != null && gi.m_StackableItem.m_Units > 1 )
 				{
@@ -322,6 +327,18 @@ namespace QualityOfLife
 				}
 			}
             return true;
+        }
+    }
+
+	[HarmonyPatch( typeof( PlayerManager ), "EnterInspectGearMode", new Type[] { typeof( GearItem ), typeof( Container ), typeof( IceFishingHole ), typeof( Harvestable ), typeof( CookingPotItem ) } )]
+    internal class Patch_PlayerManager_EnterInspectGearMode
+	{
+        static void Postfix( PlayerManager __instance, GearItem gear, Container c, IceFishingHole hole, Harvestable h, CookingPotItem pot )
+		{
+            if ( Settings.Instance.EnableMod && ModInput.GetKey( __instance, Settings.Instance.AutoPickupKey ) )
+            {
+                __instance.ProcessPickupWithNoInspectScreen( gear, true );
+            }
         }
     }
 

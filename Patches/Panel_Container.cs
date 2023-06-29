@@ -9,14 +9,14 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Container __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.EquipKey ) || InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.EquipKey ) || ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnMoveItem();
                 }
 
-                if ( InputManager.GetKeyDown( __instance, KeyCode.Tab ) )
+                if ( ModInput.GetKeyDown( __instance, KeyCode.Tab ) )
                 {
                     if ( __instance.m_SelectedTable == SelectedTableEnum.ContainerTable )
                     {

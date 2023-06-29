@@ -8,17 +8,17 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Clothing __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.DropKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.DropKey ) )
                 {
                     __instance.OnDropItem();
                 }
-                else if ( InputManager.GetKeyDown( __instance, Settings.Instance.EquipKey ) )
+                else if ( ModInput.GetKeyDown( __instance, Settings.Instance.EquipKey ) )
                 {
                     __instance.OnUseClothingItem();
                 }
-                else if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                else if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnActionsButton();
                 }

@@ -16,11 +16,11 @@ namespace QualityOfLife
 		public void Update()
 		{
 			KeyCode Key = KeyCodeFunc();
-			if ( Input.GetKeyDown( Key ) )
+			if ( ModInput.GetKeyDown( null, Key ) )
 			{
 				DownTime = Time.unscaledTime;
 			}
-			else if ( Input.GetKey( Key ) && !HandledHold )
+			else if ( ModInput.GetKey( null, Key ) && !HandledHold )
 			{
 				float HeldDuration = Time.unscaledTime - DownTime;
 				if ( HeldDuration >= Settings.Instance.QuickSelectHoldDuration )
@@ -30,7 +30,7 @@ namespace QualityOfLife
                 }
 			}
 
-			if ( Input.GetKeyUp( Key ) )
+			if ( ModInput.GetKeyUp( null, Key ) )
 			{
 				HandledHold = false;
 				OnTap();

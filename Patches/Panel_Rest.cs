@@ -12,7 +12,7 @@ namespace QualityOfLife
 
         static void Postfix( Panel_Rest __instance, bool enable )
         {
-            if ( Settings.Instance.RestPreset && enable )
+            if ( Settings.Instance.EnableMod && Settings.Instance.RestPreset && enable )
             {
                 Transform Parent = __instance.m_ButtonIncrease.transform.parent;
                 GenericButtonMouseSpawner ButtonSpawner = __instance.m_PickUpButton.GetComponent<GenericButtonMouseSpawner>();
@@ -75,9 +75,9 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Rest __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     if ( __instance.m_ShowPassTime && __instance.m_PassTimeButtonObject.activeInHierarchy )
                     {
@@ -89,7 +89,7 @@ namespace QualityOfLife
                     }
                 }
 
-                if ( InputManager.GetKeyDown( __instance, KeyCode.Tab ) )
+                if ( ModInput.GetKeyDown( __instance, KeyCode.Tab ) )
                 {
                     if ( __instance.m_ShowPassTime && !__instance.m_ShowPassTimeOnly )
                     {
@@ -101,17 +101,17 @@ namespace QualityOfLife
                     }
                 }
 
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.DropKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.DropKey ) )
                 {
                     __instance.OnPickUp();
                 }
 
                 float Scroll = InputManager.GetScroll( __instance );
-                if ( Scroll < 0 || InputManager.GetKeyDown( __instance, KeyCode.A ) )
+                if ( Scroll < 0 || ModInput.GetKeyDown( __instance, KeyCode.A ) )
                 {
                     __instance.OnDecreaseHours();
                 }
-                else if ( Scroll > 0 || InputManager.GetKeyDown( __instance, KeyCode.D ) )
+                else if ( Scroll > 0 || ModInput.GetKeyDown( __instance, KeyCode.D ) )
                 {
                     __instance.OnIncreaseHours();
                 }

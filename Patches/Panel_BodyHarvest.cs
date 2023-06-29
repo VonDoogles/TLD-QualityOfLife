@@ -10,7 +10,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_BodyHarvest __instance )
         {
-            if ( Settings.Instance.HighlightSelection )
+            if ( Settings.Instance.EnableMod && Settings.Instance.HighlightSelection )
             {
                 int SelectedIndex = __instance.m_SelectedButtonIndex;
 
@@ -24,9 +24,9 @@ namespace QualityOfLife
                 }
             }
 
-            if ( Settings.Instance.HighlightSelection )
+            if ( Settings.Instance.EnableMod && Settings.Instance.HighlightSelection )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     if ( __instance.IsTabHarvestSelected() )
                     {
@@ -38,7 +38,7 @@ namespace QualityOfLife
                     }
                 }
 
-                if ( InputManager.GetKeyDown( __instance, KeyCode.Tab ) )
+                if ( ModInput.GetKeyDown( __instance, KeyCode.Tab ) )
                 {
                     if ( __instance.IsTabHarvestSelected() )
                     {

@@ -8,14 +8,14 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_PickWater __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnExecute();
                 }
 
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.EquipKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.EquipKey ) )
                 {
                     __instance.OnExecuteAll();
                 }

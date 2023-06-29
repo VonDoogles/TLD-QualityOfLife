@@ -24,7 +24,7 @@ namespace QualityOfLife
 
         static bool Prefix( Panel_TorchLight __instance )
         {
-            if ( Settings.Instance.TorchLightAlwaysShow )
+            if ( Settings.Instance.EnableMod && Settings.Instance.TorchLightAlwaysShow )
             {
                 if ( __instance.m_AvailableTools.Count == 1 )
                 {
@@ -41,9 +41,9 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_TorchLight __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnUseSelectedItem();
                 }

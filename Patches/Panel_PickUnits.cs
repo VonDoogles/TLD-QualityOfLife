@@ -9,14 +9,14 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_PickUnits __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnExecute();
                 }
 
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.EquipKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.EquipKey ) )
                 {
                     __instance.OnExecuteAll();
                 }
@@ -29,7 +29,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_PickUnits __instance )
         {
-            if ( Settings.Instance.FoodEatPickUnits )
+            if ( Settings.Instance.EnableMod && Settings.Instance.FoodEatPickUnits )
             {
                 if ( __instance.m_GearItem != null )
                 {
@@ -66,7 +66,7 @@ namespace QualityOfLife
     {
         static bool Prefix( Panel_PickUnits __instance )
         {
-            if ( __instance.m_GearItem != null )
+            if ( Settings.Instance.EnableMod && __instance.m_GearItem != null )
             {
                 if ( Settings.Instance.FoodEatPickUnits && __instance.m_GearItem.m_StackableItem != null && __instance.m_GearItem.m_StackableItem.m_Units > 1 && __instance.m_ExecuteAction == PickUnitsExecuteAction.Harvest )
                 {
@@ -159,7 +159,7 @@ namespace QualityOfLife
     {
         static bool Prefix( Panel_PickUnits __instance )
         {
-            if ( __instance.m_GearItem != null )
+            if ( Settings.Instance.EnableMod && __instance.m_GearItem != null )
             {
                 if ( Settings.Instance.FoodEatPickUnits && __instance.m_GearItem.m_StackableItem != null && __instance.m_GearItem.m_StackableItem.m_Units > 1 && __instance.m_ExecuteAction == PickUnitsExecuteAction.Harvest )
                 {

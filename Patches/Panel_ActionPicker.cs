@@ -9,7 +9,7 @@ namespace QualityOfLife
     {
         static bool Prefix( Panel_ActionPicker __instance )
         {
-            if ( Settings.Instance.FireCharcoalPickUnits )
+            if ( Settings.Instance.EnableMod && Settings.Instance.FireCharcoalPickUnits )
             {
                 GameObject InteractObj = __instance.GetObjectInteractedWith();
                 if ( InteractObj != null )

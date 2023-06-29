@@ -8,9 +8,9 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_SnowShelterInteract __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     int Index = __instance.m_SelectedButtonIndex;
                     if ( Index >= 0 && Index < __instance.m_ButtonDelegates.Count )

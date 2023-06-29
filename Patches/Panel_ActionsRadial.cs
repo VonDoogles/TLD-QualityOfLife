@@ -12,7 +12,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_ActionsRadial __instance )
         {
-            if ( __instance.m_SegmentLabel != null )
+            if ( Settings.Instance.EnableMod && __instance.m_SegmentLabel != null )
             {
                 Vector3 Offset = new Vector3( 0, 0, 0 );
                 Offset.x = __instance.m_SegmentLabel.width * 0.5f + 16;
@@ -51,7 +51,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_ActionsRadial __instance, ref Il2CppSystem.Collections.Generic.List<GearItem> __result )
         {
-            if ( Settings.Instance.RadialCombineItems )
+            if ( Settings.Instance.EnableMod && Settings.Instance.RadialCombineItems )
             {
                 GearHelper.GroupItemsByType( __result );
             }
@@ -63,7 +63,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_ActionsRadial __instance, ref Il2CppSystem.Collections.Generic.List<GearItem> __result )
         {
-            if ( Settings.Instance.RadialCombineItems )
+            if ( Settings.Instance.EnableMod && Settings.Instance.RadialCombineItems )
             {
                 GearHelper.GroupItemsByType( __result );
             }
@@ -75,7 +75,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_ActionsRadial __instance, ref Il2CppSystem.Collections.Generic.List<GearItem> __result )
         {
-            if ( Settings.Instance.RadialShowRuinedFood )
+            if ( Settings.Instance.EnableMod && Settings.Instance.RadialShowRuinedFood )
             {
                 Inventory Inv = GameManager.GetInventoryComponent();
                 if ( Inv != null )
@@ -93,7 +93,7 @@ namespace QualityOfLife
                 }
             }
 
-            if ( Settings.Instance.RadialCombineItems )
+            if ( Settings.Instance.EnableMod && Settings.Instance.RadialCombineItems )
             {
                 GearHelper.GroupItemsByType( __result );
             }
@@ -105,7 +105,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_ActionsRadial __instance, Il2CppStringArray itemOrder, ref int items, ref Il2CppSystem.Collections.Generic.List<GearItem> __result )
         {
-            if ( Settings.Instance.TorchUseLowest )
+            if ( Settings.Instance.EnableMod && Settings.Instance.TorchUseLowest )
             {
                 for ( int Index = 0; Index < __result.Count; ++Index )
                 {
@@ -139,7 +139,7 @@ namespace QualityOfLife
 
             bool bShowItemIcons = false;
 
-            if ( Settings.Instance.RadialCombineItems )
+            if ( Settings.Instance.EnableMod && Settings.Instance.RadialCombineItems )
             {
                 RadialMenuArm? HoveredArm = __instance.m_RadialArms.FirstOrDefault( Arm => Arm.IsHoveredOver() );
                 if ( HoveredArm != null )

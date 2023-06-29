@@ -9,9 +9,9 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Badges __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, KeyCode.Tab ) )
+                if ( ModInput.GetKeyDown( __instance, KeyCode.Tab ) )
                 {
                     if ( __instance.m_FeatsObject.activeSelf )
                     {
@@ -24,11 +24,11 @@ namespace QualityOfLife
                 }
 
                 float Scroll = InputManager.GetScroll( __instance );
-                if ( Scroll > 0 || InputManager.GetKeyDown( __instance, KeyCode.A ) )
+                if ( Scroll > 0 || ModInput.GetKeyDown( __instance, KeyCode.A ) )
                 {
                     __instance.PrevTool();
                 }
-                else if ( Scroll < 0 || InputManager.GetKeyDown( __instance, KeyCode.D ) )
+                else if ( Scroll < 0 || ModInput.GetKeyDown( __instance, KeyCode.D ) )
                 {
                     __instance.NextTool();
                 }

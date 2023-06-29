@@ -9,7 +9,7 @@ namespace QualityOfLife
     {
         static void Postrix( MonoBehaviour context, ref bool __result )
         {
-            if ( __result && Settings.Instance.SeparateInteract )
+            if ( __result && Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
             {
                 PlayerManager PlayerMan = GameManager.GetPlayerManagerComponent();
                 if ( PlayerMan != null )
@@ -30,7 +30,7 @@ namespace QualityOfLife
     {
         static void Postfix( MonoBehaviour context, ref bool __result )
         {
-            if ( __result && Settings.Instance.SeparateInteract )
+            if ( __result && Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
             {
                 PlayerManager PlayerMan = GameManager.GetPlayerManagerComponent();
                 if ( PlayerMan != null )
@@ -51,9 +51,9 @@ namespace QualityOfLife
     {
         static void Postfix( MonoBehaviour context, ref bool __result )
         {
-            if ( Settings.Instance.SeparateInteract )
+            if ( Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
             {
-                __result = InputManager.GetKeyDown( context, Settings.Instance.InteractKey );
+                __result = ModInput.GetKeyDown( context, Settings.Instance.InteractKey );
             }
         }
     }
@@ -63,9 +63,9 @@ namespace QualityOfLife
     {
         static void Postfix( MonoBehaviour context, ref bool __result )
         {
-            if ( Settings.Instance.SeparateInteract )
+            if ( Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
             {
-                __result = InputManager.GetKeyDown( context, Settings.Instance.DropKey ) || InputManager.GetKeyDown( context, KeyCode.Escape );
+                __result = ModInput.GetKeyDown( context, Settings.Instance.DropKey ) || ModInput.GetKeyDown( context, KeyCode.Escape );
             }
         }
     }
@@ -75,9 +75,9 @@ namespace QualityOfLife
     {
         static bool Prefix( MonoBehaviour context, ref bool __result )
         {
-            if ( Settings.Instance.SeparateInteract )
+            if ( Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
             {
-                if ( InputManager.GetKeyDown( context, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( context, Settings.Instance.InteractKey ) )
                 {
                     __result = true;
                 }
@@ -92,17 +92,17 @@ namespace QualityOfLife
     {
         static void Postfix( InputManager __instance, ref bool __result )
         {
-            if ( Settings.Instance.LightSourceKey != KeyCode.None )
+            if ( Settings.Instance.EnableMod && Settings.Instance.LightSourceKey != KeyCode.None )
             {
-                if ( Input.GetKey( Settings.Instance.LightSourceKey ) )
+                if ( ModInput.GetKey( __instance, Settings.Instance.LightSourceKey ) )
                 {
                     __result = true;
                 }
             }
 
-            if ( Settings.Instance.WeaponKey != KeyCode.None )
+            if ( Settings.Instance.EnableMod && Settings.Instance.WeaponKey != KeyCode.None )
             {
-                if ( Input.GetKey( Settings.Instance.WeaponKey ) )
+                if ( ModInput.GetKey( __instance, Settings.Instance.WeaponKey ) )
                 {
                     __result = true;
                 }

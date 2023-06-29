@@ -38,13 +38,18 @@ namespace QualityOfLife
 
     internal class Settings : JsonModSettings
     {
+        [Section( "Mod" )]
+        [Name( "Enable Mod" )]
+        [Description( "Enable / Disable Mod.  Allows turning off all features without changing individual settings." )]
+        public bool EnableMod = true;
+
         [Section( "Crafting" )]
         [Name( "Remember Filter" )]
         [Description( "Remembers which crafting filter was selected, and restores it when the crafting UI is opened." )]
         public bool CraftRememberFilter = true;
 
         [Section( "Food" )]
-        [Name( "Cook Filter Reheat" )]
+        [Name( "Cook Filter Reheat (TEMPORARILY REMOVED)" )]
         [Description( "Filter reheatable items in the Cook UI." )]
         public bool FoodCookFilterReheat = true;
 
@@ -131,6 +136,9 @@ namespace QualityOfLife
         [Description( "Quick select key to show the Weapon radial UI." )]
         public KeyCode WeaponKey = KeyCode.Alpha6;
 
+        [Name( "Auto Pickup" )]
+        [Description( "Modifier key to auto pickup items instead of inspecting them." )]
+        public KeyCode AutoPickupKey = KeyCode.LeftShift;
 
         [Section( "Radial" )]
         [Name( "Combine Items" )]

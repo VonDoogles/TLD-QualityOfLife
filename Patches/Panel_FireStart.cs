@@ -14,7 +14,7 @@ namespace QualityOfLife
 
         static void Postfix( Panel_FireStart __instance, bool enable )
         {
-            if ( enable )
+            if ( Settings.Instance.EnableMod && enable )
             {
                 if ( Settings.Instance.FireRememberSelection )
                 {
@@ -75,7 +75,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_FireStart __instance )
         {
-            if ( Settings.Instance.HighlightSelection )
+            if ( Settings.Instance.EnableMod && Settings.Instance.HighlightSelection )
             {
                 int SelectedIndex = __instance.m_SelectedButtonIndex;
 
@@ -89,9 +89,9 @@ namespace QualityOfLife
                 }
             }
 
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnStartFire();
                 }

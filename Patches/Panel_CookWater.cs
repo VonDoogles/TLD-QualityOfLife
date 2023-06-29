@@ -3,26 +3,26 @@ using Il2Cpp;
 
 namespace QualityOfLife
 {
-    [HarmonyPatch( typeof( Panel_IceFishingHoleClear ), "Update")]
-    internal class Patch_Panel_IceFishingHoleClear_Update
+    [HarmonyPatch( typeof( Panel_CookWater ), "Update" )]
+    internal class Patch_Panel_CookWater_Update
     {
-        static void Postfix( Panel_IceFishingHoleClear __instance )
+        static void Postfix( Panel_CookWater __instance )
         {
             if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
                 if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
-                    __instance.OnBreakIce();
+                    __instance.OnDoAction();
                 }
 
                 float Scroll = InputManager.GetScroll( __instance );
-                if ( Scroll > 0 )
+                if ( Scroll < 0 )
                 {
-                    __instance.PrevTool();
+                    __instance.OnWaterDown();
                 }
-                else if ( Scroll < 0 )
+                else if ( Scroll > 0 )
                 {
-                    __instance.NextTool();
+                    __instance.OnWaterUp();
                 }
             }
         }

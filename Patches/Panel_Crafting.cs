@@ -25,7 +25,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Crafting __instance, bool enable, bool fromPanel )
         {
-            if ( Settings.Instance.CraftRememberFilter )
+            if ( Settings.Instance.EnableMod && Settings.Instance.CraftRememberFilter )
             {
                 if ( enable )
                 {
@@ -41,18 +41,18 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Crafting __instance )
         {
-            if ( Settings.Instance.UIExtraControls && __instance.m_CraftButton.isActiveAndEnabled )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls && __instance.m_CraftButton.isActiveAndEnabled )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     __instance.OnBeginCrafting();
                 }
 
-                if ( InputManager.GetKeyDown( __instance, KeyCode.A ) )
+                if ( ModInput.GetKeyDown( __instance, KeyCode.A ) )
                 {
                     __instance.m_RequirementContainer.m_QuantitySelect.OnDecrease();
                 }
-                else if ( InputManager.GetKeyDown( __instance, KeyCode.D ) )
+                else if ( ModInput.GetKeyDown( __instance, KeyCode.D ) )
                 {
                     __instance.m_RequirementContainer.m_QuantitySelect.OnIncrease();
                 }
@@ -65,9 +65,9 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Crafting __instance )
         {
-            if ( __instance.m_SelectedBPI != null )
+            if ( __instance.SelectedBPI != null )
             {
-                Il2CppSystem.Collections.Generic.List<GearItem> Tools = __instance.m_SelectedBPI.GetToolsAvailableToCraft( GameManager.GetInventoryComponent() );
+                Il2CppSystem.Collections.Generic.List<GearItem> Tools = __instance.SelectedBPI.GetToolsAvailableToCraft( GameManager.GetInventoryComponent() );
                 if ( Tools.Count > 0 )
                 {
                     GearItem? BestTool = null;

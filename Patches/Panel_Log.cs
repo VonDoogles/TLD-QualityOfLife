@@ -8,7 +8,7 @@ namespace QualityOfLife
     {
         public static void ScrollDailyLogToEnd( Panel_Log __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
                 UISlider DaySlider = __instance.m_ScrollbarDays.GetComponentInChildren<UISlider>();
                 if ( DaySlider != null )
@@ -25,9 +25,9 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Log __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     if ( __instance.m_CollectibleSectionObject.activeSelf )
                     {
@@ -73,7 +73,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Log __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
                 string SceneName = GameManager.m_LastOutdoorSceneSet.name;
 
@@ -104,7 +104,7 @@ namespace QualityOfLife
     {
         static bool Prefix( Panel_Log __instance, bool doSelectionReset )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
                 if ( doSelectionReset )
                 {
@@ -120,7 +120,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Log __instance, bool enable )
         {
-            if ( Settings.Instance.UIExtraControls && enable )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls && enable )
             {
                 Panel_Log_Utils.ScrollDailyLogToEnd( __instance );
             }
@@ -132,7 +132,7 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_Log __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
                 Panel_Log_Utils.ScrollDailyLogToEnd( __instance );
             }

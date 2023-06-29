@@ -8,7 +8,7 @@ namespace QualityOfLife
     {
         static void Postfix( EquipItemPopup __instance )
         {
-            if ( Settings.Instance.SeparateInteract )
+            if ( Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
             {
                 __instance.m_ButtonPromptLeft.gameObject.SetActive( false );
                 __instance.m_ButtonPromptRight.gameObject.SetActive( false );

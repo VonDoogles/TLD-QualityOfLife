@@ -12,11 +12,11 @@ namespace QualityOfLife
 
         static void Postfix( Panel_Inventory_Examine __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
                 if ( __instance.IsRepairing() )
                 {
-                    if ( InputManager.GetKeyDown( __instance, KeyCode.Escape ) )
+                    if ( ModInput.GetKeyDown( __instance, KeyCode.Escape ) )
                     {
                         __instance.OnProgressBarCancel();
                     }
@@ -28,20 +28,20 @@ namespace QualityOfLife
                     if ( __instance.m_ReadPanel.active )
                     {
                         float Scroll = InputManager.GetScroll( __instance );
-                        if ( Scroll < 0 || InputManager.GetKeyDown( __instance, KeyCode.A ) )
+                        if ( Scroll < 0 || ModInput.GetKeyDown( __instance, KeyCode.A ) )
                         {
                             __instance.OnReadHoursDecrease();
                         }
-                        else if ( Scroll > 0 || InputManager.GetKeyDown( __instance, KeyCode.D ) )
+                        else if ( Scroll > 0 || ModInput.GetKeyDown( __instance, KeyCode.D ) )
                         {
                             __instance.OnReadHoursIncrease();
                         }
-                        else if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                        else if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                         {
                             __instance.OnRead();
                         }
                     }
-                    else if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                    else if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                     {
                         if ( __instance.m_ActionToolSelect.active )
                         {
@@ -57,7 +57,7 @@ namespace QualityOfLife
 
             if ( __instance.m_RepairPanel.active )
             {
-                if ( Settings.Instance.RepairColoredAmount && __instance.m_GearItem != null && __instance.m_GearItem.m_Repairable != null )
+                if ( Settings.Instance.EnableMod && Settings.Instance.RepairColoredAmount && __instance.m_GearItem != null && __instance.m_GearItem.m_Repairable != null )
                 {
                     float FullAmount = __instance.m_GearItem.m_Repairable.m_ConditionIncrease;
                     float RepairAmount = __instance.GetConditionIncreaseFromRepair( __instance.m_GearItem );

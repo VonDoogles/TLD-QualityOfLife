@@ -8,7 +8,7 @@ namespace QualityOfLife.Patches
     {
         static void Postfix( RadialMenuArm __instance )
         {
-            if ( Settings.Instance.RadialCombineItems )
+            if ( Settings.Instance.EnableMod && Settings.Instance.RadialCombineItems )
             {
                 GearItem Item = __instance.GetGearItem();
                 if ( Item != null )

@@ -10,11 +10,11 @@ namespace QualityOfLife
     {
         static void Postfix( SafeCracking __instance, ref float __result )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
                 if ( __result == 0.0f )
                 {
-                    bool bPrecisionRotate = Input.GetKey( Settings.Instance.PrecisionRotateKey );
+                    bool bPrecisionRotate = ModInput.GetKey( __instance, Settings.Instance.PrecisionRotateKey );
                     if ( bPrecisionRotate )
                     {
                         __result = InputManager.GetScroll( __instance );
@@ -33,9 +33,9 @@ namespace QualityOfLife
     {
         static void Postfix( SafeCracking __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-                if ( __instance.m_Cracked && InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+                if ( __instance.m_Cracked && ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                 {
                     Panel_SafeCracking Panel = __instance.m_SafeCracking.GetPanel();
                     if ( Panel != null )

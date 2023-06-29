@@ -9,19 +9,19 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_IceFishing __instance )
         {
-            if ( Settings.Instance.UIExtraControls )
+            if ( Settings.Instance.EnableMod && Settings.Instance.UIExtraControls )
             {
-				if ( InputManager.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
+				if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
 				{
 					__instance.OnFish();
 				}
 
 				float Scroll = InputManager.GetScroll( __instance );
-				if ( Scroll < 0 || InputManager.GetKeyDown( __instance, KeyCode.A ) )
+				if ( Scroll < 0 || ModInput.GetKeyDown( __instance, KeyCode.A ) )
 				{
 					__instance.OnDecreaseHours();
 				}
-				else if ( Scroll > 0 || InputManager.GetKeyDown( __instance, KeyCode.D ) )
+				else if ( Scroll > 0 || ModInput.GetKeyDown( __instance, KeyCode.D ) )
 				{
 					__instance.OnIncreaseHours();
 				}
