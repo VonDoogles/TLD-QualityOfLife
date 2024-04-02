@@ -8,7 +8,7 @@ namespace QualityOfLife
     public class WeightLabel : MonoBehaviour
     {
         public UILabel? Label;
-        public Vector3 LabelOffset = new Vector3( -30.0f, 30.6f, 0.0f );
+        public Vector3 LabelOffset = new Vector3( -30.0f, 16.0f, 0.0f );
 
         private UISprite? SpriteCapacity;
         private UISprite? SpriteEncumber;

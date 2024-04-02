@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
+using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Il2CppTLD.Gear;
 using UnityEngine;
@@ -127,6 +128,31 @@ namespace QualityOfLife
         }
     }
 
+    [HarmonyPatch( typeof( Panel_ActionsRadial ), "ShowPlaceItemRadial" )]
+    internal class Patch_Patch_ActionsRadial_ShowPlaceItemRadial
+    {
+        static void Postfix( Panel_ActionsRadial __instance )
+        {
+            if ( Settings.Instance.EnableMod && Settings.Instance.RadialCombineItems )
+            {
+                for ( int Index = 0; Index < __instance.m_RadialArms.Count; ++Index )
+                {
+                    RadialMenuArm Arm = __instance.m_RadialArms[ Index ];
+                    if ( Arm != null && Arm.name == "RadialArmS" && Arm.GetGearItem() == null )
+                    {
+                        GearItem Skillet = GameManager.GetInventoryComponent().GetLowestConditionGearThatMatchesName( "GEAR_Skillet" );
+                        if ( Skillet != null )
+                        {
+                            IntPtr MethodPtr = IL2CPP.GetIl2CppMethod( Il2CppClassPointerStore<Panel_ActionsRadial>.NativeClassPtr, false, "UseItem", "void", new string[ 0 ] );
+                            Arm.SetRadialInfoGear( new Panel_ActionsRadial.RadialGearDelegate( __instance, MethodPtr ), Skillet );
+                            Arm.SetEnabled( true );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     [HarmonyPatch( typeof( Panel_ActionsRadial ), "Update" )]
     internal class Patch_Panel_ActionsRadial_Update
     {
@@ -148,7 +174,32 @@ namespace QualityOfLife
                     if ( Item != null )
                     {
                         Il2CppSystem.Collections.Generic.List<GearItem> ItemList = new();
-                        GameManager.GetInventoryComponent().GetItems( Item.name, ItemList );
+
+                        if ( Item.name == "GEAR_CookingPot" || Item.name == "GEAR_Skillet" )
+                        {
+                            foreach ( GearItemObject GearObj in GameManager.GetInventoryComponent().m_Items )
+                            {
+                                if ( GearObj != null && GearObj.m_GearItem != null && ( GearObj.m_GearItemName == "GEAR_CookingPot" || GearObj.m_GearItemName == "GEAR_Skillet" ) )
+                                {
+                                    ItemList.Add( GearObj.m_GearItem );
+                                }
+                            }
+                        }
+                        else if ( Item.name == "GEAR_BedRoll" || Item.name == "GEAR_BedRoll_Down" || Item.name == "GEAR_BearSkinBedRoll" )
+                        {
+                            foreach ( GearItemObject GearObj in GameManager.GetInventoryComponent().m_Items )
+                            {
+                                if ( GearObj != null && GearObj.m_GearItem != null && GearObj.m_GearItem.m_Bed != null )
+                                {
+                                    ItemList.Add( GearObj.m_GearItem );
+                                }
+                            }
+                        }
+                        else
+                        {
+                            GameManager.GetInventoryComponent().GetItems( Item.name, ItemList );
+                        }
+
                         GearHelper.Sort( ItemList, GearHelper.CompareGearItemByHeatAndHP );
 
                         bool bMultipleItems = ItemList.Count > 1;
@@ -170,6 +221,7 @@ namespace QualityOfLife
                             if ( NewItem != Item )
                             {
                                 HoveredArm.m_GearItem = NewItem;
+                                HoveredArm.SetRadialInfoGear( HoveredArm.m_GearCallback, NewItem );
                             }
 
                             if ( LineBreak != null && Thumb != null )

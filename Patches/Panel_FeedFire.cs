@@ -17,4 +17,18 @@ namespace QualityOfLife
             }
         }
     }
+
+    [HarmonyPatch( typeof( Panel_FeedFire ), "OnTakeTorch" )]
+    internal class Patch_Panel_FeedFire_OnTakeTorch
+    {
+        static bool Prefix( Panel_FeedFire __instance )
+        {
+            if ( Settings.Instance.EnableMod && !Settings.Instance.FireAllowTakeTortch )
+            {
+                GameAudioManager.PlayGUIError();
+                return false;
+            }
+            return true;
+        }
+    }
 }

@@ -4,6 +4,16 @@ using UnityEngine;
 
 namespace QualityOfLife
 {
+	internal enum CatTailCalorieType
+	{
+		// Cat Tails have 1/3 the normal calories. (50)
+		OneThird = 0,
+		// Cat Tails have 2/3 the normal calories. (100)
+		TwoThird,
+		// Cat Tails have the normal amount of calories. (150).
+		Default
+	}
+
     internal enum DropItemType
     {
         // Disable dropping item in hand.
@@ -48,8 +58,76 @@ namespace QualityOfLife
         [Description( "Remembers which crafting filter was selected, and restores it when the crafting UI is opened." )]
         public bool CraftRememberFilter = true;
 
+        [Section( "Difficulty" )]
+		[Name( "Allow Take Torch" )]
+		[Description( "Allows taking torchs from lit fires." )]
+		public bool FireAllowTakeTortch = true;
+
+		[Name( "Cat Tail Calories" )]
+		[Description( "The amount of calories Cat Tail stalks have.\n"+
+					  "OneThird - 1/3 the normal calories. (50)\n"+
+					  "TwoThird - 2/3 the normal calories. (100)\n"+
+					  "Default - the normal amount of calories. (150)"+
+					  "*Note*\n"+
+					  "Calorie count for inventory is saved. "+
+					  "Before removing/disabling this mod, set Cat Tail Calories back to Default and save the game." )]
+		public CatTailCalorieType CatTailCalories = CatTailCalorieType.Default;
+
+		[Name( "Cat Tail Harvest Stalk" )]
+		[Description( "Enable/Disable harvesting Cat Tail stalks." )]
+		public bool CatTailHarvestStalk = true;
+
+		[Name( "Cat Tail Harvest Tinder" )]
+		[Description( "Enable/Disable harvesting Cat Tail tinder." )]
+		public bool CatTailHarvestTinder = true;
+
+		[Name( "Stick North" )]
+		[Description( "When enabled, items drop like normal.  When disabled items are randomly rotated when dropped to prevent using stick north." )]
+		public bool StickNorth = true;
+
+		[Name( "Bear Meat Min (KG)" )]
+		[Description( "The minimum amount of meat in KG a bear carcas will have. (Default: 25)" )]
+		[Slider(0f, 25f, 51)]
+		public float BearMeatMinKG = 25.0f;
+
+		[Name( "Bear Meat Max (KG)" )]
+		[Description( "The maximum amount of meat in KG a bear carcas will have. (Default: 40)" )]
+		[Slider(0f, 40f, 81)]
+		public float BearMeatMaxKG = 40.0f;
+
+		[Name( "Deer Meat Min (KG)" )]
+		[Description( "The minimum amount of meat in KG a deer carcas will have. (Default: 8)" )]
+		[Slider(0f, 8f, 17)]
+		public float DeerMeatMinKG = 8.0f;
+
+		[Name( "Deer Meat Max (KG)" )]
+		[Description( "The maximum amount of meat in KG a deer carcas will have. (Default: 12.5)" )]
+		[Slider(0f, 12.5f, 26)]
+		public float DeerMeatMaxKG = 12.5f;
+
+		[Name( "Moose Meat Min (KG)" )]
+		[Description( "The minimum amount of meat in KG a moose carcas will have. (Default: 30)" )]
+		[Slider(0f, 30f, 61)]
+		public float MooseMeatMinKG = 30.0f;
+
+		[Name( "Moose Meat Max (KG)" )]
+		[Description( "The maximum amount of meat in KG a moose carcas will have. (Default: 45)" )]
+		[Slider(0f, 45f, 91)]
+		public float MooseMeatMaxKG = 45.0f;
+
+		[Name( "Wolf Meat Min (KG)" )]
+		[Description( "The minimum amount of meat in KG a wolf carcas will have. (Default: 3)" )]
+		[Slider(0f, 3f, 7)]
+		public float WolfMeatMinKG = 3.0f;
+
+		[Name( "Wolf Meat Max (KG)" )]
+		[Description( "The maximum amount of meat in KG a wolf carcas will have. (Default: 6)" )]
+		[Slider(0f, 6f, 13)]
+		public float WolfMeatMaxKG = 6.0f;
+
+
         [Section( "Food" )]
-        [Name( "Cook Filter Reheat (TEMPORARILY REMOVED)" )]
+        [Name( "Cook Filter Reheat" )]
         [Description( "Filter reheatable items in the Cook UI." )]
         public bool FoodCookFilterReheat = true;
 
@@ -195,6 +273,11 @@ namespace QualityOfLife
         {
             base.OnConfirm();
             Patch_uConsole_Start.UpdateConsoleColor();
+
+			if ( EnableMod )
+			{
+				CatTailHelper.TryUpdateInventory();
+			}
         }
     }
 }

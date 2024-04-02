@@ -5,18 +5,24 @@ using UnityEngine;
 
 namespace QualityOfLife
 {
-
     [HarmonyPatch( typeof( PlayerManager ), "InteractiveObjectsProcess" )]
 	internal class Patch_PlayerManager_InteractiveObjectsProcess
 	{
         static bool Prefix( PlayerManager __instance )
 		{
-			if ( Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
+			bool CatTailDisabled = !Settings.Instance.CatTailHarvestStalk && !Settings.Instance.CatTailHarvestTinder;
+
+			if ( Settings.Instance.EnableMod && Settings.Instance.SeparateInteract || CatTailDisabled )
 			{
 				float Range = __instance.ComputeModifiedPickupRange( __instance.GetDefaultPlacementDistance() );
 				GameObject GameObj = __instance.GetInteractiveObjectUnderCrosshairs( Range );
 				if ( GameObj != null )
 				{
+					if ( CatTailDisabled && GameObj.name == "OBJ_CatTailShrub" )
+					{
+						return false;
+					}
+
 					IInteraction[] Interactions = GameObj.GetComponentsInChildren<IInteraction>();
 					foreach ( IInteraction Interaction in Interactions )
 					{
@@ -44,7 +50,7 @@ namespace QualityOfLife
 		}
 	}
 
-	[HarmonyPatch( typeof( PlayerManager ), "UpdateActiveInteraction" )]
+    [HarmonyPatch( typeof( PlayerManager ), "UpdateActiveInteraction" )]
 	internal class Patch_PlayerManager_UpdateActiveInteraction
 	{
         static bool Prefix( PlayerManager __instance )
@@ -200,10 +206,12 @@ namespace QualityOfLife
 				if ( Enable )
 				{
                     InterfaceManager.TrySetPanelEnabled<Panel_Clothing>( false );
+                    InterfaceManager.TrySetPanelEnabled<Panel_Cooking>( false );
                     InterfaceManager.TrySetPanelEnabled<Panel_FirstAid>( false );
 					InterfaceManager.TrySetPanelEnabled<Panel_Inventory>( false );
 					InterfaceManager.TrySetPanelEnabled<Panel_Log>( false );
                     InterfaceManager.TrySetPanelEnabled<Panel_Map>( false );
+                    InterfaceManager.TrySetPanelEnabled<Panel_RecipeBook>( false );
 
 					InterfaceManager.TrySetPanelEnabled<Panel_Crafting>( true );
                 }
@@ -267,8 +275,9 @@ namespace QualityOfLife
 				if ( __instance.m_FoodItemEaten.m_StackableItem != null && __instance.m_FoodItemEaten.m_StackableItem.m_Units > 1 )
 				{
 					GearItem ItemPrefab = GearItem.LoadGearItemPrefab( __instance.m_FoodItemEaten.name );
+                    ItemPrefab.CacheComponents();
 
-					float CaloriesPerUnit = ItemPrefab.m_FoodItem.m_CaloriesTotal;
+                    float CaloriesPerUnit = ItemPrefab.m_FoodItem.m_CaloriesTotal;
 					float ConsumedCalories = __instance.m_FoodItemEatenStartingCalories * progress;
 					int ConsumedUnits = (int)Math.Floor( ConsumedCalories / CaloriesPerUnit );
 

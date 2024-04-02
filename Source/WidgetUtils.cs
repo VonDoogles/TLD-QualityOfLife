@@ -34,7 +34,7 @@ namespace QualityOfLife
             }
         }
 
-        public static void SetActive( GameObject GameObj, bool Active )
+        public static void SetActive( GameObject? GameObj, bool Active )
         {
             if ( GameObj != null && GameObj.activeSelf != Active )
             {
