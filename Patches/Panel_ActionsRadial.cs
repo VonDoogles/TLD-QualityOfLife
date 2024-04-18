@@ -52,6 +52,27 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_ActionsRadial __instance, ref Il2CppSystem.Collections.Generic.List<GearItem> __result )
         {
+			if ( Settings.Instance.EnableMod && Settings.Instance.RadialShowInsulatedFlaskContents )
+			{
+				Inventory Inv = GameManager.GetInventoryComponent();
+				if ( Inv != null )
+				{
+					foreach ( GearItemObject GearObj in Inv.m_Items )
+					{
+						if ( GearObj != null && GearObj.m_GearItem != null && GearObj.m_GearItem.m_InsulatedFlask != null )
+						{
+							foreach ( GearItemObject ContentObj in GearObj.m_GearItem.m_InsulatedFlask.m_Items )
+							{
+								if ( ContentObj != null && ContentObj.m_GearItem != null && ContentObj.m_GearItem.m_FoodItem != null && ContentObj.m_GearItem.m_FoodItem.m_IsDrink )
+								{
+									__result.Add( ContentObj.m_GearItem );
+								}
+							}
+						}
+					}
+				}
+			}
+
             if ( Settings.Instance.EnableMod && Settings.Instance.RadialCombineItems )
             {
                 GearHelper.GroupItemsByType( __result );
@@ -76,19 +97,33 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_ActionsRadial __instance, ref Il2CppSystem.Collections.Generic.List<GearItem> __result )
         {
-            if ( Settings.Instance.EnableMod && Settings.Instance.RadialShowRuinedFood )
+            if ( Settings.Instance.EnableMod && ( Settings.Instance.RadialShowRuinedFood || Settings.Instance.RadialShowInsulatedFlaskContents ) )
             {
                 Inventory Inv = GameManager.GetInventoryComponent();
                 if ( Inv != null )
                 {
                     foreach ( GearItemObject GearObj in Inv.m_Items )
                     {
-                        if ( GearObj != null && GearObj.m_GearItem != null && GearObj.m_GearItem.m_FoodItem != null )
+                        if ( GearObj != null && GearObj.m_GearItem != null )
                         {
-                            if ( GearObj.m_GearItem.CurrentHP <= 0.0f && !__result.Contains( GearObj.m_GearItem ) )
-                            {
-                                __result.Add( GearObj.m_GearItem );
-                            }
+							if ( Settings.Instance.RadialShowRuinedFood && GearObj.m_GearItem.m_FoodItem != null )
+							{
+								if ( GearObj.m_GearItem.CurrentHP <= 0.0f && !__result.Contains( GearObj.m_GearItem ) )
+								{
+									__result.Add( GearObj.m_GearItem );
+								}
+							}
+
+							if ( Settings.Instance.RadialShowInsulatedFlaskContents && GearObj.m_GearItem.m_InsulatedFlask != null )
+							{
+								foreach ( GearItemObject ContentObj in GearObj.m_GearItem.m_InsulatedFlask.m_Items )
+								{
+									if ( ContentObj != null && ContentObj.m_GearItem != null && ContentObj.m_GearItem.m_FoodItem != null && !ContentObj.m_GearItem.m_FoodItem.m_IsDrink )
+									{
+										__result.Add( ContentObj.m_GearItem );
+									}
+								}
+							}
                         }
                     }
                 }
@@ -198,6 +233,23 @@ namespace QualityOfLife
                         else
                         {
                             GameManager.GetInventoryComponent().GetItems( Item.name, ItemList );
+
+							if ( Settings.Instance.RadialShowInsulatedFlaskContents )
+							{
+								foreach ( GearItemObject GearObj in GameManager.GetInventoryComponent().m_Items )
+								{
+									if ( GearObj != null && GearObj.m_GearItem != null && GearObj.m_GearItem.m_InsulatedFlask != null )
+									{
+										foreach ( GearItemObject ContentObj in GearObj.m_GearItem.m_InsulatedFlask.m_Items )
+										{
+											if ( ContentObj != null && ContentObj.m_GearItem != null && ContentObj.m_GearItem.name == Item.name )
+											{
+												ItemList.Add( ContentObj.m_GearItem );
+											}
+										}
+									}
+								}
+							}
                         }
 
                         GearHelper.Sort( ItemList, GearHelper.CompareGearItemByHeatAndHP );
@@ -216,6 +268,10 @@ namespace QualityOfLife
                             {
                                 Index = Math.Min( Index + 1, ItemList.Count - 1 );
                             }
+							else
+							{
+								Index = Math.Clamp( Index, 0, ItemList.Count - 1 );
+							}
 
                             GearItem NewItem = ItemList[ Index ];
                             if ( NewItem != Item )

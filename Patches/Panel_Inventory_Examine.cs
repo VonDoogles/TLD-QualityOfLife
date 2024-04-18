@@ -63,6 +63,7 @@ namespace QualityOfLife
                     float RepairAmount = __instance.GetConditionIncreaseFromRepair( __instance.m_GearItem );
 
                     __instance.m_Repair_AmountLabel.color = ( FullAmount != RepairAmount ) ? ColorParialRepair : __instance.m_RepairLabelColorNormal;
+					__instance.m_Repair_AmountLabel.text = $"{RepairAmount}% ({FullAmount})";
                 }
                 else if ( __instance.m_Repair_AmountLabel.color != __instance.m_RepairLabelColorNormal )
                 {

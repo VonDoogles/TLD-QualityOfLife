@@ -229,6 +229,10 @@ namespace QualityOfLife
         [Description( "Always show ruined food items in the radial menu." )]
         public bool RadialShowRuinedFood = true;
 
+		[Name( "Show Insulated Flask Contents" )]
+		[Description( "Always show Insulated Flasks contents in the radial menu." )]
+		public bool RadialShowInsulatedFlaskContents = true;
+
 
         [Section( "Repair" )]
         [Name( "Repair Colored Amount" )]
