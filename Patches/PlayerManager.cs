@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
+using Il2CppTLD.Gear;
 using Il2CppTLD.Interactions;
 using UnityEngine;
 
@@ -45,6 +46,32 @@ namespace QualityOfLife
 				}
 
 				return false;
+			}
+			return true;
+		}
+	}
+
+	[HarmonyPatch( typeof( PlayerManager ), "PlaceMeshInWorld" )]
+    internal class Patch_PlayerManager_PlaceMeshInWorld
+	{
+		static bool Prefix( PlayerManager __instance )
+		{
+			if ( __instance.m_ObjectToPlace != null )
+			{
+				GearItem ItemToPlace = __instance.m_ObjectToPlaceGearItem;
+				if ( ItemToPlace != null && ItemToPlace.m_FoodItem != null )
+				{
+					foreach ( GearItemObject GearObj in GameManager.GetInventoryComponent().m_Items )
+					{
+						if ( GearObj != null && GearObj.m_GearItem != null && GearObj.m_GearItem.m_InsulatedFlask != null )
+						{
+							if ( GearObj.m_GearItem.m_InsulatedFlask.IsItemCompatibleWithFlask( ItemToPlace ) )
+							{
+								GearObj.m_GearItem.m_InsulatedFlask.TryRemoveItem( ItemToPlace );
+							}
+						}
+					}
+				}
 			}
 			return true;
 		}

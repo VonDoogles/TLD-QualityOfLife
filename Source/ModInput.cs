@@ -24,9 +24,9 @@ namespace QualityOfLife
                 if ( Method != null )
                 {
                     bool? ShowMenu = Method.Invoke( TypeUIManager, null ) as bool?;
-                    if ( ShowMenu != null )
+                    if ( ShowMenu != null && ShowMenu.Value )
                     {
-                        return !ShowMenu.Value;
+                        return false;
                     }
                 }
             }
@@ -35,6 +35,15 @@ namespace QualityOfLife
             {
                 return false;
             }
+
+            Panel_Log PanelLog = InterfaceManager.GetPanel<Panel_Log>();
+			if ( PanelLog != null && PanelLog.enabled && PanelLog.m_NotesTextField != null && PanelLog.m_NotesTextField.m_Input != null )
+			{
+				if ( PanelLog.m_NotesTextField.m_Input.isSelected )
+				{
+					return false;
+				}
+			}
 
             return Key != KeyCode.None;
         }
