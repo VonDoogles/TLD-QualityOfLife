@@ -43,7 +43,9 @@ namespace QualityOfLife
         // Wind StatusBar only shows direction.
         DirectionOnly,
         // Wind StatusBar shows both direction and speed.
-        DirectionAndSpeed
+        DirectionAndSpeed,
+		// Wind StatusBar only shows the shelter status icon.
+		ShelterOnly,
     }
 
     internal class Settings : JsonModSettings
@@ -52,6 +54,11 @@ namespace QualityOfLife
         [Name( "Enable Mod" )]
         [Description( "Enable / Disable Mod.  Allows turning off all features without changing individual settings." )]
         public bool EnableMod = true;
+
+		[Section( "Animation" )]
+		[Name( "Play Harvest Anims" )]
+		[Description( "When true, plays the new harvest anims, when false uses the old progress bar." )]
+		public bool AnimPlayHarvest = true;
 
         [Section( "Crafting" )]
         [Name( "Remember Filter" )]
@@ -264,6 +271,10 @@ namespace QualityOfLife
         [Name( "Wind Status Bar" )]
         [Description( "Show a wind status bar." )]
         public WindStatusType WindStatusBar = WindStatusType.DirectionAndSpeed;
+
+		[Name( "Show Temperature Labels" )]
+		[Description( "Show labels on the cold and wind status bars that display FeelsLike and WindChill temps." )]
+		public bool ShowTemperatureLabels = true;
 
 
         public static Settings Instance = new();

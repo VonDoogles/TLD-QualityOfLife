@@ -19,6 +19,9 @@ namespace QualityOfLife
             transform.localScale = Vector3.one;
 
             Label = GetComponent<UILabel>();
+			Label.effectColor = new Color( 0, 0, 0, 0.75f );
+			Label.effectDistance = new Vector2( 0.5f, 0.5f );
+			Label.effectStyle = UILabel.Effect.Shadow;
 
             Panel_HUD PanelHUD = InterfaceManager.GetPanel<Panel_HUD>();
             if ( PanelHUD != null )

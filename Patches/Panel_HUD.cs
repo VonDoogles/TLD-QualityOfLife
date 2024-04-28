@@ -119,7 +119,7 @@ namespace QualityOfLife
                             GameObj.AddComponent<StatusBarWind>();
                         }
                     }
-                    WidgetUtils.SetActive( StatusBarWind, Settings.Instance.WindStatusBar != WindStatusType.None );
+                    WidgetUtils.SetActive( StatusBarWind, Settings.Instance.WindStatusBar != WindStatusType.None || Settings.Instance.ShowTemperatureLabels );
                 }
             }
         }
