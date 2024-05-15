@@ -12,37 +12,31 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.EnableMod )
             {
-                ButtonPrompt? PromptPutBack = __instance.m_InspectMode_InspectPrompts.transform.FindChild( "ButtonPrompt_PutBack" )?.GetComponent<ButtonPrompt>();
-                ButtonPrompt? PromptTake = __instance.m_InspectMode_InspectPrompts.transform.FindChild( "ButtonPrompt_Take" )?.GetComponent<ButtonPrompt>();
+				WidgetUtils.GetControlSchemeMouse( __instance.m_InspectMode_Equip.transform, out UILabel? EquipLabel, out UISprite? EquipSprite );
+				WidgetUtils.GetControlSchemeMouse( __instance.m_InspectMode_Take.transform, out UILabel? TakeLabel, out UISprite? TakeSprite );
 
-                if ( PromptPutBack == null )
-                {
-                    PromptPutBack = GameObject.Instantiate( __instance.m_EquipItemPopup.m_ButtonPromptFire.gameObject ).GetComponent<ButtonPrompt>();
-                    PromptPutBack.gameObject.name = "ButtonPrompt_PutBack";
-                    PromptPutBack.transform.parent = __instance.m_InspectMode_Take.transform.parent.parent;
-                    Vector3 LocalPos = __instance.m_InspectMode_Take.transform.localPosition;
-                    LocalPos.y = 148;
-                    PromptPutBack.transform.localPosition = LocalPos;
-                    PromptPutBack.transform.localScale = __instance.m_InspectMode_Take.transform.localScale;
-                    PromptPutBack.ShowPromptForKey( __instance.m_InspectMode_PutBack.text, Settings.Instance.DropKey.ToString() );
-                    PromptPutBack.m_KeyboardButtonLabel.text = Settings.Instance.DropKey.ToString();
-                }
+				UILabel? PutBackLabel = __instance.m_Button_InspectModePutBack_PC.GetComponentInChildren<UILabel>( true );
+				UISprite? PutBackSprite = __instance.m_Button_InspectModePutBack_PC.GetComponentInChildren<UISprite>( true );
 
-                if ( PromptTake == null )
-                {
-                    PromptTake = GameObject.Instantiate( __instance.m_EquipItemPopup.m_ButtonPromptFire.gameObject ).GetComponent<ButtonPrompt>();
-                    PromptTake.gameObject.name = "ButtonPrompt_Take";
-                    PromptTake.transform.parent = __instance.m_InspectMode_PutBack.transform.parent.parent;
-                    Vector3 LocalPos = __instance.m_InspectMode_PutBack.transform.localPosition;
-                    LocalPos.y = 148;
-                    PromptTake.transform.localPosition = LocalPos;
-                    PromptTake.transform.localScale = __instance.m_InspectMode_PutBack.transform.localScale;
-                    PromptTake.ShowPromptForKey( __instance.m_InspectMode_Take.text, Settings.Instance.InteractKey.ToString() );
-                    PromptTake.m_KeyboardButtonLabel.text = Settings.Instance.InteractKey.ToString();
-                }
+				if ( EquipLabel != null )
+				{
+					if ( PutBackLabel == null && PutBackSprite != null )
+					{
+						PutBackLabel = GameObject.Instantiate( EquipLabel.gameObject, PutBackSprite.transform ).GetComponent<UILabel>();
+						PutBackLabel.transform.localPosition = Vector3.zero;
+						PutBackLabel.fontSize = 18;
+					}
 
-                WidgetUtils.SetActive( PromptPutBack?.gameObject, false );
-                WidgetUtils.SetActive( PromptTake?.gameObject, false );
+					if ( TakeLabel == null && TakeSprite != null )
+					{
+						TakeLabel = GameObject.Instantiate( EquipLabel.gameObject, TakeSprite.transform ).GetComponent<UILabel>();
+						TakeLabel.transform.localPosition = Vector3.zero;
+						TakeLabel.fontSize = 18;
+					}
+				}
+
+				WidgetUtils.SetActive( PutBackLabel, false );
+				WidgetUtils.SetActive( TakeLabel, false );
             }
         }
     }
@@ -130,24 +124,31 @@ namespace QualityOfLife
     {
         static void Postfix( Panel_HUD __instance )
         {
-            ButtonPrompt? PromptPutBack = __instance.m_InspectMode_InspectPrompts.transform.FindChild( "ButtonPrompt_PutBack" )?.GetComponent<ButtonPrompt>();
-            ButtonPrompt? PromptTake = __instance.m_InspectMode_InspectPrompts.transform.FindChild( "ButtonPrompt_Take" )?.GetComponent<ButtonPrompt>();
+			WidgetUtils.GetControlSchemeMouse( __instance.m_InspectMode_Take.transform, out UILabel? TakeLabel, out UISprite? TakeSprite );
+
+			UILabel PutBackLabel = __instance.m_Button_InspectModePutBack_PC.GetComponentInChildren<UILabel>( true );
+			UISprite PutBackSprite = __instance.m_Button_InspectModePutBack_PC.GetComponentInChildren<UISprite>( true );
 
             if ( Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
-            {
-                bool bShouldBeActive = __instance.m_InspectMode_StandardElementsParent.activeSelf;
+			{
+				WidgetUtils.SetSprite( PutBackSprite, "genericButton_normal", 32, 30 );
+				WidgetUtils.SetSprite( TakeSprite, "genericButton_normal", 32, 30 );
+				WidgetUtils.SetLabelText( PutBackLabel, Settings.Instance.DropKey.ToString() );
+				WidgetUtils.SetLabelText( TakeLabel, Settings.Instance.InteractKey.ToString() );
+				WidgetUtils.SetActive( PutBackLabel, true );
+				WidgetUtils.SetActive( TakeLabel, true );
 
-                WidgetUtils.SetActive( PromptPutBack?.gameObject, bShouldBeActive );
-                WidgetUtils.SetActive( PromptTake?.gameObject, bShouldBeActive );
+				WidgetUtils.EnsureChildOrder( __instance.m_InspectMode_ButtonLayout, __instance.m_InspectMode_PutBack, __instance.m_InspectMode_Take );
+			}
+			else
+			{
+				WidgetUtils.SetSprite( PutBackSprite, "ico_mouseButtonR", 42, 42 );
+				WidgetUtils.SetSprite( TakeSprite, "ico_mouseButtonL", 42, 42 );
+				WidgetUtils.SetActive( PutBackLabel, false );
+				WidgetUtils.SetActive( TakeLabel, false );
 
-                WidgetUtils.SetActive( __instance.m_InspectMode_Take.gameObject, false );
-                WidgetUtils.SetActive( __instance.m_InspectMode_PutBack.gameObject, false );
-            }
-            else
-            {
-                WidgetUtils.SetActive( PromptPutBack?.gameObject, false );
-                WidgetUtils.SetActive( PromptTake?.gameObject, false );
-            }
+				WidgetUtils.EnsureChildOrder( __instance.m_InspectMode_ButtonLayout, __instance.m_InspectMode_Take, __instance.m_InspectMode_PutBack );
+			}
         }
     }
 

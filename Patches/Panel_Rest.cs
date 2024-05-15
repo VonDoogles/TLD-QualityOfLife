@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
+using Il2CppTLD.Gameplay;
 using UnityEngine;
 
 namespace QualityOfLife
@@ -9,6 +10,7 @@ namespace QualityOfLife
     internal class Patch_Panel_Rest_Enable
     {
         static Vector3 Offset = new Vector3( 80, 0, 0 );
+		static int QuickHours = 10;
 
         static void Postfix( Panel_Rest __instance, bool enable )
         {
@@ -17,57 +19,68 @@ namespace QualityOfLife
                 Transform Parent = __instance.m_ButtonIncrease.transform.parent;
                 GenericButtonMouseSpawner ButtonSpawner = __instance.m_PickUpButton.GetComponent<GenericButtonMouseSpawner>();
 
-                Transform ButtonQuick10 = Parent.FindChild( "ButtonQuick10" );
+				ExperienceMode XpMode = GameManager.GetExperienceModeManagerComponent().GetCurrentExperienceMode();
+				QuickHours = ( XpMode.m_ThirstRateScale > 1.0f ) ? 8 : 10;
+
+                GameObject? ButtonQuick10 = Parent.FindChild( "ButtonQuick10" )?.gameObject;
                 if ( ButtonQuick10 == null )
                 {
-                    var OnSet = () =>
+					var OnSet = () =>
                     {
-                        __instance.m_SleepHours = 10;
+                        __instance.m_SleepHours = GetQuickHours();
                     };
 
-                    GameObject NewButton = GameObject.Instantiate( ButtonSpawner.m_Prefab, Parent );
-                    NewButton.name = "ButtonQuick10";
-                    NewButton.transform.localPosition = __instance.m_ButtonIncrease.transform.localPosition + Offset;
+                    ButtonQuick10 = GameObject.Instantiate( ButtonSpawner.m_Prefab, Parent );
+                    ButtonQuick10.name = "ButtonQuick10";
+                    ButtonQuick10.transform.localPosition = __instance.m_ButtonIncrease.transform.localPosition + Offset;
 
-                    UILabel Label = NewButton.GetComponentInChildren<UILabel>();
+                    UILabel Label = ButtonQuick10.GetComponentInChildren<UILabel>();
                     if ( Label != null )
                     {
                         Label.fontSize = 18;
                     }
 
-                    UILocalize Localize = NewButton.GetComponentInChildren<UILocalize>();
-                    if ( Localize != null )
-                    {
-                        Localize.key = "10";
-                        Localize.OnLocalize();
-                    }
-
-                    UIButton Button = NewButton.GetComponent<UIButton>();
+                    UIButton Button = ButtonQuick10.GetComponent<UIButton>();
                     if ( Button != null )
                     {
                         Button.onClick.Add( new EventDelegate( OnSet ) );
                     }
 
-                    BoxCollider Box = NewButton.GetComponent<BoxCollider>();
+                    BoxCollider Box = ButtonQuick10.GetComponent<BoxCollider>();
                     if ( Box != null )
                     {
                         Box.size = new Vector3( 48, 30, 0 );
                     }
 
-                    Transform Background = NewButton.transform.FindChild( "Background" );
+                    Transform Background = ButtonQuick10.transform.FindChild( "Background" );
                     if ( Background != null )
                     {
                         Background.GetComponentInChildren<UISprite>().SetDimensions( 48, 38 );
                     }
 
-                    Transform BackGlow = NewButton.transform.FindChild( "BackGlow" );
+                    Transform BackGlow = ButtonQuick10.transform.FindChild( "BackGlow" );
                     if ( BackGlow != null )
                     {
                         BackGlow.GetComponentInChildren<UISprite>().SetDimensions( 64, 83 );
                     }
                 }
+
+				if ( ButtonQuick10 != null )
+				{
+					UILocalize Localize = ButtonQuick10.GetComponentInChildren<UILocalize>();
+					if ( Localize != null )
+					{
+						Localize.key = QuickHours.ToString();
+						Localize.OnLocalize();
+					}
+				}
             }
         }
+
+		static int GetQuickHours()
+		{
+			return QuickHours;
+		}
     }
 
     [HarmonyPatch( typeof( Panel_Rest ), "Update" )]

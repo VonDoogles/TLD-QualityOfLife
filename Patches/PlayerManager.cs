@@ -2,6 +2,7 @@
 using Il2Cpp;
 using Il2CppTLD.Gear;
 using Il2CppTLD.Interactions;
+using Il2CppTLD.SaveState;
 using UnityEngine;
 
 namespace QualityOfLife
@@ -163,6 +164,12 @@ namespace QualityOfLife
                 __instance.m_PlaceMeshRotationDegreesPerSecond = 60;
                 __instance.m_PlaceDecalRotationDegreesPerSecond = 120;
             }
+
+			if ( bDropKeyDown && __instance.GetControlMode() == PlayerControlMode.BigCarry )
+			{
+				bCanDropItemInHands = false;
+				InputManager.ExecuteHolsterAction();
+			}
 
 			if ( bCanDropItemInHands && bDropKeyDown && __instance.m_ItemInHands != null )
 			{
@@ -371,11 +378,55 @@ namespace QualityOfLife
 	{
         static void Postfix( PlayerManager __instance, GearItem gear, Container c, IceFishingHole hole, Harvestable h, CookingPotItem pot )
 		{
+			if ( Settings.Instance.EnableMod && Settings.Instance.TravoisPickupWithContents )
+			{
+				Panel_HUD HUD = InterfaceManager.GetPanel<Panel_HUD>();
+
+				if ( HUD != null && gear != null && gear.m_Travois != null )
+				{
+					MeasurementUnits Units = BaseStateSingleton<SettingsState>.Instance.m_Units;
+
+					WidgetUtils.SetActive( HUD.m_InspectMode_Equip, true );
+					WidgetUtils.SetLabelText( HUD.m_InspectMode_Equip, "Transfer" );
+					WidgetUtils.SetLabelText( HUD.m_InspectMode_Weight, Utils.GetWeightTwoDecimalPlacesWithUnitsString( Units, gear.GetItemWeightKG() ) );
+
+					if ( HUD.m_InspectMode_ButtonLayout != null )
+					{
+						HUD.m_InspectMode_ButtonLayout.Reposition();
+					}
+				}
+			}
+
             if ( Settings.Instance.EnableMod && ModInput.GetKey( __instance, Settings.Instance.AutoPickupKey ) )
             {
                 __instance.ProcessPickupWithNoInspectScreen( gear, true );
             }
         }
     }
+
+	[HarmonyPatch( typeof( PlayerManager ), "OnEquipFromStandardGearItemInspection" )]
+	internal class Patch_PlayerManager_OnEquipFromStandardGearItemInspection
+	{
+		static bool Prefix( PlayerManager __instance )
+		{
+			if ( Settings.Instance.EnableMod && Settings.Instance.TravoisPickupWithContents )
+			{
+				GearItem Gear = __instance.GearItemBeingInspected();
+				if ( Gear != null && Gear.m_Travois != null )
+				{
+					ContainerInteraction Interaction = Gear.m_Travois.BigCarryItem.m_Container.GetComponent<ContainerInteraction>();
+					if ( Interaction != null )
+					{
+						__instance.ExitInspectGearMode( true );
+						WidgetUtils.SetActive( Gear, false );
+						Interaction.PerformInteraction();
+					}
+
+					return false;
+				}
+			}
+			return true;
+		}
+	}
 
 }

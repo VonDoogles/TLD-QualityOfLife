@@ -1,10 +1,46 @@
 # Quality Of Life
-A mod for The Long Dark that makes several changes to the UI in hopes to make the game more consistent and easier to control.
+A mod for The Long Dark that makes several changes to the UI in hopes to make the game more consistent and easier to control.  Also contains some options to make the game more difficult.
 
 # Features
+## Animation
+### Play Harvest Anims
+When true, plays the new harvest anims, when false uses the old progress bar.
+
 ## Crafting
 ### Remember Filter
 Remembers which crafting filter was selected, and restores it when the crafting UI is opened.
+
+## Difficulty
+### Allow Take Torch
+Allows taking torchs from lit fires.
+
+### Cat Tail Calories
+The amount of calories Cat Tail stalks have.
+- OneThird - 1/3 the normal calories. (50)
+- TwoThird - 2/3 the normal calories. (100)
+- Default - the normal amount of calories. (150)
+
+> [!WARNING]
+> Calorie count for inventory is saved.  Before removing/disabling this mod, set Cat Tail Calories back to Default and save the game.
+
+### Cat Tail Harvest Stalk
+Enable/Disable harvesting Cat Tail stalks.
+
+### Cat Tail Harvest Tinder
+Enable/Disable harvesting Cat Tail tinder.
+
+### Stick North
+When enabled, items drop like normal.  When disabled items are randomly rotated when dropped to prevent using stick north.
+
+### Meat Settings
+Settings to control the min/max KG of meat that Bear, Deer, Moose and Wolf carcas will have.
+
+## Food
+### Cook Filter Reheat
+Filter reheatable items in the Cook UI.
+
+### Eat Pick Units
+Show the Pick Units UI to select how many stackable food items to eat.
 
 ## Fire
 ### Auto-Select Lit Torch
@@ -28,6 +64,9 @@ Separate interact with objects so it doesn't share the same controls as shooting
 
 ### Highlight Selection
 Changes the background color of items on the Harvest and FireStart UI to show which row has keyboard focus.
+
+### Rest Preset
+Adds a preset button for 10 hours to the rest UI.
 
 ### UI Extra Controls
 Adds extra shortcut keys to verious UI screens.
@@ -148,6 +187,9 @@ Quick select key to show the LightSource radial UI. (Hold to show menu. Press fo
 ### Weapon Radial
 Quick select key to show the Weapon radial UI. (Hold to show menu. Press for default behaviour.)
 
+### Auto Pickup
+Modifier key to auto pickup items instead of inspecting them.
+
 ## Map
 ### Show Player Icon
 Show the player's location on the map.  It does not reveal any of the map, just renders the player's icon.
@@ -156,6 +198,12 @@ Show the player's location on the map.  It does not reveal any of the map, just 
 ### Combine Items
 The radial menu will only show one item of each type.  Mouse wheel will select which item of that type is used. (IE: Birch Tea, Coffee)
 Also sorts the items by Heat status first, then by Calories remaining and finally by HP.
+
+### Show Ruined Food
+Always show ruined food items in the radial menu.
+
+### Show Insulated Flask Contents
+Always show Insulated Flasks contents in the radial menu.
 
 ## Repair
 ### Repair Colored Amount
@@ -168,3 +216,28 @@ The radial menu will equip the lowest quality torch.
 ### Always Select Starter
 Always show the torch light UI to select the starter item.  This helps prevent accidental usage of matches.
 
+## Travois
+### Pickup With Contents
+When enabled, allows picking up a Travois while items are still inside.  Also enables transfering items to a Travois in your inventory.
+
+> [!CAUTION]
+> **Pickup With Contents** causes this mod to handle save/load for items in a Travois while in your inventory.  Before disabling the option or this mod, MAKE SURE all Travois in your inventory are empty!  Otherwise you WILL loose all items inside such Travois!  This does not affect Travois that are deployed in the world.
+
+### Use With Rope
+When enabled, allows attaching a Travois to a rope and raising/lowering it at climb points.
+
+## UI
+### Buff Notification Offset
+A vertical offset applied to the buff notification UI.
+
+### Console Dark Mode
+Change the console to use a dark mode color scheme.
+
+### Weight Label
+Show a weight label on the hud.
+
+### Wind Status Bar
+Show a wind status bar.
+
+### Show Temperature Labels
+Show labels on the cold and wind status bars that display FeelsLike and WindChill temps.

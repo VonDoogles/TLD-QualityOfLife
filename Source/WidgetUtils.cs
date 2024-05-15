@@ -5,6 +5,22 @@ namespace QualityOfLife
 {
     public class WidgetUtils
     {
+		public static void GetControlSchemeMouse( Transform Parent, out UILabel? Label, out UISprite? Sprite )
+		{
+			Label = null;
+			Sprite = null;
+
+			foreach ( UIControllerScheme Scheme in Parent.GetComponentsInChildren<UIControllerScheme>( true ) )
+			{
+				if ( Scheme != null && Scheme.m_ControlScheme == UIControllerScheme.ControlScheme.Mouse )
+				{
+					Label = Scheme.GetComponentInChildren<UILabel>( true );
+					Sprite = Scheme.GetComponentInChildren<UISprite>( true );
+					return;
+				}
+			}
+		}
+
         public static UISprite? MakeSprite( string Name, Transform parent, Vector3 offset, string SpriteName )
         {
             GameObject GameObj = new GameObject( Name );
@@ -20,6 +36,27 @@ namespace QualityOfLife
             }
             return null;
         }
+
+		public static void SetSprite( UISprite? Sprite, string SpriteName, int width = 0, int height = 0 )
+		{
+			if ( Sprite != null )
+			{
+				if ( Sprite.spriteName != SpriteName )
+				{
+					Sprite.spriteName = SpriteName;
+				}
+
+				if ( width != 0 )
+				{
+					Sprite.width = width;
+				}
+
+				if ( height != 0 )
+				{
+					Sprite.height = height;
+				}
+			}
+		}
 
         public static UIAtlas? FindAtlas( string AtlasName )
         {
@@ -42,6 +79,14 @@ namespace QualityOfLife
             }
         }
 
+		public static void SetLabelText( UILabel? Label, string Text )
+		{
+			if ( Label != null )
+			{
+				Label.text = Text;
+			}
+		}
+
         public static bool UIRectContains( UIRect Rect, Vector3 MouseLoc )
         {
             Vector3 Min = Rect.anchorCamera.WorldToScreenPoint( Rect.worldCorners[ 0 ] );
@@ -58,6 +103,26 @@ namespace QualityOfLife
 
             Rect ScreenRect = UnityEngine.Rect.MinMaxRect( Min.x, Min.y, Max.x, Max.y );
             return ScreenRect.Contains( MouseLoc );
+        }
+
+        internal static void EnsureChildOrder( UIGrid? Grid, Component? ChildA, Component? ChildB )
+        {
+			if ( Grid != null && ChildA != null && ChildB != null )
+			{
+				int IndexA = Grid.GetIndex( ChildA.transform );
+				int IndexB = Grid.GetIndex( ChildB.transform );
+
+				if ( IndexA > IndexB && IndexA != -1 && IndexB != -1 )
+				{
+					Il2CppSystem.Collections.Generic.List<Transform> ChildList = new();
+					Grid.GetChildList( ChildList );
+
+					ChildList[ IndexA ] = ChildB.transform;
+					ChildList[ IndexB ] = ChildA.transform;
+
+					Grid.ResetPosition( ChildList );
+				}
+			}
         }
     }
 }

@@ -4,6 +4,23 @@ using UnityEngine;
 
 namespace QualityOfLife
 {
+	[HarmonyPatch( typeof( Panel_Container ), "ItemPassesFilter" )]
+	internal class Patch_Panel_Container_ItemPassesFilter
+    {
+        static bool Prefix( Panel_Container __instance, GearItem pi, string filterName, ref bool __result )
+		{
+			if ( Settings.Instance.EnableMod && Settings.Instance.TravoisPickupWithContents )
+			{
+				if ( pi != null && pi.GetComponent<Container>() != null )
+				{
+					__result = false;
+					return false;
+				}
+			}
+            return true;
+		}
+	}
+
     [HarmonyPatch( typeof( Panel_Container ), "Update" )]
     internal class Patch_Panel_Container_Update
     {

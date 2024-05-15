@@ -22,4 +22,33 @@ namespace QualityOfLife.Patches
             }
         }
     }
+
+    [HarmonyPatch( typeof( GearItem ), "GetItemWeightKG", new Type[] { typeof( bool ) } )]
+    internal class Patch_GearItem_GetItemWeightKG
+    {
+        static void Postfix( GearItem __instance, bool ignoreClothingBonus, ref float __result )
+        {
+			if ( Settings.Instance.EnableMod && Settings.Instance.TravoisPickupWithContents )
+			{
+				if ( __instance != null && __instance.m_Travois != null )
+				{
+					Container? GearContainer = null;
+
+					if ( __instance.m_Travois.BigCarryItem != null )
+					{
+						GearContainer = __instance.m_Travois.BigCarryItem.m_Container;
+					}
+					else
+					{
+						GearContainer = __instance.gameObject.GetComponent<Container>();
+					}
+
+					if ( GearContainer != null )
+					{
+						__result += GearContainer.GetTotalWeightKG();
+					}
+				}
+			}
+        }
+    }
 }
