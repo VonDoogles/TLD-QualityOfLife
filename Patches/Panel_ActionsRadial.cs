@@ -7,6 +7,11 @@ using UnityEngine;
 
 namespace QualityOfLife
 {
+	static public class Panel_ActionsRadial_Data
+	{
+		static public List<string> m_NavigationRadialOrderDefault = new();
+		static public List<string> m_NavigationRadialOrderTravois = new();
+	}
 
     [HarmonyPatch( typeof( Panel_ActionsRadial ), "Initialize" )]
     internal class Patch_Panel_ActionsRadial_Initialize
@@ -44,8 +49,35 @@ namespace QualityOfLife
                     NextItem.SetDimensions( 32, 32 );
                 }
             }
+
+            Panel_ActionsRadial_Data.m_NavigationRadialOrderDefault = new( __instance.m_NavigationRadialOrder );
+
+            Panel_ActionsRadial_Data.m_NavigationRadialOrderTravois = new( __instance.m_NavigationRadialOrder )
+            {
+                "GEAR_Travois"
+            };
         }
     }
+
+	[HarmonyPatch( typeof( Panel_ActionsRadial ), "Enable", new Type[] { typeof( bool ), typeof( bool ) } )]
+	internal class Patch_Panel_ActionsRadial_Enable
+    {
+		static bool Prefix( Panel_ActionsRadial __instance, bool enable, bool doHoverDisable )
+		{
+			if ( enable )
+			{
+				if ( Settings.Instance.EnableMod && Settings.Instance.TravoisShowInRadial )
+				{
+					__instance.m_NavigationRadialOrder = Panel_ActionsRadial_Data.m_NavigationRadialOrderTravois.ToArray();
+				}
+				else
+				{
+					__instance.m_NavigationRadialOrder = Panel_ActionsRadial_Data.m_NavigationRadialOrderDefault.ToArray();
+				}
+			}
+			return true;
+		}
+	}
 
     [HarmonyPatch( typeof( Panel_ActionsRadial ), "GetDrinkItemsInInventory" )]
     internal class Patch_Panel_ActionsRadial_GetDrinkItemsInInventory
@@ -318,5 +350,21 @@ namespace QualityOfLife
             WidgetUtils.SetActive( Thumb, bShowItemIcons );
         }
     }
+
+	[HarmonyPatch( typeof( Panel_ActionsRadial ), "UseItem" )]
+	 internal class Patch_Panel_ActionsRadial_UseItem
+	 {
+		 static bool Prefix( Panel_ActionsRadial __instance, GearItem gi )
+		 {
+			 if ( Settings.Instance.EnableMod && Settings.Instance.TravoisShowInRadial )
+			 {
+				 if ( gi != null && gi.m_Travois != null )
+				 {
+					 TravoisUtil.DropTravois( gi );
+				 }
+			 }
+			 return true;
+		 }
+	}
 
 }

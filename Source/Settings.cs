@@ -144,6 +144,17 @@ namespace QualityOfLife
         [Description( "Show the Pick Units UI to select how many stackable food items to eat." )]
         public bool FoodEatPickUnits = true;
 
+		[Name( "Scale Meat 1/3 Size" )]
+		[Description( "Meat on the ground that has less than this percent of full calories is scaled to 1/3 size." )]
+		[Slider(0f, 100f, 101)]
+		public float FoodScaleMeatOneThird = 50.0f;
+
+		[Name( "Scale Meat 2/3 Size" )]
+		[Description( "Meat on the ground that has less than this percent of full calories is scaled to 2/3 size." )]
+		[Slider(0f, 100f, 101)]
+		public float FoodScaleMeatTwoThird = 100.0f;
+
+
         [Section( "Fire" )]
         [Name( "Auto-Select Lit Torch" )]
         [Description( "Auto selects the torch as the fire starter if the player is holding a lit torch." )]
@@ -166,13 +177,23 @@ namespace QualityOfLife
         public bool FireRememberSelection = true;
 
 
+		[Section( "Fishing" )]
+		[Name( "Remember Selection" )]
+		[Description( "Remember previous selected items and auto select them." )]
+		public bool FishingRememberSelection = true;
+
+		[Name( "Show Remaining Bait" )]
+		[Description( "Show remaining bait on fishing UI." )]
+		public bool FishingShowRemainingBait = true;
+
+
         [Section( "Input" )]
         [Name( "Separate Interact" )]
         [Description( "Separate interact with objects so it doesn't share the same controls as shooting." )]
         public bool SeparateInteract = true;
 
         [Name( "Highlight Selection" )]
-        [Description( "Changes the background color of items on the Harvest and FireStart UI to show which row has keyboard focus." )]
+        [Description( "Changes the background color of items on the Harvest, FireStart and IceFishing UI to show which row has keyboard focus." )]
         public bool HighlightSelection = true;
 
         [Name( "Rest Preset" )]
@@ -257,6 +278,11 @@ namespace QualityOfLife
         [Description( "Always show the torch light UI to select the starter item.  This helps prevent accidental usage of matches." )]
         public bool TorchLightAlwaysShow = true;
 
+        [Section( "Toilet" )]
+        [Name( "Water Non Potable" )]
+        [Description( "When enabled, water taken from toilets is non potable." )]
+        public bool ToiletNonPotable = true;
+
 		[Section( "Travois" )]
 		[Name( "Pickup With Contents" )]
 		[Description( "When enabled, allows picking up a Travois while items are still inside.  Also enables transfering items to a Travois in your inventory." )]
@@ -265,6 +291,10 @@ namespace QualityOfLife
 		[Name( "Use With Rope" )]
 		[Description( "When enabled, allows attaching a Travois to a rope and raising/lowering it at climb points." )]
 		public bool TravoisUseWithRope = false;
+
+		[Name( "Show In Radial" )]
+		[Description( "When enabled, the travois will appear under the navigation radial menu.  This can be used to deploy the Travois." )]
+		public bool TravoisShowInRadial = true;
 
         [Section( "UI" )]
         [Name( "Buff Notification Offset" )]
@@ -297,8 +327,8 @@ namespace QualityOfLife
 
         protected override void OnChange( FieldInfo field, object? oldValue, object? newValue )
         {
-			string TravoisPickupWithContentsWarning = "\n\"Pickup With Contents\" causes this mod to handle save/load for items in a Travois while in your inventory.  "+
-													  "Before disabling the option or this mod, MAKE SURE all Travois in your inventory are empty!  "+
+			string TravoisPickupWithContentsWarning = "\n\"Pickup With Contents\" in QoL v1.12.0 caused this mod to handle save/load for items in a Travois while in your inventory.  "+
+													  "Before disabling the option or this mod, MAKE SURE all Travois in your inventory are empty and save, or save with QoL v1.13.0 or newer!  "+
 													  "Otherwise you WILL loose all items inside such Travois!  "+
 													  "This does not affect Travois that are deployed in the world.";
 

@@ -27,7 +27,7 @@ namespace QualityOfLife
 			return CatTailCaloriesDefault;
 		}
 
-		public static void TryUpdateCalories( FoodItem Food )
+		public static void TryUpdateCalories( FoodItem? Food )
 		{
 			if ( Food != null )
 			{

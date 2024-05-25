@@ -5,6 +5,16 @@ using UnityEngine;
 namespace QualityOfLife
 {
 
+    [HarmonyPatch( typeof( Panel_Inventory_Examine ), "HarvestSuccessful" )]
+    internal class Patch_Panel_Inventory_Examine_HarvestSuccessful
+    {
+        static bool Prefix( Panel_Inventory_Examine __instance )
+		{
+			TravoisUtil.NotifyHarvested( __instance.m_GearItem );
+			return true;
+		}
+    }
+
     [HarmonyPatch( typeof( Panel_Inventory_Examine ), "Update" )]
     internal class Patch_Panel_Inventory_Examine_Update
     {

@@ -20,7 +20,7 @@ namespace QualityOfLife
                 GenericButtonMouseSpawner ButtonSpawner = __instance.m_PickUpButton.GetComponent<GenericButtonMouseSpawner>();
 
 				ExperienceMode XpMode = GameManager.GetExperienceModeManagerComponent().GetCurrentExperienceMode();
-				QuickHours = ( XpMode.m_ThirstRateScale > 1.0f ) ? 8 : 10;
+				QuickHours = ( XpMode.m_ThirstRateScale > 1.25f ) ? 8 : 10;
 
                 GameObject? ButtonQuick10 = Parent.FindChild( "ButtonQuick10" )?.gameObject;
                 if ( ButtonQuick10 == null )

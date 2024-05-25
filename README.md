@@ -1,6 +1,12 @@
 # Quality Of Life
 A mod for The Long Dark that makes several changes to the UI in hopes to make the game more consistent and easier to control.  Also contains some options to make the game more difficult.
 
+> [!WARNING]
+> When using **Cat Tail Calories**, calorie count for inventory is saved.  Before removing/disabling this mod, set Cat Tail Calories back to Default and save the game.
+
+> [!CAUTION]
+> **Pickup With Contents** in QoL v1.12.0 caused this mod to handle save/load for items in a Travois while in your inventory.  Before disabling the option or this mod, MAKE SURE all Travois in your inventory are empty and save, or save with QoL v1.13.0 or newer!  Otherwise you WILL loose all items inside such Travois!  This does not affect Travois that are deployed in the world.
+
 # Features
 ## Animation
 ### Play Harvest Anims
@@ -21,7 +27,7 @@ The amount of calories Cat Tail stalks have.
 - Default - the normal amount of calories. (150)
 
 > [!WARNING]
-> Calorie count for inventory is saved.  Before removing/disabling this mod, set Cat Tail Calories back to Default and save the game.
+> When using **Cat Tail Calories**, calorie count for inventory is saved.  Before removing/disabling this mod, set Cat Tail Calories back to Default and save the game.
 
 ### Cat Tail Harvest Stalk
 Enable/Disable harvesting Cat Tail stalks.
@@ -42,6 +48,12 @@ Filter reheatable items in the Cook UI.
 ### Eat Pick Units
 Show the Pick Units UI to select how many stackable food items to eat.
 
+### Scale Meat 1/3 Size
+Meat on the ground that has less than this percent of full calories is scaled to 1/3 size.
+
+### Scale Meat 2/3 Size
+Meat on the ground that has less than this percent of full calories is scaled to 2/3 size.
+
 ## Fire
 ### Auto-Select Lit Torch
 Auto selects the torch as the fire starter if the player is holding a lit torch.
@@ -57,6 +69,13 @@ Auto selects next tinder type when Fire Start UI is opened.  This prevents accid
 
 ### Remember Selection
 Remember previous selected items and auto select them.  Above options take precedence is enabled.
+
+## Fishing
+### Remember Selection
+Remember previous selected items and auto select them.
+
+### Show Remaining Bait
+Show remaining bait on fishing UI.
 
 ## Input
 ### Separate Interact
@@ -190,10 +209,6 @@ Quick select key to show the Weapon radial UI. (Hold to show menu. Press for def
 ### Auto Pickup
 Modifier key to auto pickup items instead of inspecting them.
 
-## Map
-### Show Player Icon
-Show the player's location on the map.  It does not reveal any of the map, just renders the player's icon.
-
 ## Radial
 ### Combine Items
 The radial menu will only show one item of each type.  Mouse wheel will select which item of that type is used. (IE: Birch Tea, Coffee)
@@ -216,15 +231,22 @@ The radial menu will equip the lowest quality torch.
 ### Always Select Starter
 Always show the torch light UI to select the starter item.  This helps prevent accidental usage of matches.
 
+## Toilet
+### Water Non Potable
+When enabled, water taken from toilets is non potable.
+
 ## Travois
 ### Pickup With Contents
 When enabled, allows picking up a Travois while items are still inside.  Also enables transfering items to a Travois in your inventory.
 
 > [!CAUTION]
-> **Pickup With Contents** causes this mod to handle save/load for items in a Travois while in your inventory.  Before disabling the option or this mod, MAKE SURE all Travois in your inventory are empty!  Otherwise you WILL loose all items inside such Travois!  This does not affect Travois that are deployed in the world.
+> **Pickup With Contents** in QoL v1.12.0 caused this mod to handle save/load for items in a Travois while in your inventory.  Before disabling the option or this mod, MAKE SURE all Travois in your inventory are empty and save, or save with QoL v1.13.0 or newer!  Otherwise you WILL loose all items inside such Travois!  This does not affect Travois that are deployed in the world.
 
 ### Use With Rope
 When enabled, allows attaching a Travois to a rope and raising/lowering it at climb points.
+
+### Show In Radial
+When enabled, the travois will appear under the navigation radial menu.  This can be used to deploy the Travois.
 
 ## UI
 ### Buff Notification Offset

@@ -4,6 +4,24 @@ using UnityEngine;
 
 namespace QualityOfLife.Patches
 {
+	[HarmonyPatch( typeof( GearItem ), "Drop" )]
+	internal class Patch_GearItem_Drop
+	{
+		static void Postfix( GearItem __instance, int numUnits, bool playSound, bool stickToFeet, bool force )
+		{
+			MeatScale.TryAdd( __instance );
+		}
+	}
+
+	[HarmonyPatch( typeof( GearItem ), "CacheComponents" )]
+	internal class Patch_GearItem_CacheComponents
+	{
+		static void Postfix( GearItem __instance )
+		{
+			MeatScale.TryAdd( __instance );
+		}
+	}
+
     [HarmonyPatch( typeof( GearItem ), "StickToGroundAtPlayerFeet" )]
     internal class Patch_GearItem_StickToGroundAtPlayerFeet
     {
