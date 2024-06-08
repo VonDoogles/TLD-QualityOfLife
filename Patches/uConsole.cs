@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
+using Il2CppTLD.Gameplay;
 using UnityEngine;
 
 namespace QualityOfLife.Patches
@@ -20,6 +21,8 @@ namespace QualityOfLife.Patches
             OriginalColorFGInput = __instance.m_InputFieldFontColor;
 
             UpdateConsoleColor();
+
+			uConsole.RegisterCommand( "vitaminc", (uConsole.DebugCommand) OnShowVitaminC );
         }
 
         public static void UpdateConsoleColor()
@@ -41,5 +44,16 @@ namespace QualityOfLife.Patches
                 }
             }
         }
+
+		public static void OnShowVitaminC()
+		{
+			ScurvyManager ScurvyMan = GameManager.GetScurvyComponent();
+			if ( ScurvyMan != null )
+			{
+				float Max = ScurvyMan.m_CureThreshold;
+				float Cur = ScurvyMan.GetVitaminCNormalized() * Max;
+				uConsoleLog.Add( $"VitaminC {Cur} / {Max}" );
+			}
+		}
     }
 }
