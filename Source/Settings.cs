@@ -28,6 +28,16 @@ namespace QualityOfLife
         NonWeapons
     }
 
+	internal enum ItemDropRotationType
+	{
+		// Use base game functionality.
+		StickNorth = 0,
+		// Drop items facing the same direction as the player.
+		PlayerFacing,
+		// Drop items facing a random diration.
+		Random
+	}
+
     internal enum WeightLabelType
     {
         // Weight Label is disabled.
@@ -57,15 +67,18 @@ namespace QualityOfLife
         [Description( "Enable / Disable Mod.  Allows turning off all features without changing individual settings." )]
         public bool EnableMod = true;
 
+
 		[Section( "Animation" )]
 		[Name( "Play Harvest Anims" )]
 		[Description( "When true, plays the new harvest anims, when false uses the old progress bar." )]
 		public bool AnimPlayHarvest = true;
 
+
         [Section( "Crafting" )]
         [Name( "Remember Filter" )]
         [Description( "Remembers which crafting filter was selected, and restores it when the crafting UI is opened." )]
         public bool CraftRememberFilter = true;
+
 
         [Section( "Difficulty" )]
 		[Name( "Allow Take Torch" )]
@@ -90,9 +103,12 @@ namespace QualityOfLife
 		[Description( "Enable/Disable harvesting Cat Tail tinder." )]
 		public bool CatTailHarvestTinder = true;
 
-		[Name( "Stick North" )]
-		[Description( "When enabled, items drop like normal.  When disabled items are randomly rotated when dropped to prevent using stick north." )]
-		public bool StickNorth = true;
+		[Name( "Item Drop Rotation" )]
+		[Description( "The rotation of items when dropped.\n"+
+					  "StickNorth - Use base game behaviour.\n"+
+					  "PlayerFacing - Drop items facing the same direction as the player.\n"+
+					  "Random - Drop items facing a random diration." )]
+		public ItemDropRotationType ItemDropRotation = ItemDropRotationType.PlayerFacing;
 
 		[Name( "Bear Meat Min (KG)" )]
 		[Description( "The minimum amount of meat in KG a bear carcas will have. (Default: 25)" )]
@@ -187,6 +203,12 @@ namespace QualityOfLife
 		public bool FishingShowRemainingBait = true;
 
 
+		[Section( "Fuel" )]
+		[Name( "Select Source" )]
+		[Description( "When enabled, allows choosing which fuel source to use when refueling." )]
+		public bool FuelSelectSource = true;
+
+
         [Section( "Input" )]
         [Name( "Separate Interact" )]
         [Description( "Separate interact with objects so it doesn't share the same controls as shooting." )]
@@ -248,6 +270,7 @@ namespace QualityOfLife
         [Description( "Modifier key to auto pickup items instead of inspecting them." )]
         public KeyCode AutoPickupKey = KeyCode.LeftShift;
 
+
         [Section( "Radial" )]
         [Name( "Combine Items" )]
         [Description( "The radial menu will only show one item of each type.\n" +
@@ -269,6 +292,7 @@ namespace QualityOfLife
         [Description( "Change the color of the repair amount when it is less than the full amount." )]
         public bool RepairColoredAmount = true;
 
+
         [Section( "Torch" )]
         [Name( "Lowest Torch" )]
         [Description( "The radial menu will equip the lowest quality torch." )]
@@ -278,10 +302,12 @@ namespace QualityOfLife
         [Description( "Always show the torch light UI to select the starter item.  This helps prevent accidental usage of matches." )]
         public bool TorchLightAlwaysShow = true;
 
+
         [Section( "Toilet" )]
         [Name( "Water Non Potable" )]
         [Description( "When enabled, water taken from toilets is non potable." )]
         public bool ToiletNonPotable = true;
+
 
 		[Section( "Travois" )]
 		[Name( "Pickup With Contents" )]
@@ -296,10 +322,15 @@ namespace QualityOfLife
 		[Description( "When enabled, the travois will appear under the navigation radial menu.  This can be used to deploy the Travois." )]
 		public bool TravoisShowInRadial = true;
 
+
         [Section( "UI" )]
         [Name( "Buff Notification Offset" )]
         [Description( "A vertical offset applied to the buff notification UI." )]
         public float BuffOffsetVertical = 0.5f;
+
+		[Name( "Clothing Condition Bars" )]
+		[Description( "When enabled, shows bars at the bottom of each clothing slot to show the current condition of the item." )]
+		public bool ClothingConditionBars = true;
 
         [Name( "Console Dark Mode" )]
         [Description( "Change the console to use a dark mode color scheme." )]

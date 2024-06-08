@@ -21,6 +21,46 @@ namespace QualityOfLife
 			}
 		}
 
+		public static UIProgressBar? MakeProgressBar( string Name, Transform parent, int depth )
+		{
+			GameObject GameObj = new GameObject( Name );
+			if ( GameObj != null )
+			{
+				GameObj.transform.parent = parent;
+				GameObj.transform.localPosition = Vector3.zero;
+				GameObj.transform.localScale = Vector3.one;
+
+				UISprite? Background = MakeSprite( "Background", GameObj.transform, Vector3.zero, "progressbar_horizontal2" );
+				if ( Background != null )
+				{
+					Background.depth = depth;
+					Background.type = UIBasicSprite.Type.Filled;
+					Background.fillDirection = UIBasicSprite.FillDirection.Horizontal;
+					Background.pivot = UIWidget.Pivot.Left;
+				}
+				SetSprite( Background, "progressbar_horizontal2", 80, 24 );
+
+				UISprite? Foreground = MakeSprite( "Foreground", GameObj.transform, Vector3.zero, "whiteSquare" );
+				if ( Foreground != null )
+				{
+					Foreground.depth = depth + 1;
+					Foreground.type = UIBasicSprite.Type.Filled;
+					Foreground.fillDirection = UIBasicSprite.FillDirection.Horizontal;
+					Foreground.pivot = UIWidget.Pivot.Left;
+				}
+				SetSprite( Foreground, "whiteSquare", 56, 2 );
+
+				UIProgressBar? Progress = GameObj.AddComponent<UIProgressBar>();
+				if ( Progress )
+				{
+					Progress.foregroundWidget = Foreground;
+					Progress.fillDirection = UIProgressBar.FillDirection.LeftToRight;
+				}
+				return Progress;
+			}
+			return null;
+		}
+
         public static UISprite? MakeSprite( string Name, Transform parent, Vector3 offset, string SpriteName )
         {
             GameObject GameObj = new GameObject( Name );
@@ -28,6 +68,7 @@ namespace QualityOfLife
             {
                 GameObj.transform.parent = parent;
                 GameObj.transform.localPosition = offset;
+				GameObj.transform.localScale = Vector3.one;
 
                 UISprite Sprite = GameObj.AddComponent<UISprite>();
                 Sprite.spriteName = SpriteName;

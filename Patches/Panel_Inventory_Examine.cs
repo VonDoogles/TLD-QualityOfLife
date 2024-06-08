@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
+using Il2CppTLD.Gear;
 using UnityEngine;
 
 namespace QualityOfLife
@@ -14,6 +15,82 @@ namespace QualityOfLife
 			return true;
 		}
     }
+
+	[HarmonyPatch( typeof( Panel_Inventory_Examine ), "OnRefuel" )]
+	internal class Patch_Panel_Inventory_Examine_OnRefuel
+	{
+		static bool Prefix( Panel_Inventory_Examine __instance )
+		{
+			if ( Settings.Instance.EnableMod && Settings.Instance.FuelSelectSource )
+			{
+				RefuelPanel? Refuel = __instance.m_RefuelPanel.GetComponent<RefuelPanel>();
+				if ( Refuel != null )
+				{
+					Refuel.OnRefuel();
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+
+	[HarmonyPatch( typeof( Panel_Inventory_Examine ), "RefreshMainWindow" )]
+	internal class Patch_Panel_Inventory_Examine_RefreshMainWindow
+	{
+        static bool Prefix( Panel_Inventory_Examine __instance )
+		{
+			if ( Settings.Instance.EnableMod && Settings.Instance.FuelSelectSource )
+			{
+				if ( IsKerosene( __instance.m_GearItem ) )
+				{
+					__instance.RefreshHarvest();
+					__instance.RefreshCleanPanel();
+					__instance.RefreshRepairPanel();
+					__instance.RefreshSharpenPanel();
+					__instance.RefreshRefuelPanel();
+					__instance.RefreshReadPanel();
+					__instance.RefreshReadPanel();
+					__instance.RefreshButton();
+					__instance.UpdateWeightAndConditionLabels();
+
+					__instance.m_Button_Refuel.transform.localPosition = Vector3.zero;
+					__instance.OnSelectRefuelButton();
+					WidgetUtils.SetActive( __instance.m_Button_Refuel, true );
+					WidgetUtils.SetActive( __instance.m_Button_Unload, false );
+					WidgetUtils.SetActive( __instance.m_RequiresFuelMessage, false );
+					WidgetUtils.SetLabelText( __instance.m_Item_Label, __instance.m_GearItem.GetBasicDisplayNameForInventoryInterfaces() );
+					return false;
+				}
+			}
+			return true;
+		}
+
+		static bool IsKerosene( GearItem Gear )
+		{
+			if ( Gear != null && Gear.m_LiquidItem != null && Gear.m_LiquidItem.LiquidType == LiquidType.GetKerosene() )
+			{
+				return true;
+			}
+			return false;
+		}
+	}
+
+	[HarmonyPatch( typeof( Panel_Inventory_Examine ), "RefreshRefuelPanel" )]
+	internal class Patch_Panel_Inventory_Examine_RefreshRefuelPanel
+	{
+        static bool Prefix( Panel_Inventory_Examine __instance )
+		{
+			if ( Settings.Instance.EnableMod && Settings.Instance.FuelSelectSource )
+			{
+				RefuelPanel? Refuel = __instance.m_RefuelPanel.GetComponent<RefuelPanel>();
+				if ( Refuel == null )
+				{
+					Refuel = __instance.m_RefuelPanel.AddComponent<RefuelPanel>();
+				}
+			}
+			return true;
+		}
+	}
 
     [HarmonyPatch( typeof( Panel_Inventory_Examine ), "Update" )]
     internal class Patch_Panel_Inventory_Examine_Update
@@ -32,7 +109,10 @@ namespace QualityOfLife
                     }
                 }
 
-                bool bIsDoingAction = __instance.IsCleaning() || __instance.IsHarvesting() || __instance.IsReading() || __instance.IsRepairing() || __instance.IsSharpening();
+				RefuelPanel? Refuel = __instance.m_RefuelPanel.GetComponent<RefuelPanel>();
+				bool bIsRefueling = Refuel != null ? Refuel.IsRefueling : false;
+
+                bool bIsDoingAction = bIsRefueling || __instance.IsCleaning() || __instance.IsHarvesting() || __instance.IsReading() || __instance.IsRepairing() || __instance.IsSharpening();
                 if ( !bIsDoingAction )
                 {
                     if ( __instance.m_ReadPanel.active )
