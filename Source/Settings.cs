@@ -202,6 +202,10 @@ namespace QualityOfLife
 		[Description( "Show remaining bait on fishing UI." )]
 		public bool FishingShowRemainingBait = true;
 
+		[Name( "Show Tipup Condition" )]
+		[Description( "Show Tipup condition on fishing UI." )]
+		public bool FishingShowTipupCondition = true;
+
 
 		[Section( "Fuel" )]
 		[Name( "Select Source" )]

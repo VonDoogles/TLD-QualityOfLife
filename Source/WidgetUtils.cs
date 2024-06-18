@@ -120,9 +120,9 @@ namespace QualityOfLife
             }
         }
 
-		public static void SetLabelText( UILabel? Label, string Text )
+		public static void SetLabelText( UILabel? Label, string? Text )
 		{
-			if ( Label != null )
+			if ( Label != null && Text != null )
 			{
 				Label.text = Text;
 			}

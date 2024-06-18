@@ -376,6 +376,20 @@ namespace QualityOfLife
 	[HarmonyPatch( typeof( PlayerManager ), "EnterInspectGearMode", new Type[] { typeof( GearItem ), typeof( Container ), typeof( IceFishingHole ), typeof( Harvestable ), typeof( CookingPotItem ) } )]
     internal class Patch_PlayerManager_EnterInspectGearMode
 	{
+        static bool Prefix( PlayerManager __instance, GearItem gear, Container c, IceFishingHole hole, Harvestable h, CookingPotItem pot )
+		{
+			if ( Settings.Instance.EnableMod && ModInput.GetKey( __instance, Settings.Instance.AutoPickupKey ) )
+			{
+				Inventory Inv = GameManager.GetInventoryComponent();
+				if ( Inv != null )
+				{
+					Inv.AddGear( gear, true );
+					return false;
+				}
+			}
+			return true;
+		}
+
         static void Postfix( PlayerManager __instance, GearItem gear, Container c, IceFishingHole hole, Harvestable h, CookingPotItem pot )
 		{
 			if ( Settings.Instance.EnableMod && Settings.Instance.TravoisPickupWithContents )
@@ -396,11 +410,6 @@ namespace QualityOfLife
 					}
 				}
 			}
-
-            if ( Settings.Instance.EnableMod && ModInput.GetKey( __instance, Settings.Instance.AutoPickupKey ) )
-            {
-                __instance.ProcessPickupWithNoInspectScreen( gear, true );
-            }
         }
     }
 

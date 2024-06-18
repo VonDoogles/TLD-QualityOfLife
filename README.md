@@ -35,8 +35,12 @@ Enable/Disable harvesting Cat Tail stalks.
 ### Cat Tail Harvest Tinder
 Enable/Disable harvesting Cat Tail tinder.
 
-### Stick North
-When enabled, items drop like normal.  When disabled items are randomly rotated when dropped to prevent using stick north.
+### Item Drop Rotation
+The rotation of items when dropped.
+- StickNorth - Use base game behaviour.
+- PlayerFacing - Drop items facing the same direction as the player.
+- Random - Drop items facing a random diration.
+
 
 ### Meat Settings
 Settings to control the min/max KG of meat that Bear, Deer, Moose and Wolf carcas will have.
@@ -76,6 +80,13 @@ Remember previous selected items and auto select them.
 
 ### Show Remaining Bait
 Show remaining bait on fishing UI.
+
+### Show Tipup Condition
+Show Tipup condition on fishing UI.
+
+## Fuel
+### Select Source
+When enabled, allows choosing which fuel source to use when refueling.
 
 ## Input
 ### Separate Interact

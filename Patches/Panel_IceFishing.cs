@@ -9,18 +9,68 @@ namespace QualityOfLife
 	{
 		internal static string? BaitName;
 		internal static string? LureName;
+		internal static Panel_IceFishing.IceFishingAction? LastAction;
+
+		internal static Vector3 ConditionOffset = new Vector3( -236.7f, -110.0f, 0.0f );
+
 
         static void Postfix( Panel_IceFishing __instance, bool enable )
 		{
-            if ( Settings.Instance.EnableMod && enable )
+            if ( Settings.Instance.EnableMod )
 			{
-				if ( Settings.Instance.FishingRememberSelection )
+				if ( Settings.Instance.FishingShowTipupCondition )
+				{
+					Transform? Parent = __instance.m_TipupFishingParent?.transform;
+					if ( Parent != null )
+					{
+						Transform? Condition = Parent.FindChild( "Condition" );
+
+						if ( enable && Condition == null )
+						{
+							Panel_Inventory InvPanel = InterfaceManager.GetPanel<Panel_Inventory>();
+							InventoryGridItem? ItemPrefab = InvPanel?.InventoryItemPrefab?.GetComponent<InventoryGridItem>();
+
+							if ( ItemPrefab != null )
+							{
+								Condition = GameObject.Instantiate( ItemPrefab.m_ConditionLabel, Parent )?.transform;
+								if ( Condition != null )
+								{
+									Condition.gameObject.name = "Condition";
+									Condition.localPosition = ConditionOffset;
+									Condition.localScale = Vector3.one;
+								}
+							}
+						}
+
+						WidgetUtils.SetActive( Condition, enable );
+
+						UILabel? ConditionLabel = Condition?.GetComponent<UILabel>();
+						if ( ConditionLabel != null && __instance.m_BestTipup != null )
+						{
+							int ConditionValue = __instance.m_BestTipup.GetRoundedCondition();
+							ConditionLabel.color = __instance.m_BestTipup.GetColorBasedOnCondition();
+							ConditionLabel.text = $"{ConditionValue}%";
+							ConditionLabel.fontSize = 14;
+						}
+					}
+				}
+
+				if ( Settings.Instance.FishingRememberSelection && enable )
 				{
 					__instance.m_BaitSelection.m_SelectedIndex = Math.Max( 0, __instance.m_BaitSelection.m_Items.FindIndex( (Il2CppSystem.Predicate<GearItem>)( Gear => Gear?.name == BaitName ) ) );
 					__instance.m_BaitSelection.UpdateSelection();
 
 					__instance.m_LureSelection.m_SelectedIndex = Math.Max( 0, __instance.m_LureSelection.m_Items.FindIndex( (Il2CppSystem.Predicate<GearItem>)( Gear => Gear?.name == LureName ) ) );
 					__instance.m_LureSelection.UpdateSelection();
+
+					if ( LastAction == Panel_IceFishing.IceFishingAction.TipupFishing )
+					{
+						__instance.OnShowPlaceTipup();
+					}
+					else
+					{
+						__instance.OnShowActiveFishing();
+					}
 				}
 			}
 		}
@@ -33,6 +83,7 @@ namespace QualityOfLife
 		{
 			Patch_Panel_IceFishing_Enable.BaitName = __instance.m_BaitSelection.SelectedItem?.name;
 			Patch_Panel_IceFishing_Enable.LureName = __instance.m_LureSelection.SelectedItem?.name;
+			Patch_Panel_IceFishing_Enable.LastAction = __instance.m_Action;
 		}
 	}
 
