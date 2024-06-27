@@ -85,9 +85,11 @@ namespace QualityOfLife
 		{
 			if ( Settings.Instance.EnableMod && Settings.Instance.SeparateInteract && __instance.ActiveInteraction != null )
 			{
-				if ( __instance.IsClickHoldActive() && ModInput.GetKeyUp( __instance, Settings.Instance.InteractKey ) )
+				bool bClickAndHold = !BaseStateSingleton<SettingsState>.Instance.m_DisableClickHold;
+
+				if ( bClickAndHold && __instance.IsClickHoldActive() && ModInput.GetKeyUp( __instance, Settings.Instance.InteractKey ) )
 				{
-					__instance.TryCancelHoldInteraction();
+                    __instance.TryCancelHoldInteraction();
 				}
 			}
 			return true;
@@ -234,27 +236,6 @@ namespace QualityOfLife
 				}
             }
 
-			if ( ModInput.GetKeyDown( __instance, Settings.Instance.CraftingKey ) )
-			{
-				bool Enable = !InterfaceManager.IsPanelEnabled<Panel_Crafting>();
-				if ( Enable )
-				{
-                    InterfaceManager.TrySetPanelEnabled<Panel_Clothing>( false );
-                    InterfaceManager.TrySetPanelEnabled<Panel_Cooking>( false );
-                    InterfaceManager.TrySetPanelEnabled<Panel_FirstAid>( false );
-					InterfaceManager.TrySetPanelEnabled<Panel_Inventory>( false );
-					InterfaceManager.TrySetPanelEnabled<Panel_Log>( false );
-                    InterfaceManager.TrySetPanelEnabled<Panel_Map>( false );
-                    InterfaceManager.TrySetPanelEnabled<Panel_RecipeBook>( false );
-
-					InterfaceManager.TrySetPanelEnabled<Panel_Crafting>( true );
-                }
-				else
-				{
-					InterfaceManager.TrySetPanelEnabled<Panel_Crafting>( false );
-				}
-			}
-
 			return true;
 		}
 
@@ -376,6 +357,7 @@ namespace QualityOfLife
 	[HarmonyPatch( typeof( PlayerManager ), "EnterInspectGearMode", new Type[] { typeof( GearItem ), typeof( Container ), typeof( IceFishingHole ), typeof( Harvestable ), typeof( CookingPotItem ) } )]
     internal class Patch_PlayerManager_EnterInspectGearMode
 	{
+#if false // 2024-06-26: Disabled for now until I have time to thoroughly investigate it. 
         static bool Prefix( PlayerManager __instance, GearItem gear, Container c, IceFishingHole hole, Harvestable h, CookingPotItem pot )
 		{
 			if ( Settings.Instance.EnableMod && ModInput.GetKey( __instance, Settings.Instance.AutoPickupKey ) )
@@ -389,6 +371,7 @@ namespace QualityOfLife
 			}
 			return true;
 		}
+#endif
 
         static void Postfix( PlayerManager __instance, GearItem gear, Container c, IceFishingHole hole, Harvestable h, CookingPotItem pot )
 		{
@@ -402,7 +385,7 @@ namespace QualityOfLife
 
 					WidgetUtils.SetActive( HUD.m_InspectMode_Equip, true );
 					WidgetUtils.SetLabelText( HUD.m_InspectMode_Equip, "Transfer" );
-					WidgetUtils.SetLabelText( HUD.m_InspectMode_Weight, Utils.GetWeightTwoDecimalPlacesWithUnitsString( Units, gear.GetItemWeightKG() ) );
+					WidgetUtils.SetLabelText( HUD.m_InspectMode_Weight, gear.GetItemWeightKG().ToFormattedStringWithUnits() );
 
 					if ( HUD.m_InspectMode_ButtonLayout != null )
 					{

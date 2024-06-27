@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
 using Il2CppTLD.Cooking;
+using Il2CppTLD.IntBackedUnit;
 using UnityEngine;
 
 namespace QualityOfLife
@@ -29,33 +30,7 @@ namespace QualityOfLife
                     __instance.m_FoodList.Add( Item );
                 }
 
-                for ( int Index = 0; Index < __instance.m_FoodScrollList.m_ScrollObjects.Count; ++Index )
-                {
-                    GameObject GameObj = __instance.m_FoodScrollList.m_ScrollObjects[ Index ];
-                    if ( GameObj != null )
-                    {
-                        CookableListItem ListItem = GameObj.GetComponentInChildren<CookableListItem>();
-                        if ( ListItem != null )
-                        {
-                            if ( Index < __instance.m_FoodList.Count )
-                            {
-                                ListItem.SetCookable( __instance.m_FoodList[ Index ], __instance.m_CookingPotInteractedWith );
-                            }
-                        }
-                    }
-                }
-
-                for ( int Index = __instance.m_FoodScrollList.m_ScrollObjects.Count - 1; Index >= __instance.m_FoodList.Count; --Index )
-                {
-                    GameObject GameObj = __instance.m_FoodScrollList.m_ScrollObjects[ Index ];
-                    if ( GameObj != null )
-                    {
-                        __instance.m_FoodScrollList.OnReleaseChild( GameObj );
-                    }
-                }
-
-                __instance.m_FoodScrollSlider.numberOfSteps = __instance.m_FoodList.Count - 6;
-                WidgetUtils.SetActive( __instance.m_FoodScrollSlider.transform.parent, __instance.m_FoodList.Count > 7 );
+                __instance.m_ScrollBehaviour?.RebuildItems( __instance.m_FoodList.Count );
             }
         }
 
@@ -64,7 +39,7 @@ namespace QualityOfLife
             if ( Item != null && Item.m_GearItem != null )
             {
                 Cookable Cook = Item.m_GearItem.m_Cookable;
-                if ( Cook != null && Cook.m_CookableType == Cookable.CookableType.Liquid && Cook.m_PotableWaterRequiredLiters <= 0.0f )
+                if ( Cook != null && Cook.m_CookableType == Cookable.CookableType.Liquid && Cook.m_PotableWaterRequired <= ItemLiquidVolume.Zero )
                 {
                     return true;
                 }

@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
+using Il2CppTLD.IntBackedUnit;
 using UnityEngine;
 
 namespace QualityOfLife.Patches
@@ -54,7 +55,7 @@ namespace QualityOfLife.Patches
     [HarmonyPatch( typeof( GearItem ), "GetItemWeightKG", new Type[] { typeof( bool ) } )]
     internal class Patch_GearItem_GetItemWeightKG
     {
-        static void Postfix( GearItem __instance, bool ignoreClothingBonus, ref float __result )
+        static void Postfix( GearItem __instance, bool ignoreClothingBonus, ref ItemWeight __result )
         {
 			if ( Settings.Instance.EnableMod && Settings.Instance.TravoisPickupWithContents )
 			{
@@ -71,7 +72,7 @@ namespace QualityOfLife.Patches
 						GearContainer = __instance.gameObject.GetComponent<Container>();
 					}
 
-					if ( GearContainer != null )
+					if ( GearContainer != null && !GearContainer.IsEmpty() )
 					{
 						__result += GearContainer.GetTotalWeightKG();
 					}

@@ -7,16 +7,38 @@ namespace QualityOfLife
     [HarmonyPatch( typeof( InputManager ), "GetFirePressed" )]
     internal class Patch_InputManager_GetFirePressed
     {
-        static void Postrix( MonoBehaviour context, ref bool __result )
+        static void Postfix( MonoBehaviour context, ref bool __result )
         {
             if ( __result && Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
             {
                 PlayerManager PlayerMan = GameManager.GetPlayerManagerComponent();
                 if ( PlayerMan != null )
                 {
-                    PlayerMan.SetCurrentInteraction( null );
+                    if ( PlayerMan.ActiveInteraction != null && !PlayerMan.IsClickHoldActive() )
+                    {
+                        PlayerMan.SetCurrentInteraction( null );
+                    }
 
                     if ( PlayerMan.IsInPlacementMode() )
+                    {
+                        __result = false;
+                    }
+                }
+            }
+        }
+    }
+
+    [HarmonyPatch( typeof( InputManager ), "GetFireReleased" )]
+    internal class Patch_InputManager_GetFireReleased
+    {
+        static void Postfix( MonoBehaviour context, ref bool __result )
+        {
+            if ( __result && Settings.Instance.EnableMod && Settings.Instance.SeparateInteract )
+            {
+                PlayerManager PlayerMan = GameManager.GetPlayerManagerComponent();
+                if ( PlayerMan != null )
+                {
+                    if ( PlayerMan.ActiveInteraction != null && PlayerMan.IsClickHoldActive() )
                     {
                         __result = false;
                     }
@@ -35,7 +57,10 @@ namespace QualityOfLife
                 PlayerManager PlayerMan = GameManager.GetPlayerManagerComponent();
                 if ( PlayerMan != null )
                 {
-                    PlayerMan.SetCurrentInteraction( null );
+                    if ( PlayerMan.ActiveInteraction != null && !PlayerMan.IsClickHoldActive() )
+                    {
+                        PlayerMan.SetCurrentInteraction( null );
+                    }
 
                     if ( PlayerMan.IsInPlacementMode() )
                     {

@@ -1,5 +1,6 @@
 ﻿using Il2Cpp;
 using Il2CppTLD.Gear;
+using Il2CppTLD.IntBackedUnit;
 using Il2CppTLD.SaveState;
 using MelonLoader;
 using UnityEngine;
@@ -154,10 +155,10 @@ namespace QualityOfLife
 
 		public void OnRefuel()
 		{
-			float FuelAvailable = GetFuelAvailable();
-			float MaxFuelToAdd = GetMaxFuelToAdd();
+            ItemLiquidVolume FuelAvailable = GetFuelAvailable();
+            ItemLiquidVolume MaxFuelToAdd = GetMaxFuelToAdd();
 
-			if ( FuelAvailable > 0.0f && MaxFuelToAdd > 0.0f )
+			if ( FuelAvailable > ItemLiquidVolume.Zero && MaxFuelToAdd > ItemLiquidVolume.Zero )
 			{
 				Panel_GenericProgressBar GenericProgress = InterfaceManager.GetPanel<Panel_GenericProgressBar>();
 				if ( GenericProgress != null )
@@ -173,10 +174,10 @@ namespace QualityOfLife
 		{
 			if ( ExamineItem != null && FuelItem != null )
 			{
-				float MaxFuelToAdd = GetMaxFuelToAdd();
-				float FuelToTransfer = Mathf.Min( MaxFuelToAdd, GetFuelAvailable() * Progress );
+                ItemLiquidVolume MaxFuelToAdd = GetMaxFuelToAdd();
+                ItemLiquidVolume FuelToTransfer = ItemLiquidVolume.Min( MaxFuelToAdd, GetFuelAvailable() * Progress );
 
-				if ( FuelToTransfer > 0.0f )
+				if ( FuelToTransfer > ItemLiquidVolume.Zero )
 				{
 					// Remove from source
 					if ( FuelItem.m_LiquidItem != null )
@@ -191,7 +192,7 @@ namespace QualityOfLife
 					// Add to target
 					if ( ExamineItem.m_LiquidItem != null )
 					{
-						ExamineItem.m_LiquidItem.m_LiquidLiters = ExamineItem.m_LiquidItem.m_LiquidLiters + FuelToTransfer;
+						ExamineItem.m_LiquidItem.m_Liquid = ExamineItem.m_LiquidItem.m_Liquid + FuelToTransfer;
 					}
 					else if ( ExamineItem.m_KeroseneLampItem != null )
 					{
@@ -199,7 +200,7 @@ namespace QualityOfLife
 					}
 				}
 
-				if ( GetFuelAvailable() <= 0.0f )
+				if ( GetFuelAvailable() <= ItemLiquidVolume.Zero )
 				{
 					FuelList.Remove( FuelItem );
 				}
@@ -209,39 +210,39 @@ namespace QualityOfLife
 			IsRefueling = false;
 		}
 
-		float GetFuelAvailable()
+        ItemLiquidVolume GetFuelAvailable()
 		{
 			if ( FuelItem != null )
 			{
 				if ( FuelItem.m_LiquidItem != null )
 				{
-					return FuelItem.m_LiquidItem.m_LiquidLiters;
+					return FuelItem.m_LiquidItem.GetVolumeLitres();
 				}
 				else if ( FuelItem.m_KeroseneLampItem != null )
 				{
 					return FuelItem.m_KeroseneLampItem.m_CurrentFuelLiters;
 				}
 			}
-			return 0.0f;
+			return ItemLiquidVolume.Zero;
 		}
 
-		float GetFuelCapacity()
+        ItemLiquidVolume GetFuelCapacity()
 		{
 			if ( FuelItem != null )
 			{
 				if ( FuelItem.m_LiquidItem != null )
 				{
-					return FuelItem.m_LiquidItem.m_MaximumLiters;
+					return FuelItem.m_LiquidItem.GetCapacityLitres();
 				}
 				else if ( FuelItem.m_KeroseneLampItem != null )
 				{
-					return FuelItem.m_KeroseneLampItem.m_MaxFuelLiters;
+					return FuelItem.m_KeroseneLampItem.m_MaxFuel;
 				}
 			}
-			return 0.0f;
+			return ItemLiquidVolume.Zero;
 		}
 
-		float GetMaxFuelToAdd()
+        ItemLiquidVolume GetMaxFuelToAdd()
 		{
 			if ( ExamineItem != null )
 			{
@@ -254,10 +255,10 @@ namespace QualityOfLife
 					return ExamineItem.m_KeroseneLampItem.GetMaxFuelToAdd();
 				}
 			}
-			return 0.0f;
+			return ItemLiquidVolume.Zero;
 		}
 
-		float GetTargetFuel()
+        ItemLiquidVolume GetTargetFuel()
 		{
 			if ( ExamineItem != null )
 			{
@@ -270,10 +271,10 @@ namespace QualityOfLife
 					return ExamineItem.m_KeroseneLampItem.m_CurrentFuelLiters;
 				}
 			}
-			return 0.0f;
+			return ItemLiquidVolume.Zero;
 		}
 
-		float GetTargetCapacity()
+        ItemLiquidVolume GetTargetCapacity()
 		{
 			if ( ExamineItem != null )
 			{
@@ -283,10 +284,10 @@ namespace QualityOfLife
 				}
 				else if ( ExamineItem.m_KeroseneLampItem != null )
 				{
-					return ExamineItem.m_KeroseneLampItem.m_MaxFuelLiters;
+					return ExamineItem.m_KeroseneLampItem.m_MaxFuel;
 				}
 			}
-			return 0.0f;
+			return ItemLiquidVolume.Zero;
 		}
 
 		void RefreshFuel()
@@ -309,12 +310,10 @@ namespace QualityOfLife
 			Panel_Inventory_Examine? Examine = InterfaceManager.GetPanel<Panel_Inventory_Examine>();
 			if ( Examine != null )
 			{
-				MeasurementUnits Units = BaseStateSingleton<SettingsState>.Instance.m_Units;
-
 				if ( Examine.m_LanternFuelAmountLabel != null && ExamineItem != null && ExamineItem.m_KeroseneLampItem )
 				{
-					string LitersCur = Utils.GetLiquidQuantityString( Units, ExamineItem.m_KeroseneLampItem.m_CurrentFuelLiters );
-					string LitersMax = Utils.GetLiquidQuantityStringWithUnits( Units, ExamineItem.m_KeroseneLampItem.m_MaxFuelLiters );
+					string LitersCur = ExamineItem.m_KeroseneLampItem.m_CurrentFuelLiters.ToString();
+					string LitersMax = ExamineItem.m_KeroseneLampItem.m_MaxFuel.ToFormattedStringWithUnits();
 					Examine.m_LanternFuelAmountLabel.text = $"{LitersCur}/{LitersMax}";
 				}
 
@@ -332,19 +331,20 @@ namespace QualityOfLife
 
 				if ( Examine.m_LanternFuelAmountLabel != null )
 				{
-					string LitersCur = Utils.GetLiquidQuantityString( Units, GetTargetFuel() );
-					string LitersMax = Utils.GetLiquidQuantityStringWithUnits( Units, GetTargetCapacity() );
+					string LitersCur = GetTargetFuel().ToString();
+					string LitersMax = GetTargetCapacity().ToFormattedStringWithUnits();
 					Examine.m_LanternFuelAmountLabel.text = $"{LitersCur}/{LitersMax}";
 				}
 
 				if ( Examine.m_FuelSupplyAmountLabel != null )
 				{
-					string LitersCur = Utils.GetLiquidQuantityString( Units, GetFuelAvailable() );
-					string LitersMax = Utils.GetLiquidQuantityStringWithUnits( Units, GetFuelCapacity() );
-					Examine.m_FuelSupplyAmountLabel.text = $"{LitersCur}/{LitersMax}";
+					string LitersCur = GetFuelAvailable().ToString();
+					string LitersMax = GetFuelCapacity().ToFormattedStringWithUnits();
+
+                    Examine.m_FuelSupplyAmountLabel.text = $"{LitersCur}/{LitersMax}";
 				}
 
-				WidgetUtils.SetActive( Examine.m_RequiresFuelMessage, GetFuelAvailable() <= 0.0f );
+				WidgetUtils.SetActive( Examine.m_RequiresFuelMessage, GetFuelAvailable() <= ItemLiquidVolume.Zero );
 			}
 
 			if ( FuelSupply_Texture != null )
@@ -381,11 +381,11 @@ namespace QualityOfLife
 		{
 			if ( Gear != null && Gear != ExamineItem )
 			{
-				if ( Gear.m_KeroseneLampItem != null && Gear.m_KeroseneLampItem.m_CurrentFuelLiters > 0.0f )
+				if ( Gear.m_KeroseneLampItem != null && Gear.m_KeroseneLampItem.m_CurrentFuelLiters > ItemLiquidVolume.Zero )
 				{
 					return true;
 				}
-				else if ( Gear.m_LiquidItem != null && Gear.m_LiquidItem.LiquidType == LiquidType.GetKerosene() && Gear.m_LiquidItem.m_LiquidLiters > 0.0f )
+				else if ( Gear.m_LiquidItem != null && Gear.m_LiquidItem.LiquidType == LiquidType.GetKerosene() && Gear.m_LiquidItem.m_Liquid > ItemLiquidVolume.Zero )
 				{
 					return true;
 				}

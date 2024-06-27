@@ -166,7 +166,7 @@ namespace QualityOfLife
 
                     if ( TemplateContainer != null )
                     {
-                        GearContainer.m_CapacityKG = TemplateContainer.m_CapacityKG;
+                        GearContainer.m_Capacity = TemplateContainer.m_Capacity;
                         GearContainer.m_CloseAudio = TemplateContainer.m_CloseAudio;
                         GearContainer.m_OpenAudio = TemplateContainer.m_OpenAudio;
                     }

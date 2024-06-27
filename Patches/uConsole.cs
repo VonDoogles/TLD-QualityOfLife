@@ -3,7 +3,7 @@ using Il2Cpp;
 using Il2CppTLD.Gameplay;
 using UnityEngine;
 
-namespace QualityOfLife.Patches
+namespace QualityOfLife
 {
     [HarmonyPatch( typeof( uConsole ), "Start" )]
     public class Patch_uConsole_Start

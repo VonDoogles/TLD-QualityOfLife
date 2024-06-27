@@ -258,10 +258,6 @@ namespace QualityOfLife
         [Description( "Quick select key to equip Charcoal." )]
         public KeyCode NavigateKey = KeyCode.BackQuote;
 
-        [Name( "Crafting UI" )]
-        [Description( "Quick select key to toggle the crafting UI. (Hold to show menu. Press for default behaviour.)" )]
-        public KeyCode CraftingKey = KeyCode.X;
-
         [Name( "LightSource Radial" )]
         [Description( "Quick select key to show the LightSource radial UI. (Hold to show menu. Press for default behaviour.)" )]
         public KeyCode LightSourceKey = KeyCode.Alpha5;
@@ -271,7 +267,8 @@ namespace QualityOfLife
         public KeyCode WeaponKey = KeyCode.Alpha6;
 
         [Name( "Auto Pickup" )]
-        [Description( "Modifier key to auto pickup items instead of inspecting them." )]
+        [Description( "Modifier key to auto pickup items instead of inspecting them.\n"+
+					  "2024-06-26: Disabled for now until I have time to thoroughly investigate it. " )]
         public KeyCode AutoPickupKey = KeyCode.LeftShift;
 
 

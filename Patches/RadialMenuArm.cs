@@ -2,7 +2,7 @@
 using Il2Cpp;
 using Il2CppTLD.Gear;
 
-namespace QualityOfLife.Patches
+namespace QualityOfLife
 {
     [HarmonyPatch( typeof( RadialMenuArm ), "UpdateStackLabel" )]
     internal class Patch_RadialMenuArm_UpdateStackLabel

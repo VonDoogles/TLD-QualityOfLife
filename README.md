@@ -2,6 +2,9 @@
 A mod for The Long Dark that makes several changes to the UI in hopes to make the game more consistent and easier to control.  Also contains some options to make the game more difficult.
 
 > [!WARNING]
+> Quality Of Life requires the ModSettings mod to be installed.  (https://tldmods.com/)
+
+> [!WARNING]
 > When using **Cat Tail Calories**, calorie count for inventory is saved.  Before removing/disabling this mod, set Cat Tail Calories back to Default and save the game.
 
 > [!CAUTION]
