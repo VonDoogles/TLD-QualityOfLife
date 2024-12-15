@@ -10,9 +10,6 @@ namespace QualityOfLife
     [RegisterTypeInIl2Cpp]
     public class TravoisRopeInteraction : SimpleInteraction
     {
-		public TravoisRopeInteraction( IntPtr ptr ) : base( ptr ) { }
-		public TravoisRopeInteraction() : base( ClassInjector.DerivedConstructorPointer<TravoisContainerInteraction>() ) => ClassInjector.DerivedConstructorBody( this );
-
 		public override void InitializeInteraction()
 		{
 			CanInteract = true;

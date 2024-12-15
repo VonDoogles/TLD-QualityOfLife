@@ -165,5 +165,52 @@ namespace QualityOfLife
 				}
 			}
         }
+
+		public static void ToggleMiniNavPanel<T>() where T: Panel_Base
+		{
+			bool Enable = !InterfaceManager.IsPanelEnabled<T>();
+			if ( Enable )
+			{
+				InterfaceManager.TrySetPanelEnabled<Panel_Clothing>( false );
+				InterfaceManager.TrySetPanelEnabled<Panel_Cooking>( false );
+				InterfaceManager.TrySetPanelEnabled<Panel_Crafting>( false );
+				InterfaceManager.TrySetPanelEnabled<Panel_FirstAid>( false );
+				InterfaceManager.TrySetPanelEnabled<Panel_Inventory>( false );
+				InterfaceManager.TrySetPanelEnabled<Panel_Log>( false );
+				InterfaceManager.TrySetPanelEnabled<Panel_MissionsStory>( false );
+				InterfaceManager.TrySetPanelEnabled<Panel_Map>( false );
+				InterfaceManager.TrySetPanelEnabled<Panel_RecipeBook>( false );
+
+				InterfaceManager.TrySetPanelEnabled<T>( true );
+			}
+			else
+			{
+				InterfaceManager.TrySetPanelEnabled<T>( false );
+			}
+		}
+
+        public static void TogglePanelLogState( PanelLogState LogState )
+        {
+            Panel_Log Log = InterfaceManager.GetPanel<Panel_Log>();
+            if ( Log != null )
+            {
+                if ( Log.IsEnabled() )
+                {
+                    if ( Log.StateIsShowing( LogState ) )
+                    {
+                        WidgetUtils.ToggleMiniNavPanel<Panel_Log>();
+                    }
+                    else
+                    {
+                        Log.EnterState( LogState );
+                    }
+                }
+                else
+                {
+                    WidgetUtils.ToggleMiniNavPanel<Panel_Log>();
+                    Log.EnableFromMissionsStory( LogState );
+                }
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ using Il2Cpp;
 using Il2CppTLD.IntBackedUnit;
 using UnityEngine;
 
-namespace QualityOfLife.Patches
+namespace QualityOfLife
 {
 	[HarmonyPatch( typeof( GearItem ), "Drop" )]
 	internal class Patch_GearItem_Drop

@@ -34,8 +34,6 @@ namespace QualityOfLife
         public Vector3 IconScaleSheltered = new Vector3( 0.95f, 0.95f, 0.95f );
         public Vector3 IconScaleWind = new Vector3( 1.1f, 1.1f, 1.1f );
 
-        public StatusBarWind( IntPtr ptr ) : base( ptr ) {}
-        public StatusBarWind() : base( ClassInjector.DerivedConstructorPointer<StatusBarWind>() ) => ClassInjector.DerivedConstructorBody( this );
 
         public void Awake()
         {

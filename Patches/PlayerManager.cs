@@ -236,6 +236,16 @@ namespace QualityOfLife
 				}
             }
 
+			if ( ModInput.GetKeyDown( __instance, Settings.Instance.ObjectivesKey ) )
+			{
+				WidgetUtils.ToggleMiniNavPanel<Panel_MissionsStory>();
+			}
+
+			if ( ModInput.GetKeyDown( __instance, Settings.Instance.TradesKey ) )
+			{
+				WidgetUtils.TogglePanelLogState( PanelLogState.Trader );
+			}
+
 			return true;
 		}
 
@@ -331,8 +341,11 @@ namespace QualityOfLife
 						{
 							if ( Inventory.IsEnabled() )
 							{
+								InventoryGridDataItem ItemToSelect = new ();
+								ItemToSelect.m_GearItem = gi;
+
 								Inventory.Enable( false );
-								Inventory.m_LastSelectedGearItem = gi;
+								Inventory.m_LastSelectedItem = ItemToSelect;
 								PickUnits.m_EnablePanelOnExit = EnablePanelOnExit.Inventory;
 							}
 							else

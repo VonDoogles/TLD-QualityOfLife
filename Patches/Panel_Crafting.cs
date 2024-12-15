@@ -67,7 +67,8 @@ namespace QualityOfLife
         {
             if ( __instance.SelectedBPI != null )
             {
-                Il2CppSystem.Collections.Generic.List<GearItem> Tools = __instance.SelectedBPI.GetToolsAvailableToCraft( GameManager.GetInventoryComponent() );
+                Il2CppSystem.Collections.Generic.List<GearItem> Tools = new ();
+                __instance.SelectedBPI.GetToolsAvailableToCraft( GameManager.GetInventoryComponent(), Tools );
                 if ( Tools.Count > 0 )
                 {
                     GearItem? BestTool = null;
@@ -92,7 +93,8 @@ namespace QualityOfLife
                         CraftingRequirementMultiTool? MultiTool = Container?.m_MultiTool;
                         if ( Container != null && MultiTool != null )
                         {
-                            MultiTool.m_SelectedIndex = MultiTool.m_ToolOptions.IndexOf( BestTool );
+                            Func<CraftingRequirementMultiTool.ToolOption, bool> MatchTool = ToolOption => ToolOption.m_GearItem == BestTool && ToolOption.m_InInventory;
+                            MultiTool.m_SelectedIndex = MultiTool.m_ToolOptions.FindIndex( MatchTool );
                             MultiTool.RefreshDisplayed();
                             Container.OnSelectedToolChanged();
                         }

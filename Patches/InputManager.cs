@@ -4,6 +4,21 @@ using UnityEngine;
 
 namespace QualityOfLife
 {
+    [HarmonyPatch( typeof( InputManager ), "ExecuteJournalAction" )]
+    internal class Patch_InputManager_ExecuteJournalAction
+	{
+		static bool Prefix()
+		{
+			if ( Settings.Instance.EnableMod && Settings.Instance.JournalOpensJournal )
+			{
+				WidgetUtils.TogglePanelLogState( PanelLogState.DayListStats );
+				return false;
+			}
+			return true;
+		}
+	}
+
+
     [HarmonyPatch( typeof( InputManager ), "GetFirePressed" )]
     internal class Patch_InputManager_GetFirePressed
     {

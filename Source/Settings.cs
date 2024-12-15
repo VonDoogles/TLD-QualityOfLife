@@ -1,6 +1,5 @@
 ﻿using Il2Cpp;
 using ModSettings;
-using QualityOfLife.Patches;
 using System.Reflection;
 using UnityEngine;
 
@@ -214,6 +213,10 @@ namespace QualityOfLife
 
 
         [Section( "Input" )]
+        [Name( "Journal Opens Journal" )]
+        [Description( "Makes the journal key open the journal, not DLC objectives." )]
+        public bool JournalOpensJournal = true;
+
         [Name( "Separate Interact" )]
         [Description( "Separate interact with objects so it doesn't share the same controls as shooting." )]
         public bool SeparateInteract = true;
@@ -249,6 +252,14 @@ namespace QualityOfLife
         [Name( "Equip / Consume" )]
         [Description( "The key equipping items or consuming them." )]
         public KeyCode EquipKey = KeyCode.Space;
+
+        [Name( "Objectives" )]
+        [Description( "The key to show the objectives menu." )]
+        public KeyCode ObjectivesKey = KeyCode.O;
+
+        [Name( "Trades" )]
+        [Description( "The key to show the trades menu." )]
+        public KeyCode TradesKey = KeyCode.T;
 
         [Name( "Precision Rotate" )]
         [Description( "When this key is held, rotating the placement object with mouse wheel is more precise." )]
@@ -337,6 +348,10 @@ namespace QualityOfLife
         [Description( "Change the console to use a dark mode color scheme." )]
         public bool ConsoleDarkMode = true;
 
+        [Name( "Hypothermia Status Bar" )]
+        [Description( "Show hypothermia risk on cold status bar." )]
+        public bool HypoStatusBar = true;
+
         [Name( "Weight Label" )]
         [Description( "Show a weight label on the hud." )]
         public WeightLabelType WeightLabel = WeightLabelType.AutoHide;
@@ -345,9 +360,17 @@ namespace QualityOfLife
         [Description( "Show a wind status bar." )]
         public WindStatusType WindStatusBar = WindStatusType.DirectionAndSpeed;
 
+        [Name( "Show Stamina Until Full" )]
+        [Description( "Show the stamina bar until it is fully recovered." )]
+        public bool ShowStaminaUntilFull = true;
+
 		[Name( "Show Temperature Labels" )]
 		[Description( "Show labels on the cold and wind status bars that display FeelsLike and WindChill temps." )]
 		public bool ShowTemperatureLabels = true;
+
+        [Name( "ScrollWheel Item Selection" )]
+        [Description( "ScrollWheel changes selected item istead of changing the page." )]
+        public bool ScrollWheelItemSelection = true;
 
 
         public static Settings Instance = new();

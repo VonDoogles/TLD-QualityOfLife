@@ -2,7 +2,7 @@
 using Il2Cpp;
 using UnityEngine;
 
-namespace QualityOfLife.Patches
+namespace QualityOfLife
 {
 	[HarmonyPatch( typeof( BodyHarvest ), "TryGetBodyHarvestTimelineData" )]
 	internal class Patch_BodyHarvest_TryGetBodyHarvestTimelineData

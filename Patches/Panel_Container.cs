@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace QualityOfLife
 {
-	[HarmonyPatch( typeof( Panel_Container ), "ItemPassesFilter" )]
+	[HarmonyPatch( typeof( Panel_Container ), "ItemPassesFilter", new Type[] { typeof(GearItem), typeof(string) })]
 	internal class Patch_Panel_Container_ItemPassesFilter
     {
         static bool Prefix( Panel_Container __instance, GearItem pi, string filterName, ref bool __result )

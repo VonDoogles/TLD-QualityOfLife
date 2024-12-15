@@ -66,6 +66,10 @@ namespace QualityOfLife
                 CreateWindStatusBar( __instance.m_SmallSizeGroup, "StatusBars_Small/StatusBarHungerSpawner/StatusBar/Root" );
                 CreateWindStatusBar( __instance.m_RegularSizeGroup, "StatusBars_Regular/StatusBarHungerSpawner/StatusBar/Root" );
                 CreateWindStatusBar( __instance.m_LargeSizeGroup, "StatusBars_Large/StatusBarHungerSpawner/StatusBar/Root" );
+
+                CreateHypoStatusBar( __instance.m_SmallSizeGroup, "StatusBars_Small/StatusBarColdSpawner/StatusBar/Root" );
+                CreateHypoStatusBar( __instance.m_RegularSizeGroup, "StatusBars_Regular/StatusBarColdSpawner/StatusBar/Root" );
+                CreateHypoStatusBar( __instance.m_LargeSizeGroup, "StatusBars_Large/StatusBarColdSpawner/StatusBar/Root" );
             }
         }
 
@@ -98,22 +102,38 @@ namespace QualityOfLife
         {
             if ( Parent != null )
             {
-                Transform HungerSpawner = Parent.FindChild( HungerName );
-                if ( HungerSpawner != null )
+                Transform HungerRoot = Parent.FindChild( HungerName );
+                if ( HungerRoot != null )
                 {
-                    Transform StatusBarWind = HungerSpawner.FindChild( "StatusBarWind" );
+                    Transform StatusBarWind = HungerRoot.FindChild( "StatusBarWind" );
                     if ( StatusBarWind == null )
                     {
                         GameObject GameObj = new GameObject( "StatusBarWind" );
                         if ( GameObj != null )
                         {
                             StatusBarWind = GameObj.transform;
-                            GameObj.transform.parent = HungerSpawner;
+                            GameObj.transform.parent = HungerRoot;
                             GameObj.transform.localPosition = Vector3.zero;
                             GameObj.AddComponent<StatusBarWind>();
                         }
                     }
                     WidgetUtils.SetActive( StatusBarWind, Settings.Instance.WindStatusBar != WindStatusType.None || Settings.Instance.ShowTemperatureLabels );
+                }
+            }
+        }
+
+        static void CreateHypoStatusBar( Transform Parent, string ColdName )
+        {
+            if ( Parent != null )
+            {
+                Transform ColdRoot = Parent.FindChild( ColdName );
+                if ( ColdRoot != null )
+                {
+                    Transform Foreground = ColdRoot.FindChild( "Foreground" );
+                    if ( Foreground != null && Foreground.GetComponent<StatusBarHypo>() == null )
+                    {
+                        Foreground.gameObject.AddComponent<StatusBarHypo>();
+                    }
                 }
             }
         }
@@ -151,5 +171,21 @@ namespace QualityOfLife
 			}
         }
     }
+
+	[HarmonyPatch( typeof( Panel_HUD ), "UpdateStaminaBar" )]
+	internal class Patch_Panel_HUD_UpdateStaminaBar
+	{
+        static void Postfix( Panel_HUD __instance )
+		{
+			if ( Settings.Instance.EnableMod && Settings.Instance.ShowStaminaUntilFull )
+			{
+				PlayerMovement Movement = GameManager.GetPlayerMovementComponent();
+				if ( Movement != null && Movement.CurrentStamina < Movement.CurrentMaxStamina )
+				{
+					__instance.m_SprintFadeTimeTracker = __instance.m_SprintBar_SecondsBeforeFadeOut;
+				}
+			}
+		}
+	}
 
 }

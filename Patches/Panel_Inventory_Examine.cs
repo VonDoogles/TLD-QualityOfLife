@@ -133,7 +133,7 @@ namespace QualityOfLife
                     }
                     else if ( ModInput.GetKeyDown( __instance, Settings.Instance.InteractKey ) )
                     {
-                        if ( __instance.m_ActionToolSelect.active )
+                        if ( __instance.GetActionToolSelect().active )
                         {
                             __instance.OnSelectActionTool();
                         }
@@ -150,7 +150,8 @@ namespace QualityOfLife
                 if ( Settings.Instance.EnableMod && Settings.Instance.RepairColoredAmount && __instance.m_GearItem != null && __instance.m_GearItem.m_Repairable != null )
                 {
                     float FullAmount = __instance.m_GearItem.m_Repairable.m_ConditionIncrease;
-                    float RepairAmount = __instance.GetConditionIncreaseFromRepair( __instance.m_GearItem );
+                    float MissingAmount = 100 - __instance.m_GearItem.GetRoundedCondition();
+                    float RepairAmount = Math.Min( FullAmount, MissingAmount );
 
                     __instance.m_Repair_AmountLabel.color = ( FullAmount != RepairAmount ) ? ColorParialRepair : __instance.m_RepairLabelColorNormal;
 					__instance.m_Repair_AmountLabel.text = $"{RepairAmount}% ({FullAmount})";

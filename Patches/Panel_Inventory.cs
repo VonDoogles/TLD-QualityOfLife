@@ -13,23 +13,23 @@ namespace QualityOfLife
 		{
 			if ( Settings.Instance.EnableMod && Settings.Instance.TravoisPickupWithContents )
 			{
-				GearItem SelectedItem = __instance.GetCurrentlySelectedGearItem();
-				if ( SelectedItem != null && SelectedItem.m_Travois != null )
+				InventoryGridDataItem SelectedItem = __instance.GetCurrentlySelectedItem();
+				if ( SelectedItem.m_GearItem != null && SelectedItem.m_GearItem.m_Travois != null )
 				{
-					TravoisBigCarryItem? BigCarryItem = SelectedItem.m_Travois.BigCarryItem;
+					TravoisBigCarryItem? BigCarryItem = SelectedItem.m_GearItem.m_Travois.BigCarryItem;
 					if ( BigCarryItem == null )
 					{
-						GameObject Prefab = SelectedItem.m_Travois.m_TravoisReference.GetOrLoadAsset();
+						GameObject Prefab = SelectedItem.m_GearItem.m_Travois.m_TravoisReference.GetOrLoadAsset();
 						BigCarryItem = Prefab?.GetComponent<TravoisBigCarryItem>();
 					}
 
-					Container? GearContainer = GearHelper.FindOrCreateGearContainer( SelectedItem, BigCarryItem?.m_Container );
+					Container? GearContainer = GearHelper.FindOrCreateGearContainer( SelectedItem.m_GearItem, BigCarryItem?.m_Container );
 					if ( GearContainer != null )
 					{
 						Panel_Container PanelContainer = InterfaceManager.GetPanel<Panel_Container>();
 						if ( PanelContainer != null )
 						{
-							PanelContainer.SetContainer( GearContainer, SelectedItem.GetDisplayNameWithoutConditionForInventoryInterfaces() );
+							PanelContainer.SetContainer( GearContainer, SelectedItem.m_GearItem.GetDisplayNameWithoutConditionForInventoryInterfaces() );
 							PanelContainer.Enable( true, true, (Il2CppSystem.Action)OnContainerPanelClosed );
 							PanelContainer.DeselectAllItems();
 							__instance.Enable( false );
