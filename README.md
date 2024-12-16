@@ -1,7 +1,10 @@
 # Quality Of Life
 A mod for The Long Dark that makes several changes to the UI in hopes to make the game more consistent and easier to control.  Also contains some options to make the game more difficult.
 
-> [!WARNING]
+> [!IMPORTANT]
+> Requires the use of MelonLoader v0.6.6.
+
+> [!IMPORTANT]
 > Quality Of Life requires the ModSettings mod to be installed.  (https://tldmods.com/)
 
 > [!WARNING]
