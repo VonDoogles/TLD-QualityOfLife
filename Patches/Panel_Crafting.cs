@@ -93,14 +93,25 @@ namespace QualityOfLife
                         CraftingRequirementMultiTool? MultiTool = Container?.m_MultiTool;
                         if ( Container != null && MultiTool != null )
                         {
-                            Func<CraftingRequirementMultiTool.ToolOption, bool> MatchTool = ToolOption => ToolOption.m_GearItem == BestTool && ToolOption.m_InInventory;
-                            MultiTool.m_SelectedIndex = MultiTool.m_ToolOptions.FindIndex( MatchTool );
+                            MultiTool.m_SelectedIndex = FindToolIndex( MultiTool.m_ToolOptions, BestTool );
                             MultiTool.RefreshDisplayed();
                             Container.OnSelectedToolChanged();
                         }
                     }
                 }
             }
+        }
+
+        static int FindToolIndex( Il2CppSystem.Collections.Generic.List<CraftingRequirementMultiTool.ToolOption> ToolOptions, GearItem Tool )
+        {
+            for ( int Index = 0; Index < ToolOptions.Count; ++Index )
+            {
+                if ( ToolOptions[ Index ].m_InInventory && ToolOptions[ Index ].m_GearItem == Tool )
+                {
+                    return Index;
+                }
+            }
+            return 0;
         }
     }
 
