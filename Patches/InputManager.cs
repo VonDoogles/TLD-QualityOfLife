@@ -9,7 +9,7 @@ namespace QualityOfLife
 	{
 		static bool Prefix()
 		{
-			if ( Settings.Instance.EnableMod && Settings.Instance.JournalOpensJournal )
+			if ( Settings.Instance.EnableMod && Settings.Instance.JournalOpensJournal && ModInput.ShouldProcessInput( KeyCode.J ) )
 			{
 				WidgetUtils.TogglePanelLogState( PanelLogState.DayListStats );
 				return false;
@@ -149,4 +149,22 @@ namespace QualityOfLife
             }
         }
     }
+
+    [HarmonyPatch( typeof( InputManager ), "GetSafehouseCustomizePressed" )]
+    internal class Patch_InputManager_GetSafehouseCustomizePressed
+    {
+        static void Postfix( MonoBehaviour context, ref bool __result )
+        {
+            if ( Settings.Instance.EnableMod && Settings.Instance.SafehouseDayTimeOnly )
+            {
+                if ( __result && !TimeOfDay.Instance.IsDayWithExtendedHours( 0 ) )
+                {
+                    HUDMessage.AddMessage( "You can't use safehouse customization in the dark.", false, false );
+                    GameAudioManager.PlayGUIError();
+                    __result = false;
+                }
+            }
+        }
+    }
+
 }

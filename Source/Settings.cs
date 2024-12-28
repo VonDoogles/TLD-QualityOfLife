@@ -109,6 +109,10 @@ namespace QualityOfLife
 					  "Random - Drop items facing a random diration." )]
 		public ItemDropRotationType ItemDropRotation = ItemDropRotationType.PlayerFacing;
 
+        [Name( "Safehouse Day Time Only" )]
+        [Description( "Restrict using safehouse customization to day time only." )]
+        public bool SafehouseDayTimeOnly = true;
+
 		[Name( "Bear Meat Min (KG)" )]
 		[Description( "The minimum amount of meat in KG a bear carcas will have. (Default: 25)" )]
 		[Slider(0f, 25f, 51)]

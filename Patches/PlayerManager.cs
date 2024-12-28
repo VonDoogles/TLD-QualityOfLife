@@ -2,6 +2,7 @@
 using Il2Cpp;
 using Il2CppTLD.Gear;
 using Il2CppTLD.Interactions;
+using Il2CppTLD.Placement;
 using Il2CppTLD.SaveState;
 using UnityEngine;
 
@@ -148,9 +149,19 @@ namespace QualityOfLife
 					if ( __instance.ActiveInteraction != null && !InPlacementMode )
 					{
                         GameObject ObjectToPlace = __instance.ActiveInteraction.GetInteractiveObject();
-						if ( ObjectToPlace != null && ObjectToPlace.GetComponent<Inspect>() != null )
+						if ( ObjectToPlace != null )
 						{
-							__instance.StartPlaceMesh( ObjectToPlace, PlaceMeshFlags.None );
+                            if ( ObjectToPlace.GetComponent<Inspect>() != null )
+                            {
+                                __instance.StartPlaceMesh( ObjectToPlace, PlaceMeshFlags.None );
+                            }
+                            else if ( ObjectToPlace.GetComponent<Placeable>() != null )
+                            {
+                                float PickupRange = GameManager.GetGlobalParameters().m_MaxDecorationPickupRange;
+                                DecorationItem DecoItem = ObjectToPlace.GetComponent<DecorationItem>();
+                                PlaceMeshRules Rules = DecoItem != null ? DecoItem.GetPlacementRules() : PlaceMeshRules.Default;
+                                __instance.StartPlaceMesh( ObjectToPlace, PickupRange, PlaceMeshFlags.None, Rules );
+                            }
 						}
                         bCanDropItemInHands = false;
                     }
