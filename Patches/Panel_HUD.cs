@@ -179,9 +179,9 @@ namespace QualityOfLife
         {
             if ( Settings.Instance.EnableMod && Settings.Instance.SafehouseDayTimeOnly )
             {
-                if ( !TimeOfDay.Instance.IsDayWithExtendedHours( 0 ) )
+                if ( TimeOfDay.Instance != null && !TimeOfDay.Instance.IsDayWithExtendedHours( 0 ) )
                 {
-                    WidgetUtils.SetActive( __instance.m_SafehouseRoot, false );
+                    WidgetUtils.SetActive( __instance?.m_SafehouseRoot, false );
                 }
             }
         }
