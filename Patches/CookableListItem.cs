@@ -7,17 +7,17 @@ namespace QualityOfLife
     [HarmonyPatch( typeof( CookableListItem ), "SetCookable" )]
     internal class Patch_CookableListItem_SetCookable
     {
-		static void Postfix( CookableListItem __instance, CookableItem cookable, CookingPotItem cookingPot )
+		static void Postfix( CookableListItem __instance, CookableItem cookableItem, CookingPotItem cookingPot )
 		{
-			if ( cookable != null && cookable.m_GearItem != null )
+			if ( cookableItem != null && cookableItem.m_GearItem != null )
 			{
-				Cookable? ToCook = cookable.m_GearItem.GetComponent<Cookable>();
+				Cookable? ToCook = cookableItem.m_GearItem.GetComponent<Cookable>();
 				if ( ToCook != null && ToCook.m_CookedPrefab != null )
 				{
 					StackableItem? Stackable = ToCook.m_CookedPrefab.GetComponent<StackableItem>();
 					if ( Stackable != null && Stackable.m_DefaultUnitsInItem > 1 )
 					{
-						string DisplayName = cookable.GetDisplayName();
+						string DisplayName = cookableItem.GetDisplayName();
 						int DisplayCount = Stackable.m_DefaultUnitsInItem;
 						WidgetUtils.SetLabelText( __instance.m_ItemName, $"{DisplayName} ({DisplayCount})" );
 					}

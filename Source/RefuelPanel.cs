@@ -311,8 +311,8 @@ namespace QualityOfLife
 			{
 				if ( Examine.m_LanternFuelAmountLabel != null && ExamineItem != null && ExamineItem.m_KeroseneLampItem )
 				{
-					string LitersCur = ExamineItem.m_KeroseneLampItem.m_CurrentFuelLiters.ToString();
-					string LitersMax = ExamineItem.m_KeroseneLampItem.m_MaxFuel.ToFormattedStringWithUnits();
+					string LitersCur = ExamineItem.m_KeroseneLampItem.m_CurrentFuelLiters.ToFormattedStringNoOunces();
+					string LitersMax = ExamineItem.m_KeroseneLampItem.m_MaxFuel.ToFormattedStringWithUnitsNoOunces();
 					Examine.m_LanternFuelAmountLabel.text = $"{LitersCur}/{LitersMax}";
 				}
 
@@ -330,15 +330,15 @@ namespace QualityOfLife
 
 				if ( Examine.m_LanternFuelAmountLabel != null )
 				{
-					string LitersCur = GetTargetFuel().ToString();
-					string LitersMax = GetTargetCapacity().ToFormattedStringWithUnits();
+					string LitersCur = GetTargetFuel().ToFormattedStringNoOunces();
+					string LitersMax = GetTargetCapacity().ToFormattedStringWithUnitsNoOunces();
 					Examine.m_LanternFuelAmountLabel.text = $"{LitersCur}/{LitersMax}";
 				}
 
 				if ( Examine.m_FuelSupplyAmountLabel != null )
 				{
-					string LitersCur = GetFuelAvailable().ToString();
-					string LitersMax = GetFuelCapacity().ToFormattedStringWithUnits();
+					string LitersCur = GetFuelAvailable().ToFormattedStringNoOunces();
+					string LitersMax = GetFuelCapacity().ToFormattedStringWithUnitsNoOunces();
 
                     Examine.m_FuelSupplyAmountLabel.text = $"{LitersCur}/{LitersMax}";
 				}
